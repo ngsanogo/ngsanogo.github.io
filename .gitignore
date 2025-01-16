@@ -25,3 +25,4 @@
 # blogdown
 /blogdown/
 /public/
+.DS_Store
