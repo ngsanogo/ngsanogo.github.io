@@ -1,6 +1,12 @@
-+++
-title = "Projects"
-slug = "projects"
-+++
+---
+slug: projects
+title: Projects
+---
 
-Nothing to see here... Move along!
+Here you'll find an incomplete list of projects I've been involved with whether as a maintainer or a contributor.
+
+# Maintainer
+
+# Contributor
+
+
