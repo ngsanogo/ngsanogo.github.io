@@ -1,4 +1,5 @@
 Version: 1.0
+ProjectId: 320c0bd1-4a13-4ac2-920a-655bffe458d0
 
 RestoreWorkspace: No
 SaveWorkspace: No
@@ -11,6 +12,9 @@ Encoding: UTF-8
 
 RnwWeave: knitr
 LaTeX: pdfLaTeX
+
+AutoAppendNewline: Yes
+StripTrailingWhitespace: Yes
 
 BuildType: Website
 

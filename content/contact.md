@@ -1,8 +1,6 @@
-+++
-title = "Contact"
-slug = "contact"
-+++
+---
+slug: contact
+title: Contact
+---
 
-You can get in touch with me most effectively via email at [ngsanogo@proton.me](ngsanogo@proton.me). Feel free to reach out with any inquiries. However, if your question is related to programming, I suggest posting it on Stack Overflow, where you can find comprehensive answers to programming queries.
-
-For social networking, I am only active on [LinkedIn](https://www.linkedin.com/in/ngsanogo/) and [X](https://twitter.com/ngsanogo).
+The best way to get in touch is by emailing me at [ngsanogo@proton.me](ngsanogo@proton.me), connecting on LinkedIn at [@ngsanogo](https://www.linkedin.com/in/ngsanogo/) , or checking out my work on [GitHub](https://github.com/ngsanogo).

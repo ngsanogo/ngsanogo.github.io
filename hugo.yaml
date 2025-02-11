@@ -1,0 +1,70 @@
+baseURL: https://ngsanogo.rbind.io
+title: Issa Sanogo
+theme: hugo-coder
+languageCode: en
+defaultContentLanguage: en
+enableEmoji: yes
+pagination:
+  pagerSize: 6
+services:
+  disqus:
+    shortname: ngsanogo
+markup:
+  goldmark:
+    renderer:
+      unsafe: yes
+  highlight:
+    noClasses: no
+params:
+  author: Issa Sanogo
+  avatarURL: images/profile.jpg
+  colorScheme: auto
+  commit: https://github.com/ngsanogo/ngsanogo.rbind.io
+  customCSS: []
+  customJS: []
+  customRemoteJS: []
+  customSCSS: []
+  dateFormat: January 2, 2006
+  description: Issa Sanogo's personal website
+  hideColorSchemeToggle: no
+  info:
+    - Data Engineer / Data manager
+    - ISData consulting
+  keywords: blog,developer,personal
+  maxSeeAlsoItems: 5
+  rtl: no
+  since: 2018
+  social:
+    - icon: fa-brands fa-github fa-2x
+      name: Github
+      url: https://github.com/ngsanogo/
+      weight: 1
+    - icon: fa-brands fa-linkedin fa-2x
+      name: LinkedIn
+      url: https://www.linkedin.com/in/ngsanogo/
+      weight: 2
+taxonomies:
+  author: authors
+  category: categories
+  series: series
+  tag: tags
+languages:
+  en:
+    languageName: ':uk:'
+    menu:
+      main:
+        - name: About
+          url: about/
+          weight: 1
+        - name: Blog
+          url: posts/
+          weight: 2
+        - name: Projects
+          url: projects/
+          weight: 3
+        - name : CV
+          url: cv/
+          weight: 4
+        - name: Contact
+          url: contact/
+          weight: 5
