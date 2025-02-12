@@ -7,8 +7,7 @@ enableEmoji: yes
 pagination:
   pagerSize: 6
 services:
-  disqus:
-    shortname: ngsanogo
+  disqus:{ngsanogo}
 markup:
   goldmark:
     renderer:
@@ -68,3 +67,7 @@ languages:
         - name: Contact
           url: contact/
           weight: 5
+ignoreFiles:
+  - \.Rmd$
+  - \.Rmarkdown$
+  - _cache$
