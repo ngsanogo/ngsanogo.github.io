@@ -8,42 +8,46 @@ description: Curriculum vitae
 title: Curriculum vitae
 ---
 
-# Contact
+# Issa Sanogo  
+**Data Engineer**  
+📍 [Île-de-France, France](https://maps.app.goo.gl/RekvUGDw4UToLPzu7)  
+✉️ ngsanogo@proton.me  
+🔗 [LinkedIn: @ngsanogo](https://www.linkedin.com/in/ngsanogo)  
 
-Address : [Île-de-France, France](https://maps.app.goo.gl/n8hZQpEMaARtZjbP6)
+---
 
-email : [ngsanogo@proton.me](ngsanogo@proton.me)
+## Education  
+🎓 **Master of Science in Mathematical Engineering applied to Life Sciences**  
+University of Paris Cité, 2016 - 2017  
 
-linkedin : [@ngsanogo](https://www.linkedin.com/in/ngsanogo/)
+---
 
-# Education Background
+## Professional Experience  
 
-- 2016 - 2017, Master of Sciences, **Mathematical Engineering applied to Life Sciences**, University of Paris Cité
+### **Data Engineer | Jérôme Lejeune Institute**  
+📅 Oct. 2021 – Jan. 2025 | Paris, France  
+At Jérôme Lejeune Institute, I played a key role in **optimizing data management** for research and healthcare. My responsibilities included:  
+- **Data architecture & governance:** Diagnosed and structured data repositories (patient records, biological samples).  
+- **Data warehousing:** Designed and implemented a **centralized data warehouse**, streamlining information access.  
+- **ETL development:** Built efficient **data pipelines** for seamless data integration and transformation.  
+- **Business intelligence:** Created **interactive dashboards** and trained medical teams on data modeling.  
+- **Data quality & compliance:** Established governance rules, quality controls, and alerts to ensure data consistency.  
+- **Tech stack:** R, Python, SQL (SQL Server, PostgreSQL, MariaDB), NoSQL (MongoDB), Docker, Tableau.  
 
-# Professional Experience
+### **Data Manager | Assistance Publique - Hôpitaux de Paris (AP-HP)**  
+📅 Sept. 2017 – Sept. 2021 | Paris, France  
+- **Clinical data management:** Designed and implemented **electronic Case Report Forms (eCRF)**.  
+- **Data integrity & governance:** Developed **validation plans** and reconciled clinical and vigilance databases.  
+- **Data analysis & visualization:** Created **statistical reports, dashboards**, and automated reports.  
+- **Database administration:** Served as DBA for multiple projects, ensuring security and performance.  
+- **Tech stack:** R, SQL (MySQL), i2b2, REDCap, CleanWEB.  
 
-- **Data Engineer**, Jérôme Lejeune Institute, Oct. 2021 ‑ Jan. 2025, Paris, France.  
-At Jérôme Lejeune Institute, I played a key role in optimizing data management for research and healthcare.
-I diagnosed and structured data repositories (patient records, biological samples) and designed a data warehouse to centralize and streamline information.
-I developed ETL flows, ensuring efficient data integration and aligning new data collection with strategic needs.  
-To enhance usability, I created dashboards tailored to business teams and guided doctors, paramedics, and researchers in data modeling.
-I also established data management rules, quality controls, and alerts to ensure data consistency and reliability.
-My work contributed to improving data-driven decision-making in medical research.  
-I leveraged R, Python, SQL (SQL Server, PostgreSQL, MariaDB), NoSQL (MongoDB), Docker, and Tableau to implement scalable and efficient data solutions.
+---
 
-- **Data manager**, Assistance Publique - Hôpitaux de Paris, Sept. 2017 ‑ Sept. 2021, Paris, France.  
-At AP-HP, I was was managing clinical data and ensuring its integrity.
-I drafted comprehensive data management and validation plans, designed and implemented electronic Case Report Forms (eCRF), and developed robust queries to manage and reconcile data across clinical and vigilance databases.
-I also prepared and led data review meetings, archived data, and produced detailed management reports.
-In addition, I performed descriptive statistical analyses, created interactive dashboards, and developed reproducible reports.
-I also administered databases, serving as the DBA for several projects, ensuring robust performance, security, and availability.
-My work was essential in streamlining data processes and supporting evidence-based clinical decision-making.
-I leveraged R, SQL (MySQL), i2b2, REDCap and CleanWEB to deliver efficient, scalable data solutions.
+## Technical Skills  
+- **Programming Languages:** R, Python, SQL, NoSQL, JavaScript, HTML/CSS, Markdown  
+- **Databases:** PostgreSQL, SQL Server, MariaDB, DuckDB, SQLite, MongoDB  
+- **Applications:** Docker, Git, Airflow/Dagster, Power BI, Tableau  
+- **OS:** MacOS, Ubuntu, Windows  
 
-# Technical stack
-
-- Languages : R, Python, HTML/CSS, JavaScript, Markdown, SQL, NoSQL
-
-- Applications: Git, GitHub, Bitbucket, Jira, Confluence, MariaDB, PostgreSQL, SQL Server, DuckDB, SQLite, MongoDB, Docker, Power BI, Tableau
-
-- OS : MacOS, Ubuntu, Windows
+---
