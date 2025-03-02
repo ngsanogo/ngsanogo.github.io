@@ -9,16 +9,23 @@ title: Curriculum vitae
 ---
 
 # Issa Sanogo  
-**Data Engineer**  
+**Data Engineer | Expert in Data Management and Engineering**  
 📍 [Île-de-France, France](https://maps.app.goo.gl/RekvUGDw4UToLPzu7)  
-✉️ ngsanogo@proton.me  
+📞 +33 6 51 98 52 79 | 📧 ngsanogo@proton.me  
 🔗 [LinkedIn: @ngsanogo](https://www.linkedin.com/in/ngsanogo)  
+🐦 [GitHub : @ngsanogo](https://github.com/ngsanogo)
 
 ---
 
+### **Profil**  
+Passionate Data Engineer, expert in **data management and architecture**, specialized in **ETL** development, **data integration** and **implementation of scalable data pipelines**.
+With a wealth of experience in **data engineering, data warehousing** and **automated data flows**, I put my skills at the service of companies to optimize and add value to their data.
+
+
+
 ## Education  
 🎓 **Master of Science in Mathematical Engineering applied to Life Sciences**  
-University of Paris Cité, 2016 - 2017  
+University of Paris Cité, Paris, France, 2016 - 2017  
 
 ---
 
@@ -44,10 +51,31 @@ At Jérôme Lejeune Institute, I played a key role in **optimizing data manageme
 
 ---
 
+## **Training & Certifications**  
+🎓 **Implementing a Data Warehouse With SQL Server**  
+CEGOS, Paris, France, 2022  
+
+---
+
 ## Technical Skills  
 - **Programming Languages:** R, Python, SQL, NoSQL, JavaScript, HTML/CSS, Markdown  
 - **Databases:** PostgreSQL, SQL Server, MariaDB, DuckDB, SQLite, MongoDB  
-- **Applications:** Docker, Git, Airflow/Dagster, Power BI, Tableau  
+- **Applications:** Git, Docker, Kubernetes
+- **ETL & Data Pipelines :** Airflow, Dagster, Dataiku, DBT
+- **Visualisation & BI :** Power BI, Tableau,
+- **Cloud & Big Data :** Azure, AWS, GCP 
 - **OS:** MacOS, Ubuntu, Windows  
+
+---
+
+### **Languages**  
+🇫🇷 French : Native language  
+🇬🇧 English : Professional  
+
+---
+
+### **Other information**  
+🚀 Immediately available for new opportunities  
+📍 Mobile in France & Remote
 
 ---
