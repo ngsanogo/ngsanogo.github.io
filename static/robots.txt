@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ngsanogo.rbind.io/sitemap.xml 
