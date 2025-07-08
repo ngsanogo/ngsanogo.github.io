@@ -1,0 +1,72 @@
+<div class="search-container">
+    <div class="search-box">
+        <input type="text" id="search-input" placeholder="{{ i18n "search" | default "Rechercher..." }}" aria-label="Search">
+        <div id="search-results" class="search-results"></div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    let searchIndex = null;
+
+    // Charger l'index de recherche
+    fetch('/index.json')
+        .then(response => response.json())
+        .then(data => {
+            searchIndex = data;
+        });
+
+    // Fonction de recherche
+    function performSearch(query) {
+        if (!searchIndex) return;
+        
+        const results = searchIndex.filter(item => {
+            const searchContent = (item.title + ' ' + item.content + ' ' + (item.tags || []).join(' ')).toLowerCase();
+            return searchContent.includes(query.toLowerCase());
+        });
+
+        displayResults(results);
+    }
+
+    // Afficher les résultats
+    function displayResults(results) {
+        if (results.length === 0) {
+            searchResults.innerHTML = '<p>Aucun résultat trouvé</p>';
+            return;
+        }
+
+        const html = results.map(item => `
+            <div class="search-result">
+                <h3><a href="${item.permalink}">${item.title}</a></h3>
+                <p>${item.description || item.content.substring(0, 150)}...</p>
+            </div>
+        `).join('');
+
+        searchResults.innerHTML = html;
+    }
+
+    // Événement de recherche
+    let debounceTimer;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const query = this.value.trim();
+            if (query.length > 2) {
+                performSearch(query);
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.style.display = 'none';
+            }
+        }, 300);
+    });
+
+    // Fermer les résultats quand on clique ailleurs
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-container')) {
+            searchResults.style.display = 'none';
+        }
+    });
+});
+</script> 
