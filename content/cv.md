@@ -58,11 +58,11 @@ CEGOS, Paris, France, 2022
 ---
 
 ## Technical Skills  
-- **Programming Languages:** R, Python, SQL, NoSQL, JavaScript, HTML/CSS, Markdown  
-- **Databases:** PostgreSQL, SQL Server, MariaDB, DuckDB, SQLite, MongoDB  
-- **Applications:** Git, Docker, Kubernetes
+- **Programming Languages:** R, Python, SQL, NoSQL, Markdown  
+- **Databases:** PostgreSQL, SQL Server, MariaDB, DuckDB, SQLite, MongoDB, Cassandra
+- **Applications:** Git, Docker
 - **ETL & Data Pipelines :** Airflow, Dagster, Dataiku, DBT
-- **Visualisation & BI :** Power BI, Tableau,
+- **Visualisation & BI :** Power BI, Tableau
 - **Cloud & Big Data :** Azure, AWS, GCP 
 - **OS:** MacOS, Ubuntu, Windows  
 
