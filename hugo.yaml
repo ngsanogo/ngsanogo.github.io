@@ -3,17 +3,28 @@ title: Issa Sanogo
 theme: hugo-coder
 languageCode: en
 defaultContentLanguage: en
-enableEmoji: yes
+enableEmoji: true
 pagination:
   pagerSize: 6
+
+# SEO Improvements
+enableRobotsTXT: true
+canonifyURLs: true
+enableGitInfo: true
+
 services:
-  disqus:{ngsanogo}
+  disqus:
+    shortname: ngsanogo
+  googleAnalytics:
+    id: ""  # Add your Google Analytics ID here if needed
+
 markup:
   goldmark:
     renderer:
-      unsafe: yes
+      unsafe: true
   highlight:
-    noClasses: no
+    noClasses: false
+
 params:
   author: Issa Sanogo
   avatarURL: images/profile.jpg
@@ -24,15 +35,19 @@ params:
   customRemoteJS: []
   customSCSS: []
   dateFormat: January 2, 2006
-  description: Issa Sanogo's personal website
-  hideColorSchemeToggle: no
+  description: "Site personnel d'Issa Sanogo - Data Engineer et Data Manager spécialisé en sciences de la vie"
+  hideColorSchemeToggle: false
   info:
     - Data Engineer / Data manager
     - ISData consulting
-  keywords: blog,developer,personal
+  keywords: "data engineer, data manager, R, Python, sciences de la vie, blog, développement"
   maxSeeAlsoItems: 5
-  rtl: no
+  rtl: false
   since: 2018
+  # Analytics
+  plausible: "ngsanogo.rbind.io"
+  # SEO and Social Media Improvements
+  images: ["images/profile.jpg"]
   social:
     - icon: fa-brands fa-github fa-2x
       name: Github
@@ -42,14 +57,18 @@ params:
       name: LinkedIn
       url: https://www.linkedin.com/in/ngsanogo/
       weight: 2
+
 taxonomies:
   author: authors
   category: categories
   series: series
   tag: tags
+
 languages:
   en:
-    languageName: ':uk:'
+    languageName: ':en:'
+    title: "Issa Sanogo"
+    description: "Issa Sanogo's personal website - Data Engineer and Data Manager"
     menu:
       main:
         - name: About
@@ -58,15 +77,13 @@ languages:
         - name: Blog
           url: posts/
           weight: 2
-        - name: Projects
-          url: projects/
-          weight: 3
-        - name : CV
+        - name: CV
           url: cv/
-          weight: 4
+          weight: 3
         - name: Contact
           url: contact/
-          weight: 5
+          weight: 4
+
 ignoreFiles:
   - \.Rmd$
   - \.Rmarkdown$
