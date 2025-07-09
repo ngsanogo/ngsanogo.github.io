@@ -69,8 +69,8 @@ CEGOS, Paris, France, 2022
 ---
 
 ### **Languages**  
-🇫🇷 French : Native language  
-🇬🇧 English : Professional  
+- **French :** Native language  
+- **English :** Professional  
 
 ---
 
