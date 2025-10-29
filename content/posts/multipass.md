@@ -5,7 +5,7 @@ categories:
 - Application
 - Infrastructure
 date: "2025-03-21"
-description: What is Multipass ? How to use Multipass ? Advantage ? Disadvantage ?
+description: Introduction to Multipass - A tool for creating and managing virtual machines easily.
 series:
 - VM
 tags:
