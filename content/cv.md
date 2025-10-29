@@ -4,7 +4,7 @@ aliases:
 - cv
 author: Issa Sanogo
 date: "2025-02-11"
-description: Curriculum vitae
+description: Professional curriculum vitae - Data Engineer with expertise in data management and engineering
 title: Curriculum vitae
 ---
 
