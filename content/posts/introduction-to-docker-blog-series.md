@@ -5,9 +5,9 @@ categories:
 - Application
 - Infrastructure
 date: "2025-02-26"
-description: What is docker ? Why it is important ? Advantage ? Disadvantage ?
+description: A comprehensive blog series about Docker covering everything from basics to advanced topics.
 series:
-- Theme Docker
+- Docker
 tags:
 - docker
 title: Introduction to Docker Blog Series

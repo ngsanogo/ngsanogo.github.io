@@ -3,7 +3,7 @@ aliases:
 - about
 author: Issa Sanogo
 date: "2025-02-11"
-description: Information about the author of the website
+description: About Issa Sanogo - Freelance Data Engineer specializing in life sciences data management and engineering
 title: About
 ---
 
