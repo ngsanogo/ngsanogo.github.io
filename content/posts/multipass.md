@@ -5,9 +5,9 @@ categories:
 - Application
 - Infrastructure
 date: "2025-03-21"
-description: What is Multipass ? How to use Multipass ? Advantage ? Disadvantage ?
+description: Learn about Multipass, Ubuntu's lightweight VM manager for developers and system administrators seeking easy virtual machine creation and management.
 series:
-- Theme VM
+- VM
 tags:
 - multipass
 title: Multipass
