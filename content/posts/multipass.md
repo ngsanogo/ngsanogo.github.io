@@ -7,7 +7,7 @@ categories:
 date: "2025-03-21"
 description: What is Multipass ? How to use Multipass ? Advantage ? Disadvantage ?
 series:
-- Theme VM
+- VM
 tags:
 - multipass
 title: Multipass
