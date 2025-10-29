@@ -7,7 +7,7 @@ categories:
 date: "2025-02-26"
 description: What is docker ? Why it is important ? Advantage ? Disadvantage ?
 series:
-- Theme Docker
+- Docker
 tags:
 - docker
 title: Introduction to Docker Blog Series
