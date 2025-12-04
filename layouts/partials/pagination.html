@@ -55,14 +55,6 @@
     {{ end }}
   </div>
 
-  <!-- Items per Page Selector -->
-  <div class="pagination-controls">
-    <select id="items-per-page" class="items-selector" onchange="changeItemsPerPage(this.value)">
-      <option value="10" {{ if eq .Paginator.PageSize 10 }}selected{{ end }}>10 per page</option>
-      <option value="20" {{ if eq .Paginator.PageSize 20 }}selected{{ end }}>20 per page</option>
-      <option value="50" {{ if eq .Paginator.PageSize 50 }}selected{{ end }}>50 per page</option>
-    </select>
-  </div>
 </nav>
 
 <style>
@@ -163,39 +155,6 @@
     font-size: 1.2rem;
   }
 
-  .pagination-controls {
-    display: flex;
-    justify-content: center;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color, #e0e0e0);
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .items-selector {
-    padding: 0.8rem 1.2rem;
-    background: transparent;
-    color: var(--text-color, #333);
-    border: 2px solid var(--accent-color, #2d96de);
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    letter-spacing: 0.3px;
-  }
-
-  .items-selector:hover {
-    background: rgba(45, 150, 222, 0.05);
-    box-shadow: 0 4px 12px rgba(45, 150, 222, 0.1);
-  }
-
-  .items-selector:focus {
-    outline: none;
-    background: rgba(45, 150, 222, 0.05);
-    box-shadow: 0 0 0 3px rgba(45, 150, 222, 0.15);
-  }
-
   @media (max-width: 768px) {
     .pagination {
       margin: 3rem 0 1.5rem;
@@ -264,13 +223,10 @@
     }
   }
 </style>
-
-<script>
-  function changeItemsPerPage(itemsPerPage) {
-    localStorage.setItem('itemsPerPage', itemsPerPage);
-    const currentPath = window.location.pathname;
-    const basePath = currentPath.replace(/\/page\/\d+\/?$/, '');
-    window.location.href = basePath;
-  }
-</script>
 {{ end }}
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .pagination-num:hover {
+      background: rgba(45, 150, 222, 0.15);
+    }
+  }
