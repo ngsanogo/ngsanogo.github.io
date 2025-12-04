@@ -30,3 +30,4 @@ Thumbs.db
 .hugo_build.lock
 /resources/
 ._*
+/.github
