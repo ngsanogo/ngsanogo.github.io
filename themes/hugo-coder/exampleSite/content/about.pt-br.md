@@ -10,11 +10,11 @@ Escrito em Go, Hugo é um gerador de sites estáticos de código aberto disponí
 
 O Hugo faz o uso de vários projetos de código aberto incluíndo:
 
-* https://github.com/yuin/goldmark
-* https://github.com/alecthomas/chroma
-* https://github.com/muesli/smartcrop
-* https://github.com/spf13/cobra
-* https://github.com/spf13/viper
+- <https://github.com/yuin/goldmark>
+- <https://github.com/alecthomas/chroma>
+- <https://github.com/muesli/smartcrop>
+- <https://github.com/spf13/cobra>
+- <https://github.com/spf13/viper>
 
 O Hugo é ideal para blogs, sites corporativos, protfólio criativos, revistas online, aplicações de página única ou até sites com milhares de páginas.
 

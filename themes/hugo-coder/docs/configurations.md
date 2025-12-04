@@ -23,15 +23,15 @@
 
 This theme supports:
 
-* [Analytics](/docs/analytics.md)
+- [Analytics](/docs/analytics.md)
 
-* Commenting Systems
-  * [Disqus](https://disqus.com/)
-  * [Commento](https://commento.io/)
-  * [Utterances](https://utteranc.es/)
-  * [Giscus](https://giscus.app/)
-  * [Cusdis](https://cusdis.com/)
-  * [Telegram](https://comments.app/)
+- Commenting Systems
+  - [Disqus](https://disqus.com/)
+  - [Commento](https://commento.io/)
+  - [Utterances](https://utteranc.es/)
+  - [Giscus](https://giscus.app/)
+  - [Cusdis](https://cusdis.com/)
+  - [Telegram](https://comments.app/)
 
 ### Commenting Systems
 
@@ -157,17 +157,16 @@ These are all the parameters used by `hugo-coder` theme.
 | disableDefaultJsScripts | bool   | No       | If true, disables default js scripts (coder.js)                          | `false`                           | `true` or `false`                                 |
 | HeadTitle               | string | No       | When configured, it overrides the `<title>` tag with the provided string | ""                                | `"My custom title"`                               |
 
-
 ### Social Icons Configuration
 
 Social Icons are optional. To use them you will need to set at least all the following required parameters for each icon.
 
-| Configuration  | Type   | Required | Description                              | Example                         |
-| -------------- | ------ | -------- | ---------------------------------------- | ------------------------------- |
-| name           | string | Yes      | Icon name.                               | `"Github"`                      |
-| icon           | string | Yes      | FontAwesome icon classes.                | `"fa-brands fa-github"`         |
-| weight         | int    | Yes      | Icon order.                              | `1`                             |
-| url            | string | Yes      | URL to redirect.                         | `"https://github.com/johndoe/"` |
+| Configuration | Type   | Required | Description               | Example                         |
+| ------------- | ------ | -------- | ------------------------- | ------------------------------- |
+| name          | string | Yes      | Icon name.                | `"Github"`                      |
+| icon          | string | Yes      | FontAwesome icon classes. | `"fa-brands fa-github"`         |
+| weight        | int    | Yes      | Icon order.               | `1`                             |
+| url           | string | Yes      | URL to redirect.          | `"https://github.com/johndoe/"` |
 
 An example:
 
@@ -193,15 +192,15 @@ An example:
 
 Menu Items are optional. To use them you will need to set all the following required parameters for each icon.
 
-| Configuration  | Type   | Required | Description                              | Example                         |
-| -------------- | ------ | -------- | ---------------------------------------- | ------------------------------- |
-| name           | string | Yes      | Menu Item name.                          | `"Posts"`                       |
-| weight         | int    | Yes      | Menu Item order.                         | `1`                             |
-| url            | string | Yes      | URL to redirect.                         | `"/posts/"`                     |
-| class          | string | No       | Menu Item extra class attribute.         | `"menu-item"`                   |
-| target         | string | No       | URL target attribute.                    | `"_blank"`                      |
-| rel            | string | No       | URL rel attribute.                       | `"alternate"`                   |
-| type           | string | No       | URL type attribute.                      | `"application/rss+xml"`         |
+| Configuration | Type   | Required | Description                      | Example                 |
+| ------------- | ------ | -------- | -------------------------------- | ----------------------- |
+| name          | string | Yes      | Menu Item name.                  | `"Posts"`               |
+| weight        | int    | Yes      | Menu Item order.                 | `1`                     |
+| url           | string | Yes      | URL to redirect.                 | `"/posts/"`             |
+| class         | string | No       | Menu Item extra class attribute. | `"menu-item"`           |
+| target        | string | No       | URL target attribute.            | `"_blank"`              |
+| rel           | string | No       | URL rel attribute.               | `"alternate"`           |
+| type          | string | No       | URL type attribute.              | `"application/rss+xml"` |
 
 An example:
 
@@ -220,17 +219,17 @@ An example:
 
 CSP stands for [Content Security Policy](https://developers.google.com/web/fundamentals/security/csp). These configurations are optional. To use them you will need to set all the following required parameters. See [here](https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources) for reference.
 
-| Configuration  | Type        | Required | Description | Example                         |
-| -------------- | ----------- | -------- | ----------- | ------------------------------- |
-| childsrc       | string list | Yes      |             | `["'self'"]`                    |
-| fontsrc        | string list | Yes      |             | `["'self'"]`                    |
-| formaction     | string list | Yes      |             | `["'self'"]`                    |
-| framesrc       | string list | Yes      |             | `["'self'"]`                    |
-| imgsrc         | string list | Yes      |             | `["'self'"]`                    |
-| objectsrc      | string list | Yes      |             | `["'self'"]`                    |
-| stylesrc       | string list | Yes      |             | `["'self'"]`                    |
-| scriptsrc      | string list | Yes      |             | `["'self'"]`                    |
-| connectsrc     | string list | Yes      |             | `["'self'"]`                    |
+| Configuration | Type        | Required | Description | Example      |
+| ------------- | ----------- | -------- | ----------- | ------------ |
+| childsrc      | string list | Yes      |             | `["'self'"]` |
+| fontsrc       | string list | Yes      |             | `["'self'"]` |
+| formaction    | string list | Yes      |             | `["'self'"]` |
+| framesrc      | string list | Yes      |             | `["'self'"]` |
+| imgsrc        | string list | Yes      |             | `["'self'"]` |
+| objectsrc     | string list | Yes      |             | `["'self'"]` |
+| stylesrc      | string list | Yes      |             | `["'self'"]` |
+| scriptsrc     | string list | Yes      |             | `["'self'"]` |
+| connectsrc    | string list | Yes      |             | `["'self'"]` |
 
 An example:
 
@@ -342,27 +341,27 @@ style = "github-dark"
 
 ## Front Matter
 
-Hugo documentation: https://gohugo.io/content-management/front-matter
+Hugo documentation: <https://gohugo.io/content-management/front-matter>
 
 This theme includes one content type:
 
-* [Posts](#posts), useful to display blog posts
+- [Posts](#posts), useful to display blog posts
 
 ### Posts
 
 These are the front matter variables used by `hugo-coder` theme.
 
-| Name             | Type   | Required | Description                                        | Default | Example                                                                         |
-| ---------------- | ------ | -------- | -------------------------------------------------- | ------- | ------------------------------------------------------------------------------- |
-| tags             | list   | No       | Add tag(s) to this post.                           |         | `["Hugo", "Go"]`                                                                |
-| categories       | list   | No       | Add categorie(s) to this post.                     |         | `["Hugo", "Go"]`                                                                |
-| series           | list   | No       | Add series to this post (used by OpenGraph).       |         | `["Theme Demo"]`                                                                |
-| author           | list   | No       | Add author to this post.                           |         | `["John Doe"]`                                                                  |
-| externalLink     | string | No       | Link to an external post.                          |         | `"https://github.com/luizdepra/hugo-coder/wiki"`                                |
-| featuredImage    | string | No       | Link/path to add an image below post metadata.     |         | `"https://github.com/luizdepra/hugo-coder/blob/master/images/screenshot.png"`   |
-| math             | bool   | No       | If true, MathJax is enabled only for this post.    | `false` | `true` or `false`                                                               |
-| katex            | bool   | No       | If true, KaTeX is enabled only for this post.      | `false` | `true` or `false`                                                               |
-| disableComments  | bool   | No       | If true, comments are disabled.                    | `false` | `true` or `false`                                                               |
-| canonicalUrl     | string | No       | Link to override <link rel="canonical"/> in <head> | `false` | `"https://my-company.com/blog/my-blog-post-that-I-repost-without-hurtiong-seo"` |
+| Name            | Type   | Required | Description                                        | Default | Example                                                                         |
+| --------------- | ------ | -------- | -------------------------------------------------- | ------- | ------------------------------------------------------------------------------- |
+| tags            | list   | No       | Add tag(s) to this post.                           |         | `["Hugo", "Go"]`                                                                |
+| categories      | list   | No       | Add categorie(s) to this post.                     |         | `["Hugo", "Go"]`                                                                |
+| series          | list   | No       | Add series to this post (used by OpenGraph).       |         | `["Theme Demo"]`                                                                |
+| author          | list   | No       | Add author to this post.                           |         | `["John Doe"]`                                                                  |
+| externalLink    | string | No       | Link to an external post.                          |         | `"https://github.com/luizdepra/hugo-coder/wiki"`                                |
+| featuredImage   | string | No       | Link/path to add an image below post metadata.     |         | `"https://github.com/luizdepra/hugo-coder/blob/master/images/screenshot.png"`   |
+| math            | bool   | No       | If true, MathJax is enabled only for this post.    | `false` | `true` or `false`                                                               |
+| katex           | bool   | No       | If true, KaTeX is enabled only for this post.      | `false` | `true` or `false`                                                               |
+| disableComments | bool   | No       | If true, comments are disabled.                    | `false` | `true` or `false`                                                               |
+| canonicalUrl    | string | No       | Link to override <link rel="canonical"/> in <head> | `false` | `"https://my-company.com/blog/my-blog-post-that-I-repost-without-hurtiong-seo"` |
 
 > "tags", "categories", "series" and "authors" are taxonomies defined in the `hugo.toml` file.

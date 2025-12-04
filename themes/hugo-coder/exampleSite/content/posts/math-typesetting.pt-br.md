@@ -23,9 +23,9 @@ Em um projeto Hugo as Notações Matemáticas podem ser usadas com a ajuda de bi
 
 Nesse exemplo usaremos o [KaTeX](https://katex.org/).
 
--   Crie um partial template em `/layouts/partials/math.html`
--   Dentro, utilize o [Auto-render Extension](https://katex.org/docs/autorender.html) ou sirva os scripts localmente.
--   Inclua o partial nos seus templates da seguinte forma:
+- Crie um partial template em `/layouts/partials/math.html`
+- Dentro, utilize o [Auto-render Extension](https://katex.org/docs/autorender.html) ou sirva os scripts localmente.
+- Inclua o partial nos seus templates da seguinte forma:
 
 ```bash
 {{ if or .Params.math .Site.Params.math }}
@@ -33,8 +33,8 @@ Nesse exemplo usaremos o [KaTeX](https://katex.org/).
 {{ end }}
 ```
 
--   Para ativar o KaTeX globalmente defina o parâmetro `math` como `true` na confgiuração do projeto
--   Para ativar o KaTeX em páginas específicas inclua o parâmetro `math: true` nos arquivos de conteúdo
+- Para ativar o KaTeX globalmente defina o parâmetro `math` como `true` na confgiuração do projeto
+- Para ativar o KaTeX em páginas específicas inclua o parâmetro `math: true` nos arquivos de conteúdo
 
 **Nota:** Use a referência online [Supported TeX Functions](https://katex.org/docs/supported.html) como base para criar notações matemáticas.
 

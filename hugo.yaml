@@ -24,30 +24,36 @@ markup:
       unsafe: true
   highlight:
     noClasses: false
+    style: monokai
+    lineNos: true
+    lineNumbersInTable: true
+  tableOfContents:
+    startLevel: 2
+    endLevel: 4
 
 params:
   author: Issa Sanogo
   avatarURL: images/profile.jpg
   colorScheme: auto
-  commit: https://github.com/ngsanogo/ngsanogo.rbind.io
-  customCSS: []
+  hideColorSchemeToggle: false
+  info:
+    - Senior Data Engineer
   customJS: []
   customRemoteJS: []
   customSCSS: []
   dateFormat: January 2, 2006
-  description: "Site personnel d'Issa Sanogo - Data Engineer et Data Manager spécialisé en sciences de la vie"
-  hideColorSchemeToggle: false
-  info:
-    - Data Engineer / Data manager
-    - ISData consulting
-  keywords: "data engineer, data manager, R, Python, sciences de la vie, blog, développement"
+  description: "Personal website of Issa Sanogo - Senior Data Engineer"
+  keywords: "data engineer, data manager, R, Python, health, blog, developer"
   maxSeeAlsoItems: 5
   rtl: false
   since: 2018
   # Analytics
   plausible: "ngsanogo.rbind.io"
-  # SEO and Social Media Improvements
   images: ["images/profile.jpg"]
+  ogLocale: "en_US"
+  twitterCard: "summary_large_image"
+  # Site metadata
+  siteName: "Issa Sanogo - Senior Data Engineer"
   social:
     - icon: fa-brands fa-github fa-2x
       name: Github
@@ -64,27 +70,40 @@ taxonomies:
   series: series
   tag: tags
 
-languages:
-  en:
-    languageName: ':en:'
-    title: "Issa Sanogo"
-    description: "Issa Sanogo's personal website - Data Engineer and Data Manager"
-    menu:
-      main:
-        - name: About
-          url: about/
-          weight: 1
-        - name: Blog
-          url: posts/
-          weight: 2
-        - name: CV
-          url: cv/
-          weight: 3
-        - name: Contact
-          url: contact/
-          weight: 4
+menu:
+  main:
+    - name: About
+      url: about/
+      weight: 1
+    - name: Blog
+      url: posts/
+      weight: 2
+    - name: Resume
+      url: cv/
+      weight: 3
+    - name: Contact
+      url: contact/
+      weight: 4
 
 ignoreFiles:
-  - \.Rmd$
-  - \.Rmarkdown$
-  - _cache$
+  - \.DS_Store$
+  - \.git
+  - \.gitignore
+  - README\.md$
+  - CHANGELOG\.md$
+  - LICENSE$
+
+# Related content configuration
+related:
+  includeNewer: true
+  indices:
+    - name: keywords
+      weight: 80
+    - name: tags
+      weight: 100
+    - name: categories
+      weight: 50
+    - name: series
+      weight: 150
+  threshold: 80
+  toLower: false

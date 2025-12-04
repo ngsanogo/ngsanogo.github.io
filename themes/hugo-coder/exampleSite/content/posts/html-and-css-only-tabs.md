@@ -97,7 +97,7 @@ print('Hello')
 {{</* tab name="JavaScript" */>}}
 
 ```js
-console.log("Hello");
+console.log("Hello")
 ```
 
 {{</* /tab */>}}
@@ -124,7 +124,7 @@ print('Hello')
 {{< tab name="JavaScript" >}}
 
 ```js
-console.log("Hello");
+console.log("Hello")
 ```
 
 {{< /tab >}}

@@ -49,5 +49,5 @@ If you like my project or it was useful for you, consider supporting its develop
 
 ## Special Thanks
 
--   Gleen McComb, for his great [article](https://glennmccomb.com/articles/how-to-build-custom-hugo-pagination/) about custom pagination.
--   All contributors, for every PR and Issue reported.
+- Gleen McComb, for his great [article](https://glennmccomb.com/articles/how-to-build-custom-hugo-pagination/) about custom pagination.
+- All contributors, for every PR and Issue reported.

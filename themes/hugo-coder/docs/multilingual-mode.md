@@ -1,8 +1,8 @@
 # Multilingual-Mode
 
-* [Available Languages](#available-languages)
-* [Configure Languages](#configure-languages)
-* [Translation File Example](#translation-file-example)
+- [Available Languages](#available-languages)
+- [Configure Languages](#configure-languages)
+- [Translation File Example](#translation-file-example)
 
 ## Available Languages
 
