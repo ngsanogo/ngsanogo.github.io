@@ -7,11 +7,13 @@ enableEmoji: true
 pagination:
   pagerSize: 15
 
-# Default content ordering
+# Output configuration
 outputs:
   home:
     - HTML
     - JSON
+  section:
+    - HTML
   page:
     - HTML
 
@@ -113,8 +115,5 @@ related:
   threshold: 80
   toLower: false
 
-# Section defaults - sort by date descending
-section:
-  posts:
-    sort: date
-    reverse: true
+# Menu configuration for consistent navigation
+sectionPagesMenu: main
