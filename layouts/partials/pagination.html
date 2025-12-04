@@ -1,213 +1,95 @@
 {{ if gt .Paginator.TotalPages 1 }}
 <nav class="pagination" role="navigation" aria-label="Pagination">
-  <div class="pagination-wrapper">
-    <!-- Previous Button -->
+  <ul class="pagination-list">
     {{ if .Paginator.HasPrev }}
-      <a href="{{ .Paginator.Prev.URL }}" class="pagination-btn pagination-prev">
-        <span class="pagination-arrow">←</span> Previous
-      </a>
+      <li><a href="{{ .Paginator.First.URL }}">&laquo; First</a></li>
+      <li><a href="{{ .Paginator.Prev.URL }}">&lsaquo; Previous</a></li>
     {{ else }}
-      <span class="pagination-btn pagination-prev disabled">
-        <span class="pagination-arrow">←</span> Previous
-      </span>
+      <li class="disabled"><span>&laquo; First</span></li>
+      <li class="disabled"><span>&lsaquo; Previous</span></li>
     {{ end }}
 
-    <!-- Page Numbers -->
-    <div class="pagination-numbers">
-      {{ $adjacent := 1 }}
-      {{ $current := .Paginator.PageNumber }}
-      {{ $total := .Paginator.TotalPages }}
-      
-      {{ if gt $current (add $adjacent 1) }}
-        <a href="{{ (index .Paginator.Pagers 0).URL }}" class="pagination-num">1</a>
-        {{ if gt $current (add $adjacent 2) }}
-          <span class="pagination-ellipsis">…</span>
-        {{ end }}
+    {{ range .Paginator.Pagers }}
+      {{ if eq .PageNumber $.Paginator.PageNumber }}
+        <li class="active"><span>{{ .PageNumber }}</span></li>
+      {{ else }}
+        <li><a href="{{ .URL }}">{{ .PageNumber }}</a></li>
       {{ end }}
+    {{ end }}
 
-      {{ range $i, $pager := .Paginator.Pagers }}
-        {{ if and (ge $i (sub $current (add $adjacent 1))) (le $i (add $current (add $adjacent 1))) }}
-          {{ if eq $pager.PageNumber $current }}
-            <span class="pagination-num active">{{ $pager.PageNumber }}</span>
-          {{ else }}
-            <a href="{{ $pager.URL }}" class="pagination-num">{{ $pager.PageNumber }}</a>
-          {{ end }}
-        {{ end }}
-      {{ end }}
-
-      {{ if lt $current (sub $total (add $adjacent 1)) }}
-        {{ if lt $current (sub $total (add $adjacent 2)) }}
-          <span class="pagination-ellipsis">…</span>
-        {{ end }}
-        <a href="{{ (index .Paginator.Pagers (sub $total 1)).URL }}" class="pagination-num">{{ $total }}</a>
-      {{ end }}
-    </div>
-
-    <!-- Next Button -->
     {{ if .Paginator.HasNext }}
-      <a href="{{ .Paginator.Next.URL }}" class="pagination-btn pagination-next">
-        Next <span class="pagination-arrow">→</span>
-      </a>
+      <li><a href="{{ .Paginator.Next.URL }}">Next &rsaquo;</a></li>
+      <li><a href="{{ .Paginator.Last.URL }}">Last &raquo;</a></li>
     {{ else }}
-      <span class="pagination-btn pagination-next disabled">
-        Next <span class="pagination-arrow">→</span>
-      </span>
+      <li class="disabled"><span>Next &rsaquo;</span></li>
+      <li class="disabled"><span>Last &raquo;</span></li>
     {{ end }}
-  </div>
-
+  </ul>
 </nav>
 
 <style>
   .pagination {
-    margin: 4rem 0 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    align-items: center;
+    margin: 3rem 0 2rem;
+    text-align: center;
   }
 
-  .pagination-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-  }
-
-  .pagination-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: transparent;
-    color: var(--accent-color, #2d96de);
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid var(--accent-color, #2d96de);
-    letter-spacing: 0.3px;
-  }
-
-  .pagination-btn:hover:not(.disabled) {
-    background: var(--accent-color, #2d96de);
-    color: var(--background-color, #fff);
-    box-shadow: 0 8px 24px rgba(45, 150, 222, 0.15);
-  }
-
-  .pagination-btn.disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-    border-color: var(--disabled-bg, #ccc);
-    color: var(--disabled-color, #999);
-  }
-
-  .pagination-arrow {
-    font-size: 1rem;
-    font-weight: 700;
-  }
-
-  .pagination-numbers {
-    display: flex;
-    gap: 0.3rem;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .pagination-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 2.8rem;
-    height: 2.8rem;
+  .pagination-list {
+    list-style: none;
     padding: 0;
-    background: transparent;
-    color: var(--text-color, #666);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .pagination-list li {
+    display: inline-block;
+  }
+
+  .pagination-list a,
+  .pagination-list span {
+    display: inline-block;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid var(--accent-color, #2d96de);
+    border-radius: 4px;
     text-decoration: none;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-    border: 2px solid transparent;
-    cursor: pointer;
-  }
-
-  .pagination-num:hover {
-    background: rgba(45, 150, 222, 0.08);
     color: var(--accent-color, #2d96de);
-    border-color: var(--accent-color, #2d96de);
+    font-weight: 500;
+    transition: all 0.2s ease;
   }
 
-  .pagination-num.active {
-    background: var(--accent-color, #2d96de);
+  .pagination-list a:hover {
+    background-color: var(--accent-color, #2d96de);
     color: var(--background-color, #fff);
-    font-weight: 700;
-    border-color: var(--accent-color, #2d96de);
-    box-shadow: 0 4px 12px rgba(45, 150, 222, 0.2);
   }
 
-  .pagination-ellipsis {
-    color: var(--text-color, #999);
-    padding: 0 0.2rem;
-    font-weight: 400;
-    font-size: 1.2rem;
+  .pagination-list li.active span {
+    background-color: var(--accent-color, #2d96de);
+    color: var(--background-color, #fff);
+    border-color: var(--accent-color, #2d96de);
+  }
+
+  .pagination-list li.disabled span {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: var(--border-color, #ddd);
+    color: var(--disabled-color, #999);
   }
 
   @media (max-width: 768px) {
     .pagination {
-      margin: 3rem 0 1.5rem;
-      gap: 1.5rem;
+      margin: 2rem 0 1.5rem;
     }
 
-    .pagination-wrapper {
-      gap: 1rem;
-    }
-
-    .pagination-btn {
-      padding: 0.6rem 1.2rem;
-      font-size: 0.9rem;
-    }
-
-    .pagination-numbers {
-      gap: 0.2rem;
-    }
-
-    .pagination-num {
-      min-width: 2.4rem;
-      height: 2.4rem;
-      font-size: 0.9rem;
-    }
-
-    .items-selector {
-      font-size: 0.9rem;
-      padding: 0.6rem 1rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .pagination-wrapper {
-      gap: 0.5rem;
-    }
-
-    .pagination-btn {
-      padding: 0.5rem 1rem;
-      font-size: 0.85rem;
+    .pagination-list {
       gap: 0.3rem;
     }
 
-    .pagination-num {
-      min-width: 2.2rem;
-      height: 2.2rem;
-      font-size: 0.85rem;
-    }
-  }
-
-  /* Dark mode support */
-  @media (prefers-color-scheme: dark) {
-    .pagination-num:hover {
-      background: rgba(45, 150, 222, 0.15);
+    .pagination-list a,
+    .pagination-list span {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.9rem;
     }
   }
 </style>
