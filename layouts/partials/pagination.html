@@ -67,166 +67,200 @@
 
 <style>
   .pagination {
-    margin: 3rem 0 2rem;
+    margin: 4rem 0 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
+    align-items: center;
   }
 
   .pagination-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
     flex-wrap: wrap;
   }
 
   .pagination-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.6rem 1.2rem;
-    background: var(--accent-color, #2d96de);
-    color: var(--background-color, #fff);
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: var(--accent-color, #2d96de);
     text-decoration: none;
-    border-radius: 6px;
-    font-weight: 500;
+    border-radius: 8px;
+    font-weight: 600;
     font-size: 0.95rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: 2px solid var(--accent-color, #2d96de);
+    letter-spacing: 0.3px;
   }
 
   .pagination-btn:hover:not(.disabled) {
-    background: var(--background-color, #fff);
-    color: var(--accent-color, #2d96de);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(45, 150, 222, 0.2);
+    background: var(--accent-color, #2d96de);
+    color: var(--background-color, #fff);
+    box-shadow: 0 8px 24px rgba(45, 150, 222, 0.15);
   }
 
   .pagination-btn.disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
-    background: var(--disabled-bg, #e0e0e0);
+    border-color: var(--disabled-bg, #ccc);
     color: var(--disabled-color, #999);
-    border-color: var(--disabled-bg, #e0e0e0);
   }
 
   .pagination-arrow {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    font-weight: 700;
   }
 
   .pagination-numbers {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.3rem;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .pagination-num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 2.5rem;
-    height: 2.5rem;
-    padding: 0 0.6rem;
-    background: var(--background-secondary, #f5f5f5);
-    color: var(--accent-color, #2d96de);
+    min-width: 2.8rem;
+    height: 2.8rem;
+    padding: 0;
+    background: transparent;
+    color: var(--text-color, #666);
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-weight: 500;
+    font-size: 0.95rem;
     transition: all 0.2s ease;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
+    cursor: pointer;
   }
 
   .pagination-num:hover {
-    background: var(--accent-color, #2d96de);
-    color: var(--background-color, #fff);
+    background: rgba(45, 150, 222, 0.08);
+    color: var(--accent-color, #2d96de);
     border-color: var(--accent-color, #2d96de);
   }
 
   .pagination-num.active {
     background: var(--accent-color, #2d96de);
     color: var(--background-color, #fff);
-    font-weight: 600;
+    font-weight: 700;
     border-color: var(--accent-color, #2d96de);
+    box-shadow: 0 4px 12px rgba(45, 150, 222, 0.2);
   }
 
   .pagination-ellipsis {
-    color: var(--text-color, #666);
-    padding: 0 0.3rem;
-    font-weight: 500;
+    color: var(--text-color, #999);
+    padding: 0 0.2rem;
+    font-weight: 400;
+    font-size: 1.2rem;
   }
 
   .pagination-controls {
     display: flex;
     justify-content: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color, #e0e0e0);
+    width: 100%;
+    max-width: 300px;
   }
 
   .items-selector {
-    padding: 0.6rem 1rem;
-    background: var(--background-secondary, #f5f5f5);
+    padding: 0.8rem 1.2rem;
+    background: transparent;
     color: var(--text-color, #333);
     border: 2px solid var(--accent-color, #2d96de);
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.3px;
   }
 
   .items-selector:hover {
-    background: var(--accent-color, #2d96de);
-    color: var(--background-color, #fff);
+    background: rgba(45, 150, 222, 0.05);
+    box-shadow: 0 4px 12px rgba(45, 150, 222, 0.1);
   }
 
   .items-selector:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(45, 150, 222, 0.1);
+    background: rgba(45, 150, 222, 0.05);
+    box-shadow: 0 0 0 3px rgba(45, 150, 222, 0.15);
   }
 
   @media (max-width: 768px) {
     .pagination {
-      margin: 2rem 0 1.5rem;
+      margin: 3rem 0 1.5rem;
+      gap: 1.5rem;
     }
 
     .pagination-wrapper {
-      gap: 0.75rem;
+      gap: 1rem;
     }
 
     .pagination-btn {
-      padding: 0.5rem 0.9rem;
+      padding: 0.6rem 1.2rem;
       font-size: 0.9rem;
     }
 
     .pagination-numbers {
-      gap: 0.4rem;
+      gap: 0.2rem;
+    }
+
+    .pagination-num {
+      min-width: 2.4rem;
+      height: 2.4rem;
+      font-size: 0.9rem;
+    }
+
+    .items-selector {
+      font-size: 0.9rem;
+      padding: 0.6rem 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination-wrapper {
+      gap: 0.5rem;
+    }
+
+    .pagination-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      gap: 0.3rem;
     }
 
     .pagination-num {
       min-width: 2.2rem;
       height: 2.2rem;
-      font-size: 0.9rem;
-    }
-
-    .items-selector {
-      font-size: 0.9rem;
-      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
     }
   }
 
   /* Dark mode support */
   @media (prefers-color-scheme: dark) {
-    .pagination-num {
-      background: var(--background-secondary, #2a2a2a);
+    .pagination-controls {
+      border-top-color: var(--border-color, #333);
     }
 
-    .pagination-btn {
-      background: var(--accent-color, #2d96de);
+    .pagination-num:hover {
+      background: rgba(45, 150, 222, 0.15);
     }
 
-    .items-selector {
-      background: var(--background-secondary, #2a2a2a);
-      color: var(--text-color, #e0e0e0);
+    .items-selector:hover {
+      background: rgba(45, 150, 222, 0.1);
+    }
+
+    .items-selector:focus {
+      background: rgba(45, 150, 222, 0.1);
     }
   }
 </style>
