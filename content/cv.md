@@ -13,9 +13,8 @@ title: Resume / CV
 
 ## Data Engineer
 
-**Bezons, France**
-+33 6 51 98 52 79 | [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
-[ngsanogo.rbind.io](https://ngsanogo.rbind.io) | [LinkedIn](https://linkedin.com/in/ngsanogo) | [GitHub](https://github.com/ngsanogo)
+[**Bezons, France**](https://maps.app.goo.gl/48r3KJZQ2kE3SHbx9)
++33 6 51 98 52 79 | [ngsanogo@proton.me](mailto:ngsanogo@proton.me) | [ngsanogo.rbind.io](https://ngsanogo.rbind.io) | [LinkedIn](https://linkedin.com/in/ngsanogo) | [GitHub](https://github.com/ngsanogo)
 
 ---
 
