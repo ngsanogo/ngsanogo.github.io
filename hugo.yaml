@@ -7,16 +7,17 @@ enableEmoji: true
 pagination:
   pagerSize: 6
 
-# SEO Improvements
+# SEO and Performance
 enableRobotsTXT: true
 canonifyURLs: true
 enableGitInfo: true
-
-services:
-  disqus:
-    shortname: ngsanogo
-  googleAnalytics:
-    id: ""  # Add your Google Analytics ID here if needed
+minify:
+  disableCSS: false
+  disableHTML: false
+  disableJS: false
+  disableJSON: false
+  disableSVG: false
+  disableXML: false
 
 markup:
   goldmark:
@@ -37,17 +38,14 @@ params:
   colorScheme: auto
   hideColorSchemeToggle: false
   info:
-    - Senior Data Engineer
-  customJS: []
-  customRemoteJS: []
-  customSCSS: []
+    - Data Engineer
+    - Building reliable data pipelines and infrastructure
   dateFormat: January 2, 2006
-  description: "Personal website of Issa Sanogo - Senior Data Engineer"
-  keywords: "data engineer, data manager, R, Python, health, blog, developer"
-  maxSeeAlsoItems: 5
+  description: "Issa Sanogo - Data Engineer | Building reliable data pipelines, ETL/ELT systems, and data infrastructure"
+  keywords: "data engineer, ETL, data pipelines, Python, SQL, Docker, Airflow, PostgreSQL, data infrastructure, data quality"
+  maxSeeAlsoItems: 6
   rtl: false
-  since: 2018
-  # Analytics
+  since: 2025
   plausible: "ngsanogo.rbind.io"
   images: ["images/profile.jpg"]
   ogLocale: "en_US"
