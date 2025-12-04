@@ -6,7 +6,6 @@ author: Issa Sanogo
 date: "2025-02-11"
 lastmod: "2025-12-04"
 description: Senior Data Engineer
-title: Resume / CV
 ---
 
 # Issa Sanogo

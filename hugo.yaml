@@ -7,6 +7,18 @@ enableEmoji: true
 pagination:
   pagerSize: 15
 
+outputs:
+  home:
+    - HTML
+    - JSON
+  page:
+    - HTML
+
+# Default output formats ordering
+outputFormats:
+  HTML:
+    mediaType: text/html
+
 # SEO and Performance
 enableRobotsTXT: true
 canonifyURLs: true
