@@ -114,6 +114,3 @@ related:
       weight: 150
   threshold: 80
   toLower: false
-
-# Menu configuration for consistent navigation
-sectionPagesMenu: main
