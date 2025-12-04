@@ -19,7 +19,7 @@ Want to see the site on your computer? Here's how:
 
 ### You'll Need
 
-- [Hugo Extended](https://gohugo.io/installation/) (version 0.152.2 or newer)
+- [Hugo Extended](https://gohugo.io/installation/) (version 0.131.0 or newer)
 - Git
 
 ### Getting Started
