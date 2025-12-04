@@ -1,3 +1,21 @@
+// Skip to content link for accessibility
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent-color, #007acc);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 100;
+    border-radius: 0 0 4px 0;
+    font-weight: bold;
+
+    &:focus {
+        top: 0;
+    }
+}
+
 .toc {
     background-color: var(--background-color);
     border: 1px solid var(--border-color);
@@ -62,6 +80,11 @@
                 border-color: var(--accent-color);
                 box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.1);
             }
+            
+            &::placeholder {
+                color: var(--content-color);
+                opacity: 0.6;
+            }
         }
     }
 
@@ -80,9 +103,30 @@
         z-index: 1000;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
+        .search-count {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            color: var(--content-color);
+            opacity: 0.7;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-loading,
+        .search-no-results {
+            padding: 1rem;
+            text-align: center;
+            color: var(--content-color);
+            opacity: 0.7;
+        }
+
         .search-result {
             padding: 1rem;
             border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: var(--hover-color, rgba(0, 0, 0, 0.05));
+            }
 
             &:last-child {
                 border-bottom: none;
@@ -98,15 +142,121 @@
 
                     &:hover {
                         text-decoration: underline;
+                        color: var(--accent-color);
                     }
                 }
             }
 
             p {
-                margin: 0;
+                margin: 0 0 0.5rem 0;
                 font-size: 0.9rem;
                 color: var(--content-color);
+                line-height: 1.5;
+            }
+
+            .search-tags {
+                display: flex;
+                gap: 0.5rem;
+                margin-bottom: 0.5rem;
+                flex-wrap: wrap;
+
+                .tag {
+                    font-size: 0.75rem;
+                    padding: 0.2rem 0.5rem;
+                    background-color: var(--accent-color, #007acc);
+                    color: white;
+                    border-radius: 3px;
+                    opacity: 0.8;
+                }
+            }
+
+            .search-date {
+                font-size: 0.75rem;
+                color: var(--content-color);
+                opacity: 0.6;
             }
         }
     }
-} 
+}
+
+// Word count styling
+.word-count {
+    margin-left: 1rem;
+    opacity: 0.8;
+}
+
+// Related posts styling
+.related-posts {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+
+    h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--heading-color);
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+
+            &:hover {
+                border-color: var(--accent-color);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                transform: translateY(-2px);
+            }
+
+            a {
+                text-decoration: none;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                .related-title {
+                    font-weight: 600;
+                    font-size: 1.1rem;
+                    color: var(--heading-color);
+                }
+
+                .related-description {
+                    color: var(--content-color);
+                    font-size: 0.9rem;
+                    opacity: 0.8;
+                }
+
+                .related-date {
+                    color: var(--content-color);
+                    font-size: 0.85rem;
+                    opacity: 0.6;
+                    
+                    i {
+                        margin-right: 0.3rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Print styles
+@media print {
+    .search-container,
+    .navigation,
+    footer,
+    .related-posts {
+        display: none;
+    }
+
+    .post-content {
+        max-width: 100%;
+    }
+}

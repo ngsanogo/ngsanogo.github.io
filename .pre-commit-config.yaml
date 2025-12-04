@@ -1,0 +1,31 @@
+# Pre-commit hooks for markdown linting and formatting
+repos:
+  # Markdown linting with markdownlint
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.39.0
+    hooks:
+      - id: markdownlint
+        args: ['--fix']
+
+  # Prettier for markdown formatting
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        types_or: [markdown]
+        args: ['--write', '--prose-wrap', 'preserve']
+
+  # Additional checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      # Remove trailing whitespace
+      - id: trailing-whitespace
+        types: [markdown]
+      # Ensure files end with newline
+      - id: end-of-file-fixer
+        types: [markdown]
+      # Check for mixed line endings
+      - id: mixed-line-ending
+        types: [markdown]
+        args: ['--fix=lf']

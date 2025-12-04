@@ -77,15 +77,15 @@ Tabelas não fazem parte do cerne da especificação do Markdown, mas o Hugo ofe
 #### Blocos de código com crase
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-    <head>
-        <meta charset="utf-8" />
-        <title>Exemplo de Documento HTML5</title>
-    </head>
-    <body>
-        <p>Teste</p>
-    </body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Exemplo de Documento HTML5</title>
+  </head>
+  <body>
+    <p>Teste</p>
+  </body>
 </html>
 ```
 
@@ -128,19 +128,19 @@ Tabelas não fazem parte do cerne da especificação do Markdown, mas o Hugo ofe
 
 #### Listas não Ordenada
 
--   Um item
--   Outro item
--   Algum outro item
+- Um item
+- Outro item
+- Algum outro item
 
 #### Listas aninhadas
 
--   Frutas
-    -   Maçã
-    -   Laranja
-    -   Banana
--   Laticínios
-    -   Leite
-    -   Queijo
+- Frutas
+  - Maçã
+  - Laranja
+  - Banana
+- Laticínios
+  - Leite
+  - Queijo
 
 #### Notas de Rodapé
 

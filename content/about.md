@@ -1,9 +1,9 @@
 ---
 aliases:
-- about
+  - about
 author: Issa Sanogo
 date: "2025-02-11"
-description: About Issa Sanogo - Freelance Data Engineer specializing in life sciences data management and engineering
+description: About Issa Sanogo - Senior Data Engineer
 title: About
 ---
 
@@ -17,6 +17,6 @@ I’m a passionate advocate of open source and continually strive to improve my 
 
 This blog showcases my personal projects, with a focus on data and open source software.
 
-As Errare humanum est, some posts may contain errors, so please feel free to submit any correction requests directly on my GitHub page : https://github.com/ngsanogo/ngsanogo.rbind.io.
+As Errare humanum est, some posts may contain errors, so please feel free to submit any correction requests directly on my [GitHub page](https://github.com/ngsanogo/ngsanogo.rbind.io).
 
-This site has been created with [blogdown](https://bookdown.org/yihui/blogdown/) and the [hugo-coder](https://github.com/luizdepra/hugo-coder/) Hugo theme.
+This site is built with [Hugo](https://gohugo.io) static site generator and the [hugo-coder](https://github.com/luizdepra/hugo-coder/) theme, deployed on [Netlify](https://netlify.com).
