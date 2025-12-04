@@ -9,9 +9,18 @@
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}">
 <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-{{ with .Site.Params.images }}{{ range first 1 . }}
+<meta property="og:locale" content="{{ .Site.Params.ogLocale | default "en_US" }}">
+<meta property="og:site_name" content="{{ .Site.Params.siteName | default .Site.Title }}">
+{{ with .Params.image }}
 <meta property="og:image" content="{{ . | absURL }}">
-{{ end }}{{ end }}
+{{ else }}{{ with .Site.Params.images }}{{ range first 1 . }}
+<meta property="og:image" content="{{ . | absURL }}">
+{{ end }}{{ end }}{{ end }}
+{{ if .IsPage }}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+{{ if .Lastmod }}<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">{{ end }}
+{{ with .Params.tags }}{{ range first 5 . }}<meta property="article:tag" content="{{ . }}">{{ end }}{{ end }}
+{{ end }}
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">

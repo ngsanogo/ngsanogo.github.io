@@ -1,0 +1,22 @@
+{{ $related := .Site.RegularPages.Related . | first 5 }}
+{{ with $related }}
+<div class="related-posts">
+  <h3>Related Posts</h3>
+  <ul>
+    {{ range . }}
+    <li>
+      <a href="{{ .Permalink }}">
+        <span class="related-title">{{ .Title }}</span>
+        {{ with .Description }}
+          <span class="related-description">{{ . }}</span>
+        {{ end }}
+        <span class="related-date">
+          <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+          {{ .Date.Format "Jan 2, 2006" }}
+        </span>
+      </a>
+    </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}
