@@ -5,7 +5,7 @@ aliases:
 author: Issa Sanogo
 date: "2025-02-11"
 lastmod: "2025-12-04"
-description: Data Engineer building reliable data pipelines and infrastructure
+description: Senior Data Engineer
 title: Resume / CV
 ---
 
