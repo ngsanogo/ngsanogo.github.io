@@ -1,158 +1,239 @@
 {{ if gt .Paginator.TotalPages 1 }}
 <nav class="pagination" role="navigation" aria-label="Pagination">
-  <div class="pagination-controls">
-    <div class="pagination-items-per-page">
-      <label for="items-per-page">Items per page:</label>
-      <select id="items-per-page" onchange="changeItemsPerPage(this.value)">
-        <option value="10" {{ if eq .Paginator.PageSize 10 }}selected{{ end }}>10</option>
-        <option value="20" {{ if eq .Paginator.PageSize 20 }}selected{{ end }}>20</option>
-        <option value="50" {{ if eq .Paginator.PageSize 50 }}selected{{ end }}>50</option>
-      </select>
-    </div>
-  </div>
-
-  <ul class="pagination-list">
+  <div class="pagination-wrapper">
+    <!-- Previous Button -->
     {{ if .Paginator.HasPrev }}
-      <li><a href="{{ .Paginator.First.URL }}">« First</a></li>
-      <li><a href="{{ .Paginator.Prev.URL }}">‹ Previous</a></li>
+      <a href="{{ .Paginator.Prev.URL }}" class="pagination-btn pagination-prev">
+        <span class="pagination-arrow">←</span> Previous
+      </a>
     {{ else }}
-      <li class="disabled"><span>« First</span></li>
-      <li class="disabled"><span>‹ Previous</span></li>
+      <span class="pagination-btn pagination-prev disabled">
+        <span class="pagination-arrow">←</span> Previous
+      </span>
     {{ end }}
 
-    {{ $adjacent := 2 }}
-    {{ $current := .Paginator.PageNumber }}
-    {{ $total := .Paginator.TotalPages }}
-    
-    {{ if gt $current (add $adjacent 1) }}
-      <li><a href="{{ (index .Paginator.Pagers 0).URL }}">1</a></li>
-      {{ if gt $current (add $adjacent 2) }}
-        <li class="disabled"><span>…</span></li>
-      {{ end }}
-    {{ end }}
-
-    {{ range $i, $pager := .Paginator.Pagers }}
-      {{ if and (ge $i (sub $current (add $adjacent 1))) (le $i (add $current (add $adjacent 1))) }}
-        {{ if eq $pager.PageNumber $current }}
-          <li class="active"><span>{{ $pager.PageNumber }}</span></li>
-        {{ else }}
-          <li><a href="{{ $pager.URL }}">{{ $pager.PageNumber }}</a></li>
+    <!-- Page Numbers -->
+    <div class="pagination-numbers">
+      {{ $adjacent := 1 }}
+      {{ $current := .Paginator.PageNumber }}
+      {{ $total := .Paginator.TotalPages }}
+      
+      {{ if gt $current (add $adjacent 1) }}
+        <a href="{{ (index .Paginator.Pagers 0).URL }}" class="pagination-num">1</a>
+        {{ if gt $current (add $adjacent 2) }}
+          <span class="pagination-ellipsis">…</span>
         {{ end }}
       {{ end }}
-    {{ end }}
 
-    {{ if lt $current (sub $total (add $adjacent 1)) }}
-      {{ if lt $current (sub $total (add $adjacent 2)) }}
-        <li class="disabled"><span>…</span></li>
+      {{ range $i, $pager := .Paginator.Pagers }}
+        {{ if and (ge $i (sub $current (add $adjacent 1))) (le $i (add $current (add $adjacent 1))) }}
+          {{ if eq $pager.PageNumber $current }}
+            <span class="pagination-num active">{{ $pager.PageNumber }}</span>
+          {{ else }}
+            <a href="{{ $pager.URL }}" class="pagination-num">{{ $pager.PageNumber }}</a>
+          {{ end }}
+        {{ end }}
       {{ end }}
-      <li><a href="{{ (index .Paginator.Pagers (sub $total 1)).URL }}">{{ $total }}</a></li>
-    {{ end }}
 
+      {{ if lt $current (sub $total (add $adjacent 1)) }}
+        {{ if lt $current (sub $total (add $adjacent 2)) }}
+          <span class="pagination-ellipsis">…</span>
+        {{ end }}
+        <a href="{{ (index .Paginator.Pagers (sub $total 1)).URL }}" class="pagination-num">{{ $total }}</a>
+      {{ end }}
+    </div>
+
+    <!-- Next Button -->
     {{ if .Paginator.HasNext }}
-      <li><a href="{{ .Paginator.Next.URL }}">Next ›</a></li>
-      <li><a href="{{ .Paginator.Last.URL }}">Last »</a></li>
+      <a href="{{ .Paginator.Next.URL }}" class="pagination-btn pagination-next">
+        Next <span class="pagination-arrow">→</span>
+      </a>
     {{ else }}
-      <li class="disabled"><span>Next ›</span></li>
-      <li class="disabled"><span>Last »</span></li>
+      <span class="pagination-btn pagination-next disabled">
+        Next <span class="pagination-arrow">→</span>
+      </span>
     {{ end }}
-  </ul>
+  </div>
+
+  <!-- Items per Page Selector -->
+  <div class="pagination-controls">
+    <select id="items-per-page" class="items-selector" onchange="changeItemsPerPage(this.value)">
+      <option value="10" {{ if eq .Paginator.PageSize 10 }}selected{{ end }}>10 per page</option>
+      <option value="20" {{ if eq .Paginator.PageSize 20 }}selected{{ end }}>20 per page</option>
+      <option value="50" {{ if eq .Paginator.PageSize 50 }}selected{{ end }}>50 per page</option>
+    </select>
+  </div>
 </nav>
 
 <style>
   .pagination {
-    margin: 2rem 0;
+    margin: 3rem 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
-  .pagination-controls {
-    margin-bottom: 1rem;
-    text-align: center;
+  .pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
-  .pagination-items-per-page {
-    display: inline-block;
+  .pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.2rem;
+    background: var(--accent-color, #2d96de);
+    color: var(--background-color, #fff);
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border: 2px solid var(--accent-color, #2d96de);
   }
 
-  .pagination-items-per-page label {
-    margin-right: 0.5rem;
+  .pagination-btn:hover:not(.disabled) {
+    background: var(--background-color, #fff);
+    color: var(--accent-color, #2d96de);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(45, 150, 222, 0.2);
+  }
+
+  .pagination-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--disabled-bg, #e0e0e0);
+    color: var(--disabled-color, #999);
+    border-color: var(--disabled-bg, #e0e0e0);
+  }
+
+  .pagination-arrow {
+    font-size: 1.1rem;
+  }
+
+  .pagination-numbers {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .pagination-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.6rem;
+    background: var(--background-secondary, #f5f5f5);
+    color: var(--accent-color, #2d96de);
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+  }
+
+  .pagination-num:hover {
+    background: var(--accent-color, #2d96de);
+    color: var(--background-color, #fff);
+    border-color: var(--accent-color, #2d96de);
+  }
+
+  .pagination-num.active {
+    background: var(--accent-color, #2d96de);
+    color: var(--background-color, #fff);
+    font-weight: 600;
+    border-color: var(--accent-color, #2d96de);
+  }
+
+  .pagination-ellipsis {
+    color: var(--text-color, #666);
+    padding: 0 0.3rem;
     font-weight: 500;
   }
 
-  .pagination-items-per-page select {
-    padding: 0.4rem 0.6rem;
-    border: 1px solid var(--border-color, #ddd);
-    border-radius: 4px;
-    background-color: var(--background-color, #fff);
-    color: var(--text-color, #333);
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .pagination-items-per-page select:hover {
-    border-color: var(--accent-color, #0066cc);
-  }
-
-  .pagination-list {
-    list-style: none;
+  .pagination-controls {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0;
-    margin: 0;
   }
 
-  .pagination-list li {
-    margin: 0.25rem;
+  .items-selector {
+    padding: 0.6rem 1rem;
+    background: var(--background-secondary, #f5f5f5);
+    color: var(--text-color, #333);
+    border: 2px solid var(--accent-color, #2d96de);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
   }
 
-  .pagination-list a,
-  .pagination-list span {
-    display: inline-block;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--border-color, #ddd);
-    border-radius: 4px;
-    text-decoration: none;
-    color: var(--accent-color, #0066cc);
-    transition: all 0.2s ease;
-  }
-
-  .pagination-list a:hover {
-    background-color: var(--accent-color, #0066cc);
+  .items-selector:hover {
+    background: var(--accent-color, #2d96de);
     color: var(--background-color, #fff);
-    border-color: var(--accent-color, #0066cc);
   }
 
-  .pagination-list li.active span {
-    background-color: var(--accent-color, #0066cc);
-    color: var(--background-color, #fff);
-    border-color: var(--accent-color, #0066cc);
-  }
-
-  .pagination-list li.disabled span {
-    color: var(--disabled-color, #999);
-    cursor: not-allowed;
-    border-color: var(--border-color, #ddd);
+  .items-selector:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(45, 150, 222, 0.1);
   }
 
   @media (max-width: 768px) {
-    .pagination-list {
+    .pagination {
+      margin: 2rem 0 1.5rem;
+    }
+
+    .pagination-wrapper {
+      gap: 0.75rem;
+    }
+
+    .pagination-btn {
+      padding: 0.5rem 0.9rem;
       font-size: 0.9rem;
     }
 
-    .pagination-list a,
-    .pagination-list span {
-      padding: 0.4rem 0.6rem;
+    .pagination-numbers {
+      gap: 0.4rem;
+    }
+
+    .pagination-num {
+      min-width: 2.2rem;
+      height: 2.2rem;
+      font-size: 0.9rem;
+    }
+
+    .items-selector {
+      font-size: 0.9rem;
+      padding: 0.5rem 0.8rem;
+    }
+  }
+
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .pagination-num {
+      background: var(--background-secondary, #2a2a2a);
+    }
+
+    .pagination-btn {
+      background: var(--accent-color, #2d96de);
+    }
+
+    .items-selector {
+      background: var(--background-secondary, #2a2a2a);
+      color: var(--text-color, #e0e0e0);
     }
   }
 </style>
 
 <script>
   function changeItemsPerPage(itemsPerPage) {
-    // Store preference in localStorage
     localStorage.setItem('itemsPerPage', itemsPerPage);
-    
-    // Reload page (in production, you might use AJAX to reload content)
-    // For now, redirect to first page with the new pager size
     const currentPath = window.location.pathname;
     const basePath = currentPath.replace(/\/page\/\d+\/?$/, '');
     window.location.href = basePath;
