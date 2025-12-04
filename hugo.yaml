@@ -5,7 +5,7 @@ languageCode: en
 defaultContentLanguage: en
 enableEmoji: true
 pagination:
-  pagerSize: 10
+  pagerSize: 15
 
 # SEO and Performance
 enableRobotsTXT: true
