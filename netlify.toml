@@ -1,17 +1,32 @@
 [build]
-command = 'hugo'
-publish = 'public'
+  command = "hugo --gc --minify"
+  publish = "public"
 
 [build.environment]
-HUGO_VERSION = '0.152.2'
+  HUGO_VERSION = "0.152.2"
+  HUGO_ENV = "production"
+  HUGO_ENABLEGITINFO = "true"
 
-[context]
-[context.branch-deploy]
-command = 'hugo -F -b $DEPLOY_PRIME_URL'
+[context.production.environment]
+  HUGO_ENV = "production"
 
 [context.deploy-preview]
-command = 'hugo -F -b $DEPLOY_PRIME_URL'
+  command = "hugo --gc --minify --buildFuture -b $DEPLOY_PRIME_URL"
 
-[context.production]
-[context.production.environment]
-HUGO_ENV = 'production'
+[context.branch-deploy]
+  command = "hugo --gc --minify --buildFuture -b $DEPLOY_PRIME_URL"
+
+# Redirect old URLs if needed
+[[redirects]]
+  from = "/resume"
+  to = "/cv"
+  status = 301
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"

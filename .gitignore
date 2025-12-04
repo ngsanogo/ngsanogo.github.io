@@ -1,12 +1,13 @@
 # Hugo build files
 /public/
-/resources/
+/resources/_gen/
 .hugo_build.lock
 
 # OS files
 .DS_Store
 Thumbs.db
 ._*
+*.tmp
 
 # Editor files
 .vscode/
@@ -14,9 +15,10 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.code-workspace
 
-# Github
-/.github
+# GitHub
+/.github/
 
 # Node modules (if using npm/yarn)
 node_modules/
@@ -27,9 +29,20 @@ yarn.lock
 .venv/
 venv/
 env/
+ENV/
 
 # Python cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+.pytest_cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Pre-commit
+.pre-commit-config.yaml.backup

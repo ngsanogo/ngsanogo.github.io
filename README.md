@@ -1,12 +1,10 @@
-# My Personal Website
+# Issa Sanogo - Personal Website & Blog
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/0a07735e-6436-49c8-8d27-732f97d9cfed/deploy-status)](https://app.netlify.com/sites/ngsanogo/deploys)
 
-Hi!
+Personal website and technical blog of Issa Sanogo, Data Engineer.
 
-My name is Issa Sanogo. I am a Data Engineer.
-
-This is my personal website and blog.
+🌐 **Live site**: [ngsanogo.rbind.io](https://ngsanogo.rbind.io)
 
 ## What's Inside
 
@@ -51,25 +49,20 @@ This is a static website built with [Hugo](https://gohugo.io), using the [hugo-c
 
 Simple as that!
 
-## Found a Typo?
+## Contributing
 
-Feel free to:
+Found a typo or have a suggestion?
 
-- Open an [issue on GitHub](https://github.com/ngsanogo/ngsanogo.rbind.io/issues)
-- Send me a pull request
+- Open an [issue](https://github.com/ngsanogo/ngsanogo.rbind.io/issues)
+- Submit a pull request
 - [Contact me](https://ngsanogo.rbind.io/contact/) directly
-- **LinkedIn**: [ngsanogo](https://www.linkedin.com/in/ngsanogo/)
-
----
-
-Built with ❤️ using Hugo and deployed on Netlify
 
 ## Connect
 
-- 🌐 Website: [ngsanogo.rbind.io](https://ngsanogo.rbind.io)
-- 💻 GitHub: [@ngsanogo](https://github.com/ngsanogo)
 - 💼 LinkedIn: [ngsanogo](https://www.linkedin.com/in/ngsanogo/)
+- 💻 GitHub: [@ngsanogo](https://github.com/ngsanogo)
+- 📧 Email: [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
 
 ---
 
-Made with Hugo 🚀
+**Tech Stack**: Hugo • Netlify • Markdown
