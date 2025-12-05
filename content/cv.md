@@ -8,18 +8,19 @@ lastmod: "2025-12-04"
 description: Senior Data Engineer
 ---
 
-# Issa Sanogo
+# **Issa SANOGO**
 
-## Data Engineer
+## Senior Data Engineer
 
-[**Bezons, France**](https://maps.app.goo.gl/48r3KJZQ2kE3SHbx9)
-+33 6 51 98 52 79 | [ngsanogo@proton.me](mailto:ngsanogo@proton.me) | [ngsanogo.rbind.io](https://ngsanogo.rbind.io) | [LinkedIn](https://linkedin.com/in/ngsanogo) | [GitHub](https://github.com/ngsanogo)
+📍 [Île-de-France, France](https://maps.app.goo.gl/RekvUGDw4UToLPzu7)
+📞 [+33 6 51 98 52 79](tel:+33651985279) | ✉ [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
+🔗 [LinkedIn](https://www.linkedin.com/in/ngsanogo) | [Website](https://ngsanogo.rbind.io) | [GitHub](https://github.com/ngsanogo)
 
 ---
 
 ## Summary
 
-Data Engineer with 7+ years of experience building data infrastructure, ETL/ELT pipelines, and analytics solutions. Specialized in healthcare and life sciences data, with expertise in data warehousing, data quality, and governance. Proven ability to collaborate with technical and business teams to deliver reliable data platforms. Currently working as a freelance data engineer on mission-critical data integration projects.
+Data Engineer with 8+ years of experience building data infrastructure, ETL/ELT pipelines, and analytics solutions. Specialized in healthcare and life sciences data, with expertise in data warehousing, data quality, and governance. Proven ability to collaborate with technical and business teams to deliver reliable data platforms. Currently working as a freelance data engineer on mission-critical data integration projects.
 
 **Key Expertise:** Data pipeline development | Data warehousing | Healthcare data | Data quality & governance | Team collaboration
 
@@ -63,7 +64,7 @@ Freelance mission to build data infrastructure and improve data quality for an e
 
 **Technologies:** Python, SQL, MySQL, Looker Studio, Twilead CRM, Google API, Stripe API, VDS - VPS administration
 
-### Data Engineer (CDI - Permanent Contract)
+### Data Engineer (Permanent Contract)
 
 **Institut Jérôme Lejeune** | Paris, France
 _October 2021 – January 2025_
@@ -84,7 +85,7 @@ Permanent position building data infrastructure for a medical research institute
 
 **Technologies:** Python, R, SQL Server, PostgreSQL, ETL tools, Tableau, Power BI, Docker, Git, NocoDB, clinical data management systems (REDCap, DataCap)
 
-### Data Manager (CDD - Fixed-Term Contract)
+### Data Manager (Fixed-Term Contract)
 
 **Assistance Publique - Hôpitaux de Paris (AP-HP)** | Boulogne-Billancourt, France
 _September 2017 – September 2021_
