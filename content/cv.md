@@ -12,9 +12,7 @@ description: Senior Data Engineer
 
 ## Senior Data Engineer
 
-📍 [Île-de-France, France](https://maps.app.goo.gl/RekvUGDw4UToLPzu7)
-📞 [+33 6 51 98 52 79](tel:+33651985279) | ✉ [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
-🔗 [LinkedIn](https://www.linkedin.com/in/ngsanogo) | [Website](https://ngsanogo.rbind.io) | [GitHub](https://github.com/ngsanogo)
+📍 [Île-de-France, France](https://maps.app.goo.gl/RekvUGDw4UToLPzu7) | 📞 [+33 6 51 98 52 79](tel:+33651985279) | ✉ [ngsanogo@proton.me](mailto:ngsanogo@proton.me) | 🔗 [LinkedIn](https://www.linkedin.com/in/ngsanogo) | [Website](https://ngsanogo.rbind.io) | [GitHub](https://github.com/ngsanogo)
 
 ---
 
