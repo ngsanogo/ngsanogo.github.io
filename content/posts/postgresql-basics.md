@@ -3,8 +3,8 @@ authors:
   - Issa Sanogo
 categories:
   - Application
-date: "2025-11-30"
-lastmod: "2025-11-30"
+date: "2024-11-30"
+lastmod: "2024-11-30"
 description: "PostgreSQL basics: What it is, why it's reliable, and how to use it for data engineering work."
 tags:
   - postgresql

@@ -3,8 +3,8 @@ authors:
   - Issa Sanogo
 categories:
   - Infrastructure
-date: "2025-12-05"
-lastmod: "2025-12-05"
+date: "2024-12-05"
+lastmod: "2024-12-05"
 description: "Ubuntu for data engineers: Why it's the best Linux distribution, how to use it, and getting started."
 tags:
   - ubuntu

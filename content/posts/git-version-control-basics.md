@@ -3,8 +3,8 @@ authors:
   - Issa Sanogo
 categories:
   - Application
-date: "2025-12-01"
-lastmod: "2025-12-01"
+date: "2024-12-01"
+lastmod: "2024-12-01"
 description: "Why data engineers need Git. Learn version control, why it matters, and how to use it daily."
 tags:
   - git

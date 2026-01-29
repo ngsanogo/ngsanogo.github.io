@@ -4,8 +4,8 @@ authors:
 categories:
   - Application
   - Infrastructure
-date: "2025-12-04"
-lastmod: "2025-12-04"
+date: "2024-12-04"
+lastmod: "2024-12-04"
 description: "The essential tools every data engineer needs: SQL, Python, Git, Docker, Airflow, and databases. Build your toolkit."
 tags:
   - tools

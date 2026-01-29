@@ -3,8 +3,8 @@ authors:
   - Issa Sanogo
 categories:
   - Application
-date: "2025-11-28"
-lastmod: "2025-11-28"
+date: "2024-11-28"
+lastmod: "2024-11-28"
 description: "Why SQL is essential for data engineers. Learn what SQL does, how to use it, and why it's the foundation of data work."
 tags:
   - sql

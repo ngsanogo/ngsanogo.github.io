@@ -3,8 +3,8 @@ authors:
   - Issa Sanogo
 categories:
   - Application
-date: "2025-11-26"
-lastmod: "2025-11-26"
+date: "2024-11-26"
+lastmod: "2024-11-26"
 description: "Understanding databases (SGBD): What they are, how they work, and why every data engineer needs to know them."
 tags:
   - database
