@@ -20,7 +20,7 @@ outputs:
 # SEO and Performance
 enableRobotsTXT: true
 canonifyURLs: true
-enableGitInfo: true
+enableGitInfo: false
 minify:
   disableCSS: false
   disableHTML: false
