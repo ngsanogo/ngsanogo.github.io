@@ -17,9 +17,6 @@ Thumbs.db
 *~
 .code-workspace
 
-# GitHub
-/.github/
-
 # Node modules (if using npm/yarn)
 node_modules/
 package-lock.json
