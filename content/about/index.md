@@ -1,10 +1,12 @@
 ---
+slug: about
 aliases:
   - about
 author: Issa Sanogo
-date: "2025-02-11"
+date: "2024-01-15"
 description: About Issa Sanogo - Senior Data Engineer
 title: About
+draft: false
 ---
 
 Hi, my name is Issa Sanogo and welcome to my personal website.
@@ -17,6 +19,6 @@ I’m a passionate advocate of open source and continually strive to improve my 
 
 This blog showcases my personal projects, with a focus on data and open source software.
 
-As Errare humanum est, some posts may contain errors, so please feel free to submit any correction requests directly on my [GitHub page](https://github.com/ngsanogo/ngsanogo.rbind.io).
+As Errare humanum est, some posts may contain errors, so please feel free to submit any correction requests directly on my [GitHub page](https://github.com/ngsanogo/ngsanogo.github.io).
 
-This site is built with [Hugo](https://gohugo.io) static site generator and the [hugo-coder](https://github.com/luizdepra/hugo-coder/) theme, deployed on [Netlify](https://netlify.com).
+This site is built with [Hugo](https://gohugo.io) static site generator and the [hugo-coder](https://github.com/luizdepra/hugo-coder/) theme, deployed on [GitHub Pages](https://pages.github.com).

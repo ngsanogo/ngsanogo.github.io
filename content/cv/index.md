@@ -1,18 +1,21 @@
 ---
+slug: cv
 aliases:
   - resume
   - cv
 author: Issa Sanogo
-date: "2025-02-11"
+date: "2024-01-15"
 lastmod: "2025-12-04"
 description: Senior Data Engineer
+title: Resume
+draft: false
 ---
 
 # **Issa SANOGO**
 
 ## Senior Data Engineer
 
-📍 [Île-de-France, France](https://maps.app.goo.gl/RekvUGDw4UToLPzu7) | 📞 [+33 6 51 98 52 79](tel:+33651985279) | ✉ [ngsanogo@proton.me](mailto:ngsanogo@proton.me) | 🔗 [LinkedIn](https://www.linkedin.com/in/ngsanogo) | [Website](https://ngsanogo.rbind.io) | [GitHub](https://github.com/ngsanogo)
+📍 [Île-de-France, France](https://maps.app.goo.gl/RekvUGDw4UToLPzu7) | 📞 [+33 6 51 98 52 79](tel:+33651985279) | ✉ [ngsanogo@proton.me](mailto:ngsanogo@proton.me) | 🔗 [LinkedIn](https://www.linkedin.com/in/ngsanogo) | [Website](https://ngsanogo.github.io) | [GitHub](https://github.com/ngsanogo)
 
 ---
 
