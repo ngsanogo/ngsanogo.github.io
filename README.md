@@ -1,97 +1,92 @@
-# Mon Site - Python Zen Edition
+# Issa Sanogo - Personal Site
 
-Un site simple, beau et facile à maintenir. Construit avec Python suivant la philosophie Zen.
+A simple, fast, and easy-to-maintain personal website built with Python.
 
-## 🚀 Démarrage rapide
+## 🎯 Structure
 
-### Ajouter un article de blog
-
-```bash
-# Créer un nouveau fichier dans content/posts/
-touch content/posts/mon-article.md
+```
+.
+├── content/
+│   ├── about.md          # About page
+│   ├── cv.md             # Resume/CV
+│   ├── contact.md        # Contact page
+│   └── posts/            # Blog articles
+├── build.py              # Site generator (no dependencies)
+├── style.css             # Styling
+└── public/               # Generated HTML (build output)
 ```
 
-Remplissez avec ce template:
+## ✍️ Add a Blog Post
+
+Create a new file in `content/posts/`:
+
+```bash
+touch content/posts/my-article.md
+```
+
+Fill with this template:
 
 ```markdown
 ---
-title: Mon Super Article
-slug: mon-article
-date: 2024-01-29
-description: Une courte description de l'article
-tags: python, data, engineering
+title: My Article Title
+slug: my-article
+date: 2024-01-30
+description: Short description for listing
 draft: false
 ---
 
-# Mon Article
+# Your content here
 
-Votre contenu ici...
+Use markdown: **bold**, *italic*, [links](url), etc.
 ```
 
-### Modifier vos pages
+**Fields explained:**
+- `title`: Article title (shown on page and listings)
+- `slug`: URL path (e.g., `/posts/my-article`)
+- `date`: Publication date (YYYY-MM-DD)
+- `description`: Short preview text
+- `draft`: Set to `true` to hide article
+- `updated` (optional): Set to mark as recently updated
 
-Les pages principales (About, CV, Contact) sont dans `content/`:
+## 📄 Edit Pages
 
-- `content/about/index.md` - Page À propos
-- `content/cv/index.md` - Votre CV / Resume
-- `content/contact/index.md` - Contact
+Pages are plain markdown files in `content/`:
 
-### Builder le site
+- `about.md` → `/about`
+- `cv.md` → `/cv`
+- `contact.md` → `/contact`
+
+Only required field: `title`
+
+```markdown
+---
+title: Page Title
+---
+
+Your content here...
+```
+
+## 🏗️ Build
 
 ```bash
 python3 build.py
 ```
 
-Le site sera généré dans `public/`.
+Generates `public/` with complete site.
 
-## 📝 Format Markdown supporté
+## 🎨 Customize
 
-- `# Titres` (h1, h2, h3)
-- `**gras**` et `*italique*`
-- `[lien](url)`
-- `` `code inline` ``
-- Code blocks avec ```
-- Listes avec `*`
-- Blockquotes avec `>`
+Edit `style.css` to change colors, fonts, or layout. Everything else is in `build.py` and is straightforward Python.
 
-## 🎨 Personnaliser le design
+## 📋 Features
 
-Le CSS est embarqué dans `build.py`. Vous pouvez:
+- **Zero dependencies** - Pure Python stdlib
+- **Fast** - Static HTML generation
+- **Simple** - No config, one way to do things
+- **Maintainable** - All code is clear and readable
+- **Blog pagination** - 10 posts per page
+- **Latest posts** - Home shows newest + recently updated
 
-1. Changer les couleurs dans `:root { --primary: #xxx; }`
-2. Modifier la typographie
-3. Ajouter des sections
+## 🚀 Deploy
 
-Tout est en Python - pas de dépendances externes!
-
-## 📋 Structure du projet
-
-```
-.
-├── build.py              # Le générateur (tout est ici!)
-├── content/
-│   ├── about/index.md
-│   ├── cv/index.md
-│   ├── contact/index.md
-│   └── posts/            # Vos articles
-├── public/               # Généré (ne pas modifier)
-└── .github/workflows/    # GitHub Actions
-```
-
-## ✅ Ce qui marche
-
-- ✅ Articles de blog simples
-- ✅ Pages statiques  
-- ✅ Responsive design
-- ✅ SEO-friendly
-- ✅ Zéro dépendances externes
-- ✅ Déploiement automatique sur GitHub Pages
-
-## 🎯 Philosophie Zen
-
-Ce site suit les principes zen de Python:
-- **Simple > Complexe** - Python pur, pas de frameworks lourds
-- **Beau > Laid** - Design minimaliste et élégant
-- **Lisible > Obscur** - Code facile à comprendre et modifier
-
-Bienvenue dans la simplicité! 🚀
+Push to GitHub. GitHub Actions automatically builds and deploys to Pages.
