@@ -1,66 +1,97 @@
-# Issa Sanogo - Personal Website & Blog
+# Mon Site - Python Zen Edition
 
-Personal website and technical blog of Issa Sanogo, Data Engineer.
+Un site simple, beau et facile à maintenir. Construit avec Python suivant la philosophie Zen.
 
-🌐 **Live site**: [ngsanogo.github.io](https://ngsanogo.github.io)
+## 🚀 Démarrage rapide
 
-## What's Inside
-
-- **Blog**: Technical posts organized by topics and series
-- **Resume**: My full professional background and skills
-- **About**: A bit about me and what I do
-- **Contact**: My contact information
-
-## Running This Site Locally
-
-Want to see the site on your computer? Here's how:
-
-### You'll Need
-
-- [Hugo Extended](https://gohugo.io/installation/) (version 0.131.0 or newer)
-- Git
-
-### Getting Started
+### Ajouter un article de blog
 
 ```bash
-# 1. Get the code
-git clone https://github.com/ngsanogo/ngsanogo.rbind.io.git
-cd ngsanogo.rbind.io
-
-# 2. Start the site
-hugo server -D
+# Créer un nouveau fichier dans content/posts/
+touch content/posts/mon-article.md
 ```
 
-Open your browser to `http://localhost:1313` and you'll see the site!
+Remplissez avec ce template:
 
-### Writing a New Post
-
-```bash
-hugo new content/posts/my-new-post.md
-```
-
-Then edit the file in your favorite editor and save. Hugo will automatically refresh your browser!
-
-## How It Works
-
-This is a static website built with [Hugo](https://gohugo.io), using the [hugo-coder](https://github.com/luizdepra/hugo-coder/) theme. When I push changes to GitHub, [GitHub Actions](https://github.com/features/actions) automatically builds and deploys the site to [GitHub Pages](https://pages.github.com).
-
-Simple as that!
-
-## Contributing
-
-Found a typo or have a suggestion?
-
-- Open an [issue](https://github.com/ngsanogo/ngsanogo.rbind.io/issues)
-- Submit a pull request
-- [Contact me](https://ngsanogo.rbind.io/contact/) directly
-
-## Connect
-
-- 💼 LinkedIn: [ngsanogo](https://www.linkedin.com/in/ngsanogo/)
-- 💻 GitHub: [@ngsanogo](https://github.com/ngsanogo)
-- 📧 Email: [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
-
+```markdown
+---
+title: Mon Super Article
+slug: mon-article
+date: 2024-01-29
+description: Une courte description de l'article
+tags: python, data, engineering
+draft: false
 ---
 
-**Tech Stack**: Hugo • Netlify • Markdown
+# Mon Article
+
+Votre contenu ici...
+```
+
+### Modifier vos pages
+
+Les pages principales (About, CV, Contact) sont dans `content/`:
+
+- `content/about/index.md` - Page À propos
+- `content/cv/index.md` - Votre CV / Resume
+- `content/contact/index.md` - Contact
+
+### Builder le site
+
+```bash
+python3 build.py
+```
+
+Le site sera généré dans `public/`.
+
+## 📝 Format Markdown supporté
+
+- `# Titres` (h1, h2, h3)
+- `**gras**` et `*italique*`
+- `[lien](url)`
+- `` `code inline` ``
+- Code blocks avec ```
+- Listes avec `*`
+- Blockquotes avec `>`
+
+## 🎨 Personnaliser le design
+
+Le CSS est embarqué dans `build.py`. Vous pouvez:
+
+1. Changer les couleurs dans `:root { --primary: #xxx; }`
+2. Modifier la typographie
+3. Ajouter des sections
+
+Tout est en Python - pas de dépendances externes!
+
+## 📋 Structure du projet
+
+```
+.
+├── build.py              # Le générateur (tout est ici!)
+├── content/
+│   ├── about/index.md
+│   ├── cv/index.md
+│   ├── contact/index.md
+│   └── posts/            # Vos articles
+├── public/               # Généré (ne pas modifier)
+└── .github/workflows/    # GitHub Actions
+```
+
+## ✅ Ce qui marche
+
+- ✅ Articles de blog simples
+- ✅ Pages statiques  
+- ✅ Responsive design
+- ✅ SEO-friendly
+- ✅ Zéro dépendances externes
+- ✅ Déploiement automatique sur GitHub Pages
+
+## 🎯 Philosophie Zen
+
+Ce site suit les principes zen de Python:
+- **Simple > Complexe** - Python pur, pas de frameworks lourds
+- **Beau > Laid** - Design minimaliste et élégant
+- **Lisible > Obscur** - Code facile à comprendre et modifier
+
+Bienvenue dans la simplicité! 🚀
