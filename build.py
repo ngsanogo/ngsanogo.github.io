@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Build statique minimaliste et zen pour ngsanogo.github.io
-Suit la philosophie zen de Python : simple, lisible et beau
-Zéro dépendances externes - utilise uniquement la stdlib
+Simple static site builder with zero external dependencies.
+Builds HTML from markdown files in content/ directory.
 """
 
 import re
 import html
 from pathlib import Path
 from datetime import datetime
+
 
 # Configuration
 CONTENT_DIR = Path("content")
@@ -17,13 +17,47 @@ SITE_TITLE = "Issa Sanogo"
 SITE_DESC = "Senior Data Engineer"
 SITE_URL = "https://ngsanogo.github.io"
 
-# Crée le dossier de sortie
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 
-def simple_markdown(text):
-    """Parse minimaliste de markdown"""
-    # Échappe le HTML
+def parse_markdown_file(file_path):
+    """Parse markdown file with YAML frontmatter.
+    
+    Returns: (metadata_dict, body_text)
+    """
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    
+    # Extract frontmatter
+    if not content.startswith("---"):
+        return {}, content
+    
+    parts = content.split("---\n", 2)
+    if len(parts) != 3:
+        return {}, content
+    
+    _, frontmatter, body = parts
+    
+    # Parse YAML-like frontmatter (simple key: value format)
+    meta = {}
+    for line in frontmatter.strip().split("\n"):
+        if ": " in line:
+            key, value = line.split(": ", 1)
+            meta[key.strip()] = value.strip('" \'')
+    
+    return meta, body.strip()
+
+
+def parse_date(date_str):
+    """Parse YYYY-MM-DD date format."""
+    try:
+        return datetime.strptime(date_str, "%Y-%m-%d")
+    except (ValueError, TypeError):
+        return None
+
+
+def markdown_to_html(text):
+    """Convert markdown to HTML. Minimal but practical."""
     text = html.escape(text)
     
     # Headers
@@ -31,119 +65,57 @@ def simple_markdown(text):
     text = re.sub(r'^## (.*?)$', r'<h2>\1</h2>', text, flags=re.MULTILINE)
     text = re.sub(r'^# (.*?)$', r'<h1>\1</h1>', text, flags=re.MULTILINE)
     
-    # Bold et italic
+    # Emphasis
     text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
     text = re.sub(r'\*(.*?)\*', r'<em>\1</em>', text)
+    text = re.sub(r'__(.*?)__', r'<strong>\1</strong>', text)
+    text = re.sub(r'_(.*?)_', r'<em>\1</em>', text)
     
-    # Liens
+    # Links
     text = re.sub(r'\[(.*?)\]\((.*?)\)', r'<a href="\2">\1</a>', text)
     
-    # Listes
-    text = re.sub(r'^\* (.*?)$', r'<li>\1</li>', text, flags=re.MULTILINE)
-    text = re.sub(r'(?:<li>.*?</li>)', lambda m: '<ul>' + m.group(0) + '</ul>', text, flags=re.DOTALL)
-    text = re.sub(r'</ul>\n<ul>', '', text)
-    
-    # Code inline
+    # Code
     text = re.sub(r'`(.*?)`', r'<code>\1</code>', text)
+    text = re.sub(
+        r'```(.*?)\n(.*?)\n```',
+        r'<pre><code>\2</code></pre>',
+        text,
+        flags=re.DOTALL
+    )
     
-    # Code blocks
-    text = re.sub(r'```(.*?)\n(.*?)\n```', r'<pre><code>\2</code></pre>', text, flags=re.DOTALL)
-    
-    # Paragraphes
-    paragraphs = text.split('\n\n')
-    text = '\n\n'.join(f'<p>{p}</p>' if p and not p.startswith('<') else p for p in paragraphs)
+    # Lists
+    text = re.sub(r'^\* (.*?)$', r'<li>\1</li>', text, flags=re.MULTILINE)
+    text = re.sub(
+        r'(?:<li>.*?</li>)',
+        lambda m: '<ul>' + m.group(0) + '</ul>',
+        text,
+        flags=re.DOTALL
+    )
+    text = re.sub(r'</ul>\n<ul>', '', text)
     
     # Blockquotes
     text = re.sub(r'^> (.*?)$', r'<blockquote>\1</blockquote>', text, flags=re.MULTILINE)
     
+    # Paragraphs
+    paragraphs = text.split('\n\n')
+    text = '\n\n'.join(
+        f'<p>{p}</p>' if p and not p.startswith('<') else p
+        for p in paragraphs
+    )
+    
     return text
 
 
-def read_markdown(file_path):
-    """Lit un fichier markdown et retourne (frontmatter, contenu)"""
-    with open(file_path, "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    # Parse frontmatter (---\n...\n---)
-    if content.startswith("---"):
-        _, frontmatter, body = content.split("---\n", 2)
-    else:
-        frontmatter = ""
-        body = content
-    
-    # Parse les variables du frontmatter
-    meta = {}
-    for line in frontmatter.strip().split("\n"):
-        if ": " in line:
-            key, value = line.split(": ", 1)
-            meta[key.strip()] = value.strip('"').strip("'")
-    
-    return meta, body
+def load_css():
+    """Load CSS file."""
+    with open("style.css", "r", encoding="utf-8") as f:
+        return f.read()
 
 
-def parse_date(date_str):
-    """Parse une date au format YYYY-MM-DD"""
-    try:
-        return datetime.strptime(date_str, "%Y-%m-%d")
-    except:
-        return None
-
-
-def get_posts():
-    """Récupère tous les posts triés par date (récent d'abord)"""
-    posts = []
-    posts_dir = CONTENT_DIR / "posts"
+def render_html(title, content):
+    """Render complete HTML page."""
+    css = load_css()
     
-    if not posts_dir.exists():
-        return posts
-    
-    for md_file in sorted(posts_dir.glob("*.md"), reverse=True):
-        meta, body = read_markdown(md_file)
-        
-        # Skip les drafts
-        if meta.get("draft", "false").lower() == "true":
-            continue
-        
-        date = parse_date(meta.get("date", ""))
-        if not date:
-            continue
-        
-        # Date de dernière modification (si elle existe)
-        updated_str = meta.get("updated", meta.get("date", ""))
-        updated = parse_date(updated_str) or date
-        
-        posts.append({
-            "title": meta.get("title", md_file.stem),
-            "slug": meta.get("slug", md_file.stem),
-            "date": date,
-            "updated": updated,
-            "date_str": date.strftime("%B %d, %Y"),
-            "updated_str": updated.strftime("%B %d, %Y") if updated != date else None,
-            "description": meta.get("description", ""),
-            "body": simple_markdown(body),
-            "tags": meta.get("tags", "").split(", ") if meta.get("tags") else [],
-        })
-    
-    return sorted(posts, key=lambda x: x["date"], reverse=True)
-
-
-def get_page(slug):
-    """Récupère une page (about, cv, contact)"""
-    page_file = CONTENT_DIR / f"{slug}" / "index.md"
-    
-    if not page_file.exists():
-        return None
-    
-    meta, body = read_markdown(page_file)
-    return {
-        "title": meta.get("title", slug.capitalize()),
-        "slug": slug,
-        "body": simple_markdown(body),
-    }
-
-
-def render_html(title, content, is_home=False):
-    """Rend une page HTML complète"""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -151,217 +123,7 @@ def render_html(title, content, is_home=False):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title} - {SITE_TITLE}</title>
     <meta name="description" content="{SITE_DESC}">
-    <style>
-        :root {{
-            --primary: #1a1a1a;
-            --secondary: #666;
-            --accent: #0066cc;
-            --light: #f5f5f5;
-            --spacing: 1.5rem;
-        }}
-        
-        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-        
-        html {{ font-size: 16px; }}
-        
-        body {{
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            color: var(--primary);
-            background: white;
-            line-height: 1.6;
-        }}
-        
-        .container {{
-            max-width: 720px;
-            margin: 0 auto;
-            padding: var(--spacing);
-        }}
-        
-        header {{
-            text-align: center;
-            margin-bottom: 3rem;
-            border-bottom: 1px solid var(--light);
-            padding-bottom: 2rem;
-        }}
-        
-        .site-title {{
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 0.5rem;
-        }}
-        
-        .site-title a {{
-            color: var(--primary);
-            text-decoration: none;
-        }}
-        
-        .site-title a:hover {{
-            color: var(--accent);
-        }}
-        
-        .site-desc {{
-            color: var(--secondary);
-            font-size: 1rem;
-        }}
-        
-        nav {{
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }}
-        
-        nav a {{
-            color: var(--secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }}
-        
-        nav a:hover {{
-            color: var(--accent);
-        }}
-        
-        nav a.active {{
-            color: var(--accent);
-        }}
-        
-        main {{
-            margin: 2rem 0;
-        }}
-        
-        .page-title {{
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }}
-        
-        .post-item {{
-            margin-bottom: 2.5rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--light);
-        }}
-        
-        .post-item:last-child {{
-            border-bottom: none;
-        }}
-        
-        .post-title {{
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-        }}
-        
-        .post-title a {{
-            color: var(--primary);
-            text-decoration: none;
-        }}
-        
-        .post-title a:hover {{
-            color: var(--accent);
-        }}
-        
-        .post-meta {{
-            color: var(--secondary);
-            font-size: 0.9rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }}
-        
-        .post-description {{
-            margin-top: 0.75rem;
-            color: var(--primary);
-        }}
-        
-        .post-tags {{
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-top: 0.75rem;
-        }}
-        
-        .tag {{
-            background: var(--light);
-            color: var(--secondary);
-            padding: 0.25rem 0.5rem;
-            border-radius: 3px;
-            font-size: 0.85rem;
-        }}
-        
-        h1, h2, h3, h4, h5, h6 {{
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-            font-weight: 700;
-        }}
-        
-        h1 {{ font-size: 2rem; }}
-        h2 {{ font-size: 1.5rem; }}
-        h3 {{ font-size: 1.25rem; }}
-        
-        p {{ margin-bottom: 1rem; }}
-        
-        ul, ol {{
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }}
-        
-        li {{ margin-bottom: 0.5rem; }}
-        
-        a {{
-            color: var(--accent);
-            text-decoration: none;
-        }}
-        
-        a:hover {{
-            text-decoration: underline;
-        }}
-        
-        code {{
-            background: var(--light);
-            padding: 0.2rem 0.4rem;
-            border-radius: 3px;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-            font-size: 0.9rem;
-        }}
-        
-        pre {{
-            background: var(--light);
-            padding: 1rem;
-            border-radius: 5px;
-            overflow-x: auto;
-            margin-bottom: 1rem;
-        }}
-        
-        pre code {{
-            background: none;
-            padding: 0;
-        }}
-        
-        blockquote {{
-            border-left: 4px solid var(--accent);
-            padding-left: 1rem;
-            color: var(--secondary);
-            margin: 1.5rem 0;
-        }}
-        
-        footer {{
-            text-align: center;
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--light);
-            color: var(--secondary);
-            font-size: 0.9rem;
-        }}
-        
-        .read-more {{
-            color: var(--accent);
-            font-weight: 500;
-            display: inline-block;
-            margin-top: 0.5rem;
-        }}
-    </style>
+    <style>{css}</style>
 </head>
 <body>
     <div class="container">
@@ -376,22 +138,54 @@ def render_html(title, content, is_home=False):
                 <a href="/contact">Contact</a>
             </nav>
         </header>
-        
-        <main>
-            {content}
-        </main>
-        
+        <main>{content}</main>
         <footer>
             <p>&copy; 2024 {SITE_TITLE}. Built with Python.</p>
         </footer>
     </div>
 </body>
-</html>
-"""
+</html>"""
 
 
-def build_index():
-    """Génère la page d'accueil avec le dernier créé et le dernier mis à jour"""
+def get_posts():
+    """Get all published blog posts, sorted by date (newest first)."""
+    posts = []
+    posts_dir = CONTENT_DIR / "posts"
+    
+    if not posts_dir.exists():
+        return []
+    
+    for md_file in posts_dir.glob("*.md"):
+        meta, body = parse_markdown_file(md_file)
+        
+        # Skip drafts
+        if meta.get("draft", "false").lower() == "true":
+            continue
+        
+        # Parse date
+        date = parse_date(meta.get("date"))
+        if not date:
+            continue
+        
+        # Parse updated date (optional)
+        updated = parse_date(meta.get("updated")) or date
+        
+        posts.append({
+            "title": meta.get("title", md_file.stem),
+            "slug": meta.get("slug", md_file.stem),
+            "date": date,
+            "updated": updated,
+            "date_str": date.strftime("%B %d, %Y"),
+            "updated_str": updated.strftime("%B %d, %Y") if updated != date else None,
+            "description": meta.get("description", ""),
+            "body": markdown_to_html(body),
+        })
+    
+    return sorted(posts, key=lambda x: x["date"], reverse=True)
+
+
+def build_home():
+    """Build homepage."""
     posts = get_posts()
     
     if not posts:
@@ -400,37 +194,29 @@ def build_index():
         <p>Data Engineer with expertise in building data infrastructure, pipelines, and analytics solutions.</p>
         """
     else:
-        # Dernier post créé
         latest_created = posts[0]
-        
-        # Dernier post mis à jour
         posts_by_updated = sorted(posts, key=lambda x: x["updated"], reverse=True)
         latest_updated = posts_by_updated[0]
         
         posts_html = f"""
-        <div class="home-section">
+        <div>
             <h2 style="margin-bottom: 1rem;">📝 Latest Post</h2>
             <div class="post-item">
                 <h2 class="post-title"><a href="/posts/{latest_created['slug']}">{latest_created['title']}</a></h2>
-                <div class="post-meta">
-                    <span>Published: {latest_created['date_str']}</span>
-                </div>
+                <div class="post-meta"><span>Published: {latest_created['date_str']}</span></div>
                 <p class="post-description">{latest_created['description']}</p>
                 <a href="/posts/{latest_created['slug']}" class="read-more">Read more →</a>
             </div>
         </div>
         """
         
-        # N'afficher "Recently Updated" que si c'est différent du dernier créé
         if latest_updated['slug'] != latest_created['slug']:
             posts_html += f"""
-        <div class="home-section" style="margin-top: 2rem;">
+        <div style="margin-top: 2rem;">
             <h2 style="margin-bottom: 1rem;">🔄 Recently Updated</h2>
             <div class="post-item">
                 <h2 class="post-title"><a href="/posts/{latest_updated['slug']}">{latest_updated['title']}</a></h2>
-                <div class="post-meta">
-                    <span>Updated: {latest_updated['updated_str'] or latest_updated['date_str']}</span>
-                </div>
+                <div class="post-meta"><span>Updated: {latest_updated['updated_str'] or latest_updated['date_str']}</span></div>
                 <p class="post-description">{latest_updated['description']}</p>
                 <a href="/posts/{latest_updated['slug']}" class="read-more">Read more →</a>
             </div>
@@ -445,25 +231,22 @@ def build_index():
         {posts_html}
         """
     
-    html = render_html(SITE_TITLE, content, is_home=True)
+    html = render_html(SITE_TITLE, content)
     with open(OUTPUT_DIR / "index.html", "w", encoding="utf-8") as f:
         f.write(html)
 
 
 def build_blog():
-    """Génère la page du blog avec pagination (10 posts par page)"""
+    """Build blog with pagination (10 posts per page)."""
     posts = get_posts()
-    POSTS_PER_PAGE = 10
-    
-    total_posts = len(posts)
-    total_pages = (total_posts + POSTS_PER_PAGE - 1) // POSTS_PER_PAGE  # Arrondi supérieur
+    posts_per_page = 10
+    total_pages = (len(posts) + posts_per_page - 1) // posts_per_page
     
     (OUTPUT_DIR / "blog").mkdir(exist_ok=True)
     
-    # Génère chaque page
     for page_num in range(1, total_pages + 1):
-        start_idx = (page_num - 1) * POSTS_PER_PAGE
-        end_idx = start_idx + POSTS_PER_PAGE
+        start_idx = (page_num - 1) * posts_per_page
+        end_idx = start_idx + posts_per_page
         page_posts = posts[start_idx:end_idx]
         
         posts_html = ""
@@ -471,38 +254,36 @@ def build_blog():
             posts_html += f"""
             <div class="post-item">
                 <h2 class="post-title"><a href="/posts/{post['slug']}">{post['title']}</a></h2>
-                <div class="post-meta">
-                    <span>{post['date_str']}</span>
-                </div>
+                <div class="post-meta"><span>{post['date_str']}</span></div>
                 <p class="post-description">{post['description']}</p>
                 <a href="/posts/{post['slug']}" class="read-more">Read more →</a>
             </div>
             """
         
-        # Navigation de pagination
+        # Pagination
         pagination_html = ""
         if total_pages > 1:
-            pagination_html = '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--light);">'
+            pagination_html = '<div class="pagination">'
             
-            # Bouton précédent
+            # Previous button
             if page_num > 1:
                 prev_url = "/blog" if page_num == 2 else f"/blog/page/{page_num - 1}"
                 pagination_html += f'<a href="{prev_url}" class="read-more">← Previous</a>'
             else:
                 pagination_html += '<span></span>'
             
-            # Numéros de page
-            page_numbers = '<div style="display: flex; gap: 0.5rem;">'
+            # Page numbers
+            page_numbers = '<div class="page-numbers">'
             for i in range(1, total_pages + 1):
                 page_url = "/blog" if i == 1 else f"/blog/page/{i}"
                 if i == page_num:
-                    page_numbers += f'<span style="padding: 0.5rem; font-weight: bold; color: var(--accent);">{i}</span>'
+                    page_numbers += f'<span>{i}</span>'
                 else:
-                    page_numbers += f'<a href="{page_url}" style="padding: 0.5rem; text-decoration: none; color: var(--secondary);">{i}</a>'
+                    page_numbers += f'<a href="{page_url}">{i}</a>'
             page_numbers += '</div>'
             pagination_html += page_numbers
             
-            # Bouton suivant
+            # Next button
             if page_num < total_pages:
                 pagination_html += f'<a href="/blog/page/{page_num + 1}" class="read-more">Next →</a>'
             else:
@@ -520,8 +301,6 @@ def build_blog():
         
         html = render_html("Blog", content)
         
-        # Page 1 = /blog/index.html
-        # Page 2+ = /blog/page/2/index.html
         if page_num == 1:
             with open(OUTPUT_DIR / "blog" / "index.html", "w", encoding="utf-8") as f:
                 f.write(html)
@@ -533,50 +312,52 @@ def build_blog():
 
 
 def build_posts():
-    """Génère une page pour chaque post"""
+    """Build individual blog post pages."""
     posts = get_posts()
-    
     (OUTPUT_DIR / "posts").mkdir(exist_ok=True)
     
     for post in posts:
         content = f"""
         <h1 class="page-title">{post['title']}</h1>
-        <div class="post-meta">
-            <span>{post['date_str']}</span>
-        </div>
+        <div class="post-meta"><span>{post['date_str']}</span></div>
         {post['body']}
         """
         
         html = render_html(post['title'], content)
         post_dir = OUTPUT_DIR / "posts" / post['slug']
         post_dir.mkdir(exist_ok=True, parents=True)
+        
         with open(post_dir / "index.html", "w", encoding="utf-8") as f:
             f.write(html)
 
 
 def build_pages():
-    """Génère les pages statiques (about, cv, contact)"""
-    for slug in ["about", "cv", "contact"]:
-        page = get_page(slug)
-        if not page:
+    """Build static pages (about, cv, contact)."""
+    for page_name in ["about", "cv", "contact"]:
+        page_file = CONTENT_DIR / f"{page_name}.md"
+        
+        if not page_file.exists():
             continue
         
+        meta, body = parse_markdown_file(page_file)
+        title = meta.get("title", page_name.capitalize())
         content = f"""
-        <h1 class="page-title">{page['title']}</h1>
-        {page['body']}
+        <h1 class="page-title">{title}</h1>
+        {markdown_to_html(body)}
         """
         
-        html = render_html(page['title'], content)
-        page_dir = OUTPUT_DIR / slug
+        html = render_html(title, content)
+        page_dir = OUTPUT_DIR / page_name
         page_dir.mkdir(exist_ok=True)
+        
         with open(page_dir / "index.html", "w", encoding="utf-8") as f:
             f.write(html)
 
 
 def build():
-    """Construit le site complet"""
+    """Build entire site."""
     print("🔨 Building site...")
-    build_index()
+    build_home()
     build_blog()
     build_posts()
     build_pages()
