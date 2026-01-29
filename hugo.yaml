@@ -1,4 +1,4 @@
-baseURL: https://ngsanogo.rbind.io
+baseURL: https://ngsanogo.github.io/
 title: Issa Sanogo
 theme: hugo-coder
 languageCode: en
@@ -55,7 +55,6 @@ params:
   maxSeeAlsoItems: 6
   rtl: false
   since: 2025
-  plausible: "ngsanogo.rbind.io"
   images: ["images/profile.jpg"]
   ogLocale: "en_US"
   twitterCard: "summary_large_image"

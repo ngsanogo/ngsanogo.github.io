@@ -1,10 +1,8 @@
 # Issa Sanogo - Personal Website & Blog
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/0a07735e-6436-49c8-8d27-732f97d9cfed/deploy-status)](https://app.netlify.com/sites/ngsanogo/deploys)
-
 Personal website and technical blog of Issa Sanogo, Data Engineer.
 
-🌐 **Live site**: [ngsanogo.rbind.io](https://ngsanogo.rbind.io)
+🌐 **Live site**: [ngsanogo.github.io](https://ngsanogo.github.io)
 
 ## What's Inside
 
@@ -45,7 +43,7 @@ Then edit the file in your favorite editor and save. Hugo will automatically ref
 
 ## How It Works
 
-This is a static website built with [Hugo](https://gohugo.io), using the [hugo-coder](https://github.com/luizdepra/hugo-coder/) theme. When I push changes to GitHub, [Netlify](https://netlify.com) automatically builds and deploys the site.
+This is a static website built with [Hugo](https://gohugo.io), using the [hugo-coder](https://github.com/luizdepra/hugo-coder/) theme. When I push changes to GitHub, [GitHub Actions](https://github.com/features/actions) automatically builds and deploys the site to [GitHub Pages](https://pages.github.com).
 
 Simple as that!
 
