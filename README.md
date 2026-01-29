@@ -1,92 +1,65 @@
-# Issa Sanogo - Personal Site
+# Issa Sanogo
 
-A simple, fast, and easy-to-maintain personal website built with Python.
+This is my personal website where I share articles about data engineering, programming, and tech topics.
 
-## 🎯 Structure
+## About This Site
+
+I write about:
+- **Data Engineering** - ETL, orchestration, databases
+- **Programming** - Python, R, Git, Linux fundamentals
+- **Tools & Infrastructure** - Docker, Multipass, PostgreSQL, Apache Airflow
+
+The site is built from plain markdown files and automatically published whenever I push changes.
+
+## How It Works
 
 ```
-.
-├── content/
-│   ├── about.md          # About page
-│   ├── cv.md             # Resume/CV
-│   ├── contact.md        # Contact page
-│   └── posts/            # Blog articles
-├── build.py              # Site generator (no dependencies)
-├── style.css             # Styling
-└── public/               # Generated HTML (build output)
+content/
+├── posts/           # My articles
+├── about.md        # About me
+├── cv.md           # My resume
+└── contact.md      # How to reach me
+
+build.py            # Generates the website
+style.css           # Styling
 ```
 
-## ✍️ Add a Blog Post
+## Adding an Article
 
-Create a new file in `content/posts/`:
-
-```bash
-touch content/posts/my-article.md
-```
-
-Fill with this template:
+Create `content/posts/my-article.md`:
 
 ```markdown
 ---
 title: My Article Title
 slug: my-article
 date: 2024-01-30
-description: Short description for listing
+description: Brief summary for the listing
 draft: false
 ---
 
-# Your content here
+# Article content here
 
-Use markdown: **bold**, *italic*, [links](url), etc.
+Write in markdown with **bold**, *italic*, [links](url), etc.
 ```
 
-**Fields explained:**
-- `title`: Article title (shown on page and listings)
-- `slug`: URL path (e.g., `/posts/my-article`)
-- `date`: Publication date (YYYY-MM-DD)
-- `description`: Short preview text
-- `draft`: Set to `true` to hide article
-- `updated` (optional): Set to mark as recently updated
+Optional: Add `updated: 2024-02-01` to mark an article as recently updated.
 
-## 📄 Edit Pages
+## Editing Pages
 
-Pages are plain markdown files in `content/`:
-
-- `about.md` → `/about`
-- `cv.md` → `/cv`
-- `contact.md` → `/contact`
-
-Only required field: `title`
+Edit `about.md`, `cv.md`, or `contact.md` directly. Just need a title at the top:
 
 ```markdown
 ---
-title: Page Title
+title: About Me
 ---
 
-Your content here...
+Your content...
 ```
 
-## 🏗️ Build
+## Building & Deploying
 
 ```bash
 python3 build.py
 ```
 
-Generates `public/` with complete site.
-
-## 🎨 Customize
-
-Edit `style.css` to change colors, fonts, or layout. Everything else is in `build.py` and is straightforward Python.
-
-## 📋 Features
-
-- **Zero dependencies** - Pure Python stdlib
-- **Fast** - Static HTML generation
-- **Simple** - No config, one way to do things
-- **Maintainable** - All code is clear and readable
-- **Blog pagination** - 10 posts per page
-- **Latest posts** - Home shows newest + recently updated
-
-## 🚀 Deploy
-
-Push to GitHub. GitHub Actions automatically builds and deploys to Pages.
+Push to GitHub → automatically deployed via GitHub Actions.
