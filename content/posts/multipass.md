@@ -3,8 +3,8 @@ authors:
   - Issa Sanogo
 categories:
   - Infrastructure
-date: "2025-03-21"
-lastmod: "2025-12-04"
+date: "2024-03-21"
+lastmod: "2024-12-04"
 description: What is Multipass? Learn how to quickly create and manage lightweight Linux virtual machines on Windows, Mac, and Linux for development and testing.
 series:
   - VM

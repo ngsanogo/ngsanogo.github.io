@@ -4,8 +4,8 @@ authors:
 categories:
   - Application
   - Infrastructure
-date: "2025-12-02"
-lastmod: "2025-12-02"
+date: "2024-12-02"
+lastmod: "2024-12-02"
 description: "Docker explained for data engineers: What it is, why you need it, and how to use it for reproducible data pipelines."
 tags:
   - docker
