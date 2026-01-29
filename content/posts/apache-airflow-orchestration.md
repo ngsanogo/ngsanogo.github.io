@@ -4,8 +4,8 @@ authors:
 categories:
   - Application
   - Infrastructure
-date: "2025-12-03"
-lastmod: "2025-12-03"
+date: "2024-12-03"
+lastmod: "2024-12-03"
 description: "Apache Airflow explained: How data engineers schedule and monitor data pipelines at scale."
 tags:
   - airflow

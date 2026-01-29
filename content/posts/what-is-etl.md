@@ -3,8 +3,8 @@ authors:
   - Issa Sanogo
 categories:
   - Application
-date: "2025-11-29"
-lastmod: "2025-11-29"
+date: "2024-11-29"
+lastmod: "2024-11-29"
 description: "Understand ETL: Extract, Transform, Load. Learn what data engineers actually do every day."
 tags:
   - etl

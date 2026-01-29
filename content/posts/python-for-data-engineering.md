@@ -3,8 +3,8 @@ authors:
   - Issa Sanogo
 categories:
   - Application
-date: "2025-11-27"
-lastmod: "2025-11-27"
+date: "2024-11-27"
+lastmod: "2024-11-27"
 description: "Python for data engineering: Why it's essential, what you use it for, and how to get started."
 tags:
   - python

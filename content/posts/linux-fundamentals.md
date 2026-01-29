@@ -3,8 +3,8 @@ authors:
   - Issa Sanogo
 categories:
   - Infrastructure
-date: "2025-11-24"
-lastmod: "2025-11-24"
+date: "2024-11-24"
+lastmod: "2024-11-24"
 description: "Linux fundamentals for data engineers: How it works, why it matters, and essential concepts explained."
 tags:
   - linux

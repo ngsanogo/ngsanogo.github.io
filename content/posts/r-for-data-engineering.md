@@ -3,8 +3,8 @@ authors:
   - Issa Sanogo
 categories:
   - Application
-date: "2025-11-25"
-lastmod: "2025-11-25"
+date: "2024-11-25"
+lastmod: "2024-11-25"
 description: "Why R matters in data engineering: When to use it, how to integrate it with Python, and real examples."
 tags:
   - r
