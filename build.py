@@ -5,7 +5,6 @@ Suit la philosophie zen de Python : simple, lisible et beau
 Zéro dépendances externes - utilise uniquement la stdlib
 """
 
-import os
 import re
 import html
 from pathlib import Path
@@ -59,16 +58,6 @@ def simple_markdown(text):
     
     return text
 
-# Configuration
-CONTENT_DIR = Path("content")
-OUTPUT_DIR = Path("public")
-SITE_TITLE = "Issa Sanogo"
-SITE_DESC = "Senior Data Engineer"
-SITE_URL = "https://ngsanogo.github.io"
-
-# Crée le dossier de sortie
-OUTPUT_DIR.mkdir(exist_ok=True)
-
 
 def read_markdown(file_path):
     """Lit un fichier markdown et retourne (frontmatter, contenu)"""
@@ -119,11 +108,17 @@ def get_posts():
         if not date:
             continue
         
+        # Date de dernière modification (si elle existe)
+        updated_str = meta.get("updated", meta.get("date", ""))
+        updated = parse_date(updated_str) or date
+        
         posts.append({
             "title": meta.get("title", md_file.stem),
             "slug": meta.get("slug", md_file.stem),
             "date": date,
+            "updated": updated,
             "date_str": date.strftime("%B %d, %Y"),
+            "updated_str": updated.strftime("%B %d, %Y") if updated != date else None,
             "description": meta.get("description", ""),
             "body": simple_markdown(body),
             "tags": meta.get("tags", "").split(", ") if meta.get("tags") else [],
@@ -396,31 +391,59 @@ def render_html(title, content, is_home=False):
 
 
 def build_index():
-    """Génère la page d'accueil"""
+    """Génère la page d'accueil avec le dernier créé et le dernier mis à jour"""
     posts = get_posts()
     
-    posts_html = ""
-    for post in posts[:5]:  # Derniers 5 posts
-        posts_html += f"""
-        <div class="post-item">
-            <h2 class="post-title"><a href="/posts/{post['slug']}">{post['title']}</a></h2>
-            <div class="post-meta">
-                <span>{post['date_str']}</span>
-            </div>
-            <p class="post-description">{post['description']}</p>
-            <a href="/posts/{post['slug']}" class="read-more">Read more →</a>
-        </div>
-        """
-    
-    if posts:
-        posts_html += f'<p style="text-align: center; margin-top: 2rem;"><a href="/blog">View all {len(posts)} posts →</a></p>'
-    
-    content = f"""
+    if not posts:
+        content = """
         <h1 class="page-title">Welcome</h1>
         <p>Data Engineer with expertise in building data infrastructure, pipelines, and analytics solutions.</p>
-        <h2 style="margin-top: 2rem;">Latest Posts</h2>
+        """
+    else:
+        # Dernier post créé
+        latest_created = posts[0]
+        
+        # Dernier post mis à jour
+        posts_by_updated = sorted(posts, key=lambda x: x["updated"], reverse=True)
+        latest_updated = posts_by_updated[0]
+        
+        posts_html = f"""
+        <div class="home-section">
+            <h2 style="margin-bottom: 1rem;">📝 Latest Post</h2>
+            <div class="post-item">
+                <h2 class="post-title"><a href="/posts/{latest_created['slug']}">{latest_created['title']}</a></h2>
+                <div class="post-meta">
+                    <span>Published: {latest_created['date_str']}</span>
+                </div>
+                <p class="post-description">{latest_created['description']}</p>
+                <a href="/posts/{latest_created['slug']}" class="read-more">Read more →</a>
+            </div>
+        </div>
+        """
+        
+        # N'afficher "Recently Updated" que si c'est différent du dernier créé
+        if latest_updated['slug'] != latest_created['slug']:
+            posts_html += f"""
+        <div class="home-section" style="margin-top: 2rem;">
+            <h2 style="margin-bottom: 1rem;">🔄 Recently Updated</h2>
+            <div class="post-item">
+                <h2 class="post-title"><a href="/posts/{latest_updated['slug']}">{latest_updated['title']}</a></h2>
+                <div class="post-meta">
+                    <span>Updated: {latest_updated['updated_str'] or latest_updated['date_str']}</span>
+                </div>
+                <p class="post-description">{latest_updated['description']}</p>
+                <a href="/posts/{latest_updated['slug']}" class="read-more">Read more →</a>
+            </div>
+        </div>
+            """
+        
+        posts_html += f'<p style="text-align: center; margin-top: 2rem;"><a href="/blog" class="read-more">View all {len(posts)} posts →</a></p>'
+        
+        content = f"""
+        <h1 class="page-title">Welcome</h1>
+        <p>Data Engineer with expertise in building data infrastructure, pipelines, and analytics solutions.</p>
         {posts_html}
-    """
+        """
     
     html = render_html(SITE_TITLE, content, is_home=True)
     with open(OUTPUT_DIR / "index.html", "w", encoding="utf-8") as f:
@@ -428,32 +451,85 @@ def build_index():
 
 
 def build_blog():
-    """Génère la page du blog avec tous les posts"""
+    """Génère la page du blog avec pagination (10 posts par page)"""
     posts = get_posts()
+    POSTS_PER_PAGE = 10
     
-    posts_html = ""
-    for post in posts:
-        posts_html += f"""
-        <div class="post-item">
-            <h2 class="post-title"><a href="/posts/{post['slug']}">{post['title']}</a></h2>
-            <div class="post-meta">
-                <span>{post['date_str']}</span>
-            </div>
-            <p class="post-description">{post['description']}</p>
-            <a href="/posts/{post['slug']}" class="read-more">Read more →</a>
-        </div>
-        """
+    total_posts = len(posts)
+    total_pages = (total_posts + POSTS_PER_PAGE - 1) // POSTS_PER_PAGE  # Arrondi supérieur
     
-    content = f"""
-        <h1 class="page-title">Blog</h1>
-        <p>All posts about data engineering, tools, and best practices.</p>
-        {posts_html}
-    """
-    
-    html = render_html("Blog", content)
     (OUTPUT_DIR / "blog").mkdir(exist_ok=True)
-    with open(OUTPUT_DIR / "blog" / "index.html", "w", encoding="utf-8") as f:
-        f.write(html)
+    
+    # Génère chaque page
+    for page_num in range(1, total_pages + 1):
+        start_idx = (page_num - 1) * POSTS_PER_PAGE
+        end_idx = start_idx + POSTS_PER_PAGE
+        page_posts = posts[start_idx:end_idx]
+        
+        posts_html = ""
+        for post in page_posts:
+            posts_html += f"""
+            <div class="post-item">
+                <h2 class="post-title"><a href="/posts/{post['slug']}">{post['title']}</a></h2>
+                <div class="post-meta">
+                    <span>{post['date_str']}</span>
+                </div>
+                <p class="post-description">{post['description']}</p>
+                <a href="/posts/{post['slug']}" class="read-more">Read more →</a>
+            </div>
+            """
+        
+        # Navigation de pagination
+        pagination_html = ""
+        if total_pages > 1:
+            pagination_html = '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--light);">'
+            
+            # Bouton précédent
+            if page_num > 1:
+                prev_url = "/blog" if page_num == 2 else f"/blog/page/{page_num - 1}"
+                pagination_html += f'<a href="{prev_url}" class="read-more">← Previous</a>'
+            else:
+                pagination_html += '<span></span>'
+            
+            # Numéros de page
+            page_numbers = '<div style="display: flex; gap: 0.5rem;">'
+            for i in range(1, total_pages + 1):
+                page_url = "/blog" if i == 1 else f"/blog/page/{i}"
+                if i == page_num:
+                    page_numbers += f'<span style="padding: 0.5rem; font-weight: bold; color: var(--accent);">{i}</span>'
+                else:
+                    page_numbers += f'<a href="{page_url}" style="padding: 0.5rem; text-decoration: none; color: var(--secondary);">{i}</a>'
+            page_numbers += '</div>'
+            pagination_html += page_numbers
+            
+            # Bouton suivant
+            if page_num < total_pages:
+                pagination_html += f'<a href="/blog/page/{page_num + 1}" class="read-more">Next →</a>'
+            else:
+                pagination_html += '<span></span>'
+            
+            pagination_html += '</div>'
+        
+        page_info = f" (Page {page_num} of {total_pages})" if total_pages > 1 else ""
+        content = f"""
+            <h1 class="page-title">Blog</h1>
+            <p>All posts about data engineering, tools, and best practices.{page_info}</p>
+            {posts_html}
+            {pagination_html}
+        """
+        
+        html = render_html("Blog", content)
+        
+        # Page 1 = /blog/index.html
+        # Page 2+ = /blog/page/2/index.html
+        if page_num == 1:
+            with open(OUTPUT_DIR / "blog" / "index.html", "w", encoding="utf-8") as f:
+                f.write(html)
+        else:
+            page_dir = OUTPUT_DIR / "blog" / "page" / str(page_num)
+            page_dir.mkdir(exist_ok=True, parents=True)
+            with open(page_dir / "index.html", "w", encoding="utf-8") as f:
+                f.write(html)
 
 
 def build_posts():
