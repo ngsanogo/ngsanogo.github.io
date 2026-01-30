@@ -15,7 +15,21 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Run tests
+        run: python3 -m unittest discover tests/ -v
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +40,19 @@ jobs:
           python-version: '3.11'
       
       - name: Build site
-        run: python3 build.py
+        run: python3 src/build.py
+      
+      - name: Validate build output
+        run: |
+          if [ ! -f public/sitemap.xml ]; then
+            echo "❌ sitemap.xml missing"
+            exit 1
+          fi
+          if [ ! -f public/index.html ]; then
+            echo "❌ index.html missing"
+            exit 1
+          fi
+          echo "✅ Build validation passed"
       
       - name: Setup Pages
         id: pages
