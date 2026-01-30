@@ -1,10 +1,13 @@
+/* Zen Principle: "Beautiful is better than ugly" + "Readability counts" */
 :root {
-    --primary: #1a1a1a;
-    --secondary: #666;
+    --primary: #1a1a1a;        /* Dark text for strong contrast */
+    --secondary: #555;          /* Slightly darker gray for better readability */
     --accent: #0066cc;
     --light: #f5f5f5;
+    --spacing: 1.5rem;          /* Explicit: consistent spacing */
 }
 
+/* Zen Principle: "Explicit is better than implicit" */
 * {
     margin: 0;
     padding: 0;
@@ -12,34 +15,37 @@
 }
 
 html {
-    font-size: 16px;
+    font-size: 18px;            /* Larger base for readability */
 }
 
+/* Zen Principle: "Readability counts" + "Simple is better than complex" */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: var(--primary);
     background: white;
-    line-height: 1.6;
+    line-height: 1.7;           /* Increased from 1.6 for breathing room */
+    max-width: 100%;
 }
 
+/* Zen Principle: "Sparse is better than dense" */
 .container {
-    max-width: 720px;
+    max-width: 680px;           /* Narrower for focus */
     margin: 0 auto;
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;       /* More vertical breathing room */
 }
 
+/* Zen Principle: "Flat is better than nested" - Simple header */
 header {
     text-align: center;
-    margin-bottom: 3rem;
-    border-bottom: 1px solid var(--light);
+    margin-bottom: 4rem;        /* More white space */
     padding-bottom: 2rem;
 }
 
 .site-title {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 700;
     letter-spacing: -0.5px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .site-title a {
@@ -47,142 +53,179 @@ header {
     text-decoration: none;
 }
 
+/* Zen Principle: "There should be one obvious way to do it" */
 .site-title a:hover {
     color: var(--accent);
+    transition: color 0.15s ease;
 }
 
 .site-desc {
     color: var(--secondary);
-    font-size: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
 }
 
+/* Zen Principle: "Flat is better than nested" - Direct navigation */
 nav {
     display: flex;
-    gap: 2rem;
+    gap: 2.5rem;               /* More breathing room */
     justify-content: center;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     flex-wrap: wrap;
 }
 
+/* Zen Principle: "Explicit is better than implicit" - Clear links */
 nav a {
-    color: var(--secondary);
+    color: var(--primary);      /* Darker for clarity */
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.2s;
+    font-size: 1rem;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease;
 }
 
 nav a:hover {
-    color: var(--accent);
+    border-bottom-color: var(--accent);
 }
 
+/* Zen Principle: "Sparse is better than dense" */
 main {
-    margin: 2rem 0;
+    margin: 3rem 0;
 }
 
 .page-title {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+    font-size: 2rem;
+    margin-bottom: 2rem;        /* More space */
     font-weight: 700;
+    line-height: 1.3;
 }
 
+/* Zen Principle: "Simple is better than complex" */
 .post-item {
-    margin-bottom: 2.5rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--light);
+    margin-bottom: 3.5rem;      /* Increased spacing between posts */
+    padding-bottom: 2.5rem;
 }
 
 .post-item:last-child {
     border-bottom: none;
+    padding-bottom: 0;
 }
 
 .post-title {
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+    font-weight: 700;
 }
 
+/* Zen Principle: "Explicit is better than implicit" - Clear, obvious links */
 .post-title a {
     color: var(--primary);
     text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s ease;
 }
 
 .post-title a:hover {
-    color: var(--accent);
+    border-bottom-color: var(--accent);
 }
 
 .post-meta {
     color: var(--secondary);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
+    margin-bottom: 1rem;
 }
 
 .post-description {
-    margin-top: 0.75rem;
+    margin-top: 1rem;
     color: var(--primary);
+    line-height: 1.7;
 }
 
+/* Zen Principle: "Explicit is better than implicit" - Clear call to action */
 .read-more {
     color: var(--accent);
-    font-weight: 500;
+    font-weight: 600;
     display: inline-block;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
 }
 
+.read-more:hover {
+    color: #0052a3;
+}
+
+/* Zen Principle: "Readability counts" */
 h1, h2, h3, h4, h5, h6 {
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
     font-weight: 700;
+    line-height: 1.3;
 }
 
 h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
 }
 
 h2 {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
 }
 
 h3 {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
 }
 
 p {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;       /* More space between paragraphs */
 }
 
+
+/* Zen Principle: "Sparse is better than dense" */
 ul, ol {
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
+    margin-left: 2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
 }
 
 li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
+/* Zen Principle: "Explicit is better than implicit" - Links look like links */
 a {
     color: var(--accent);
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
 }
 
 a:hover {
-    text-decoration: underline;
+    color: #0052a3;
+    text-decoration-thickness: 2px;
 }
 
 code {
     background: var(--light);
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.9rem;
+    font-size: 0.9em;
+    color: var(--primary);
 }
 
 pre {
     background: var(--light);
-    padding: 1rem;
-    border-radius: 5px;
+    padding: 1.5rem;
+    border-radius: 6px;
     overflow-x: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
 }
 
 pre code {
@@ -190,44 +233,56 @@ pre code {
     padding: 0;
 }
 
+/* Zen Principle: "Simple is better than complex" */
 blockquote {
     border-left: 4px solid var(--accent);
-    padding-left: 1rem;
+    padding-left: 1.5rem;
     color: var(--secondary);
-    margin: 1.5rem 0;
+    margin: 2rem 0;
+    font-style: italic;
 }
 
 footer {
     text-align: center;
-    margin-top: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--light);
+    margin-top: 5rem;          /* More separation */
+    padding-top: 2.5rem;
     color: var(--secondary);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
+/* Zen Principle: "Flat is better than nested" - Simple pagination */
 .pagination {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--light);
+    margin-top: 3rem;
+    padding-top: 2.5rem;
 }
 
 .page-numbers {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
+/* Zen Principle: "Explicit is better than implicit" - Clear active state */
 .page-numbers a,
 .page-numbers span {
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
     text-decoration: none;
     color: var(--secondary);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.page-numbers a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .page-numbers span {
     font-weight: bold;
-    color: var(--accent);
+    color: white;
+    background: var(--accent);
+    border-color: var(--accent);
 }
