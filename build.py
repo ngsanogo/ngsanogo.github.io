@@ -71,6 +71,9 @@ def markdown_to_html(text):
     text = re.sub(r'__(.*?)__', r'<strong>\1</strong>', text)
     text = re.sub(r'_(.*?)_', r'<em>\1</em>', text)
     
+    # Images
+    text = re.sub(r'!\[(.*?)\]\((.*?)\)', r'<img src="\2" alt="\1">', text)
+    
     # Links
     text = re.sub(r'\[(.*?)\]\((.*?)\)', r'<a href="\2">\1</a>', text)
     
@@ -83,10 +86,16 @@ def markdown_to_html(text):
         flags=re.DOTALL
     )
     
-    # Lists
+    # Unordered lists
     text = re.sub(r'^\* (.*?)$', r'<li>\1</li>', text, flags=re.MULTILINE)
+    text = re.sub(r'^- (.*?)$', r'<li>\1</li>', text, flags=re.MULTILINE)
+    
+    # Numbered lists
+    text = re.sub(r'^\d+\. (.*?)$', r'<li>\1</li>', text, flags=re.MULTILINE)
+    
+    # Wrap consecutive <li> in <ul>
     text = re.sub(
-        r'(?:<li>.*?</li>)',
+        r'((?:<li>.*?</li>\n?)+)',
         lambda m: '<ul>' + m.group(0) + '</ul>',
         text,
         flags=re.DOTALL
@@ -140,7 +149,7 @@ def render_html(title, content):
         </header>
         <main>{content}</main>
         <footer>
-            <p>&copy; 2024 {SITE_TITLE}. Built with Python.</p>
+            <p>&copy; {datetime.now().year} {SITE_TITLE}</p>
         </footer>
     </div>
 </body>
@@ -199,31 +208,31 @@ def build_home():
         latest_updated = posts_by_updated[0]
         
         posts_html = f"""
-        <div>
-            <h2 style="margin-bottom: 1rem;">📝 Latest Post</h2>
+        <section class="home-section">
+            <h2 class="section-title">📝 Latest Post</h2>
             <div class="post-item">
                 <h2 class="post-title"><a href="/posts/{latest_created['slug']}">{latest_created['title']}</a></h2>
                 <div class="post-meta"><span>Published: {latest_created['date_str']}</span></div>
                 <p class="post-description">{latest_created['description']}</p>
                 <a href="/posts/{latest_created['slug']}" class="read-more">Read more →</a>
             </div>
-        </div>
+        </section>
         """
         
         if latest_updated['slug'] != latest_created['slug']:
             posts_html += f"""
-        <div style="margin-top: 2rem;">
-            <h2 style="margin-bottom: 1rem;">🔄 Recently Updated</h2>
+        <section class="home-section">
+            <h2 class="section-title">🔄 Recently Updated</h2>
             <div class="post-item">
                 <h2 class="post-title"><a href="/posts/{latest_updated['slug']}">{latest_updated['title']}</a></h2>
                 <div class="post-meta"><span>Updated: {latest_updated['updated_str'] or latest_updated['date_str']}</span></div>
                 <p class="post-description">{latest_updated['description']}</p>
                 <a href="/posts/{latest_updated['slug']}" class="read-more">Read more →</a>
             </div>
-        </div>
+        </section>
             """
         
-        posts_html += f'<p style="text-align: center; margin-top: 2rem;"><a href="/blog" class="read-more">View all {len(posts)} posts →</a></p>'
+        posts_html += f'<p class="view-all"><a href="/blog" class="read-more">View all {len(posts)} posts →</a></p>'
         
         content = f"""
         <h1 class="page-title">Welcome</h1>

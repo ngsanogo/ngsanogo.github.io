@@ -1,22 +1,10 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Application
-date: "2024-11-26"
-lastmod: "2024-11-26"
-description: "Understanding databases (SGBD): What they are, how they work, and why every data engineer needs to know them."
-tags:
-  - database
-  - sgbd
-  - data-storage
-  - fundamentals
 title: "Databases (SGBD): The Foundation of Data Storage"
+slug: databases-sgbd-fundamentals
+date: 2024-11-26
+description: "Understanding databases (SGBD): What they are, how they work, and why every data engineer needs to know them."
 draft: false
-weight: 8
-toc: true
 ---
-
 ## What is a Database?
 
 A database (SGBD - Système de Gestion de Base de Données in French) is organized data storage.

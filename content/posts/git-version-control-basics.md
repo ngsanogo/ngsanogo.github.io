@@ -1,21 +1,10 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Application
-date: "2024-12-01"
-lastmod: "2024-12-01"
-description: "Why data engineers need Git. Learn version control, why it matters, and how to use it daily."
-tags:
-  - git
-  - version-control
-  - collaboration
 title: "Git: Version Control Every Data Engineer Needs"
+slug: git-version-control-basics
+date: 2024-12-01
+description: "Why data engineers need Git. Learn version control, why it matters, and how to use it daily."
 draft: false
-weight: 4
-toc: true
 ---
-
 ## What is Git?
 
 Git is version control. It saves every change you make to your code or data scripts.

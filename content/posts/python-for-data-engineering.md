@@ -1,22 +1,10 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Application
-date: "2024-11-27"
-lastmod: "2024-11-27"
-description: "Python for data engineering: Why it's essential, what you use it for, and how to get started."
-tags:
-  - python
-  - programming
-  - data-engineering
-  - scripting
 title: "Python: The Language Data Engineers Use Daily"
+slug: python-for-data-engineering
+date: 2024-11-27
+description: "Python for data engineering: Why it's essential, what you use it for, and how to get started."
 draft: false
-weight: 7
-toc: true
 ---
-
 ## What is Python?
 
 Python is a programming language. Easy to read. Powerful. Flexible.

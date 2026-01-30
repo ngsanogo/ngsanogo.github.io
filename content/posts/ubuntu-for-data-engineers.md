@@ -1,22 +1,10 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Infrastructure
-date: "2024-12-05"
-lastmod: "2024-12-05"
-description: "Ubuntu for data engineers: Why it's the best Linux distribution, how to use it, and getting started."
-tags:
-  - ubuntu
-  - linux
-  - operating-system
-  - infrastructure
 title: "Ubuntu: The Linux Distribution Data Engineers Choose"
+slug: ubuntu-for-data-engineers
+date: 2024-12-05
+description: "Ubuntu for data engineers: Why it's the best Linux distribution, how to use it, and getting started."
 draft: false
-weight: 11
-toc: true
 ---
-
 ## What is Ubuntu?
 
 Ubuntu is a Linux distribution. Free, open-source, reliable operating system.
