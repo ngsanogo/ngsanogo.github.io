@@ -1,23 +1,10 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Infrastructure
-date: "2024-11-24"
-lastmod: "2024-11-24"
-description: "Linux fundamentals for data engineers: How it works, why it matters, and essential concepts explained."
-tags:
-  - linux
-  - operating-system
-  - unix
-  - command-line
-  - infrastructure
 title: "Linux Fundamentals: How It Works and Why Data Engineers Use It"
+slug: linux-fundamentals
+date: 2024-11-24
+description: "Linux fundamentals for data engineers: How it works, why it matters, and essential concepts explained."
 draft: false
-weight: 12
-toc: true
 ---
-
 ## What is Linux?
 
 Linux is an operating system kernel. Free and open-source.

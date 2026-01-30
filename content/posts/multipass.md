@@ -1,24 +1,11 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Infrastructure
-date: "2024-03-21"
-lastmod: "2024-12-04"
-description: What is Multipass? Learn how to quickly create and manage lightweight Linux virtual machines on Windows, Mac, and Linux for development and testing.
-series:
-  - VM
-tags:
-  - multipass
-  - virtualization
-  - ubuntu
-  - vm
 title: "Multipass: Quick Virtual Machines for Developers"
+slug: multipass
+date: 2024-03-21
+description: "What is Multipass? Learn how to quickly create and manage lightweight Linux virtual machines on Windows, Mac, and Linux for development and testing."
 draft: false
-weight: 1
-toc: true
+updated: 2024-12-04
 ---
-
 ## What is Multipass?
 
 Multipass is a simple tool that lets you create lightweight Linux virtual machines with one command.

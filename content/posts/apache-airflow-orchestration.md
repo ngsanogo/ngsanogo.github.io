@@ -1,361 +1,202 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Application
-  - Infrastructure
-date: "2024-12-03"
-lastmod: "2024-12-03"
-description: "Apache Airflow explained: How data engineers schedule and monitor data pipelines at scale."
-tags:
-  - airflow
-  - orchestration
-  - data-pipeline
-  - scheduling
 title: "Apache Airflow: Orchestrate Your Data Pipelines"
+slug: apache-airflow-orchestration
+date: 2024-12-03
+description: "Apache Airflow explained: How data engineers schedule and monitor data pipelines at scale."
 draft: false
-weight: 6
-toc: true
 ---
-
 ## What is Apache Airflow?
 
 Airflow schedules and monitors your data pipelines.
 
 You tell it: "Run this pipeline daily at 2 AM. If it fails, retry 3 times. Alert me if it still fails."
 
-Airflow does that. Automatically. Reliably.
+Airflow handles everything else.
 
 ## The Problem It Solves
 
-You have multiple data pipelines:
+Manual execution fails. You forget to run things. You run them twice. You can't see what's happening.
 
-- Extract from Salesforce (daily at 2 AM)
-- Extract from Google Analytics (daily at 3 AM)
-- Transform and combine (daily at 4 AM)
-- Load to warehouse (daily at 5 AM)
-- Send alerts to stakeholders (daily at 6 AM)
+Airflow automates and visualizes your entire workflow.
 
-Without Airflow: You manually run each script. Or use cron jobs (primitive, hard to manage).
+## Key Concepts
 
-With Airflow: Define the workflow once. It handles scheduling, retries, notifications, everything.
+**DAG (Directed Acyclic Graph)**: Your workflow definition. It's code that describes what runs when.
 
-## How Airflow Works
+**Task**: A single step in your DAG. Could be: run SQL query, call API, move files, send email.
 
-**DAG (Directed Acyclic Graph)**: A workflow. Tasks and their dependencies.
+**Operator**: The type of task. BashOperator runs bash commands. PythonOperator runs Python functions. PostgresOperator runs SQL.
 
-```
-Extract Salesforce → Transform → Load
-Extract Analytics  ↗
-```
+**Schedule**: When your DAG runs. Daily. Hourly. Every Monday at 9 AM. Whatever you need.
 
-Airflow understands this graph. Runs tasks in the right order. Waits for dependencies.
-
-**Tasks**: Individual units of work. Run a Python script, execute SQL, call an API.
-
-**Scheduler**: Runs in the background. Checks which tasks should run. Executes them.
-
-**Web UI**: Dashboard showing all pipelines, status, logs, history.
-
-## Real Example: E-Commerce Daily Report
+## Simple DAG Example
 
 ```python
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from airflow.operators.bash import BashOperator
-from datetime import datetime, timedelta
+from datetime import datetime
 
-default_args = {
-    'owner': 'data-team',
-    'retries': 3,
-    'retry_delay': timedelta(minutes=5),
-}
+def extract():
+    print("Extracting data...")
 
-dag = DAG(
-    'daily_sales_report',
-    default_args=default_args,
-    schedule_interval='0 2 * * *',  # 2 AM daily
-    start_date=datetime(2025, 1, 1),
-)
-
-def extract_orders():
-    # Connect to database, extract orders
-    print("Extracting orders...")
-
-def transform_data():
-    # Clean, aggregate, calculate totals
+def transform():
     print("Transforming data...")
 
-def load_warehouse():
-    # Load into data warehouse
-    print("Loading to warehouse...")
+def load():
+    print("Loading data...")
 
-def send_alert():
-    # Email report to stakeholders
-    print("Sending alert...")
-
-# Define tasks
-extract = PythonOperator(
-    task_id='extract_orders',
-    python_callable=extract_orders,
-    dag=dag,
-)
-
-transform = PythonOperator(
-    task_id='transform',
-    python_callable=transform_data,
-    dag=dag,
-)
-
-load = PythonOperator(
-    task_id='load',
-    python_callable=load_warehouse,
-    dag=dag,
-)
-
-alert = PythonOperator(
-    task_id='send_alert',
-    python_callable=send_alert,
-    dag=dag,
-)
-
-# Define dependencies
-extract >> transform >> load >> alert
-```
-
-That's it. Airflow runs the entire workflow every day at 2 AM.
-
-## Why Data Engineers Need Airflow
-
-**Reliability**: Automatic retries. If task fails, Airflow retries 3 times before giving up.
-
-**Monitoring**: Web dashboard shows every pipeline. Status, duration, logs.
-
-**Alerting**: Failures trigger email alerts. You know immediately something broke.
-
-**Scalability**: Run 100 pipelines simultaneously. Airflow manages resources.
-
-**Visibility**: Historical data. See what ran, when it ran, how long it took.
-
-**Dependency management**: If task A fails, task B doesn't run. Smart.
-
-## Key Airflow Concepts
-
-**Operator**: Task that does work.
-
-```python
-BashOperator(task_id='run_script', bash_command='python script.py')
-PythonOperator(task_id='my_task', python_callable=my_function)
-```
-
-**Sensor**: Waits for something to happen.
-
-```python
-FileSensor(task_id='wait_for_file', filepath='/data/input.csv')
-```
-
-**XCom (Cross Communication)**: Tasks share data.
-
-```python
-# Task 1 pushes data
-ti.xcom_push(key='count', value=1000)
-
-# Task 2 pulls data
-count = ti.xcom_pull(task_ids='task1', key='count')
-```
-
-**Hooks**: Connection to external systems.
-
-```python
-from airflow.providers.postgres.hooks.postgres import PostgresHook
-
-hook = PostgresHook(postgres_conn_id='my_postgres')
-result = hook.get_records('SELECT * FROM customers')
-```
-
-## Real-World Airflow Usage
-
-**Morning workflow**:
-
-- 2 AM: Extract from databases
-- 3 AM: Extract from APIs
-- 4 AM: Transform and clean
-- 5 AM: Load to warehouse
-- 6 AM: Generate reports
-- 7 AM: Send to stakeholders
-
-All automated. No manual work.
-
-**Monitoring**:
-
-- Task took 30 minutes instead of 5 minutes? Alert.
-- Task failed? Retry. Fail again? Email sent.
-- Historical view: "This task has failed 3 times this month. Investigate."
-
-## Common Airflow Patterns
-
-**Parallel execution**:
-
-```python
-# Task 1 and Task 2 run simultaneously
-extract_salesforce >> load
-extract_analytics >> load
-```
-
-**Conditional execution**:
-
-```python
-from airflow.operators.python import BranchPythonOperator
-
-def choose_path():
-    if some_condition:
-        return 'task_a'
-    else:
-        return 'task_b'
-
-branch = BranchPythonOperator(
-    task_id='branching',
-    python_callable=choose_path,
-)
-```
-
-**Dynamic tasks**:
-
-```python
-# Generate tasks based on list of tables
-tables = ['customers', 'orders', 'products']
-
-for table in tables:
-    task = PythonOperator(
-        task_id=f'extract_{table}',
-        python_callable=extract_data,
-        op_kwargs={'table': table},
+with DAG(
+    dag_id="simple_etl",
+    start_date=datetime(2024, 1, 1),
+    schedule="@daily",
+    catchup=False
+) as dag:
+    
+    extract_task = PythonOperator(
+        task_id="extract",
+        python_callable=extract
     )
+    
+    transform_task = PythonOperator(
+        task_id="transform",
+        python_callable=transform
+    )
+    
+    load_task = PythonOperator(
+        task_id="load",
+        python_callable=load
+    )
+    
+    extract_task >> transform_task >> load_task
 ```
 
-## Airflow vs Cron vs Manual
+This DAG runs daily. Extract first. Then transform. Then load.
 
-**Manual**:
+## The Airflow UI
 
-- You run scripts yourself
-- Easy to forget
-- No monitoring
-- No alerts
+Airflow provides a web interface. You can:
 
-**Cron**:
+- See all your DAGs
+- Check run history
+- View logs for each task
+- Manually trigger runs
+- See task dependencies visually
 
-- Automatic scheduling
-- No retry logic
-- No monitoring
-- Limited visibility
-- Hard to coordinate dependencies
+This visibility is valuable. You know exactly what ran, when, and if it succeeded.
 
-**Airflow**:
+## When to Use Airflow
 
-- Automatic scheduling
-- Built-in retry logic
-- Full monitoring and alerting
-- Complete visibility
-- Handles complex dependencies
-- Web UI for management
+**Good for:**
+- Scheduled batch pipelines
+- Multi-step workflows
+- Complex dependencies
+- When you need monitoring and alerting
 
-Clear winner: Airflow.
+**Not ideal for:**
+- Real-time streaming (use Kafka instead)
+- Simple one-off scripts
+- Very small projects
 
-## Getting Started with Airflow
+## Installation
 
 ```bash
-# Install
 pip install apache-airflow
 
 # Initialize database
 airflow db init
 
-# Create user
-airflow users create --role Admin --username admin --email admin@example.com --firstname John --lastname Doe --password admin
+# Create admin user
+airflow users create \
+    --username admin \
+    --password admin \
+    --firstname Admin \
+    --lastname User \
+    --role Admin \
+    --email admin@example.com
 
-# Start scheduler (in background)
-airflow scheduler &
-
-# Start web server
+# Start webserver
 airflow webserver --port 8080
 
-# Visit http://localhost:8080
+# Start scheduler (in another terminal)
+airflow scheduler
 ```
 
-Create a DAG file in the `dags/` folder. Airflow detects it automatically.
+## Common Patterns
 
-## Airflow Best Practices
+**Branching**: Run different tasks based on conditions.
 
-**Keep tasks small**: One job per task.
+**Sensors**: Wait for something to happen (file arrives, API responds).
 
-**Use clear naming**: `extract_customers`, not `task1`.
+**XCom**: Pass data between tasks.
 
-**Set timeouts**: Prevent tasks from running forever.
+**Pools**: Limit concurrent task execution.
+
+**Variables**: Store configuration values.
+
+## Real-World DAG
 
 ```python
-PythonOperator(
-    task_id='my_task',
-    python_callable=my_function,
-    execution_timeout=timedelta(minutes=30),
-)
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from airflow.providers.postgres.operators.postgres import PostgresOperator
+from airflow.operators.email import EmailOperator
+from datetime import datetime, timedelta
+
+default_args = {
+    "owner": "data-team",
+    "retries": 3,
+    "retry_delay": timedelta(minutes=5),
+    "email_on_failure": True,
+    "email": ["alerts@company.com"]
+}
+
+with DAG(
+    dag_id="sales_report",
+    default_args=default_args,
+    start_date=datetime(2024, 1, 1),
+    schedule="0 6 * * *",  # Every day at 6 AM
+    catchup=False
+) as dag:
+    
+    extract_sales = PostgresOperator(
+        task_id="extract_sales",
+        postgres_conn_id="sales_db",
+        sql="SELECT * FROM sales WHERE date = '{{ ds }}'"
+    )
+    
+    calculate_metrics = PythonOperator(
+        task_id="calculate_metrics",
+        python_callable=calculate_daily_metrics
+    )
+    
+    send_report = EmailOperator(
+        task_id="send_report",
+        to="manager@company.com",
+        subject="Daily Sales Report {{ ds }}",
+        html_content="See attached report."
+    )
+    
+    extract_sales >> calculate_metrics >> send_report
 ```
 
-**Monitor SLA (Service Level Agreement)**:
+This DAG extracts sales data, calculates metrics, sends email report. Daily at 6 AM. Retries on failure. Alerts on persistent failure.
 
-```python
-dag = DAG(
-    'my_dag',
-    sla=timedelta(hours=1),  # Task must complete in 1 hour
-)
-```
+## Best Practices
 
-**Use environment variables for secrets**:
+**Keep DAGs simple**: One DAG, one purpose. Don't build mega-DAGs.
 
-```python
-import os
-db_password = os.getenv('DB_PASSWORD')
-```
+**Idempotent tasks**: Running twice should produce the same result.
 
-## Real Example: Monitoring in Airflow
+**Use connections**: Don't hardcode credentials in DAGs.
 
-You can see:
+**Test locally**: Validate DAG syntax before deploying.
 
-- When each task ran
-- How long it took
-- If it succeeded or failed
-- Full logs of what happened
-- Previous runs of the same task
-- Trends over time
+**Monitor**: Check the Airflow UI regularly. Set up alerts.
 
-This visibility is invaluable. You know your pipelines are working. You know when they're not. You fix problems fast.
+## Summary
 
-## Airflow Ecosystem
+Airflow orchestrates data pipelines. You define workflows as code. Airflow schedules, executes, and monitors them.
 
-**Providers**: Connectors to external systems.
+It's complex to set up. But for production data pipelines, it's essential.
 
-- Google Cloud (BigQuery, Cloud Storage)
-- AWS (S3, Redshift)
-- Databricks
-- Snowflake
-- PostgreSQL
-- MySQL
-- And hundreds more
-
-Install what you need:
-
-```bash
-pip install apache-airflow-providers-google
-pip install apache-airflow-providers-amazon
-```
-
-## Bottom Line
-
-Airflow is how serious data engineering happens.
-
-Without Airflow: Manual scheduling, no monitoring, fragile.
-
-With Airflow: Automatic, monitored, reliable, scalable.
-
-Every data team uses Airflow (or similar). It's not optional for serious data work.
-
-Learn Airflow. Use it daily. Your pipelines will be more reliable and easier to manage.
+Start simple. One DAG. Few tasks. Expand as needed.

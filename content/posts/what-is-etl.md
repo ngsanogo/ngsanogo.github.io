@@ -1,21 +1,10 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Application
-date: "2024-11-29"
-lastmod: "2024-11-29"
-description: "Understand ETL: Extract, Transform, Load. Learn what data engineers actually do every day."
-tags:
-  - etl
-  - data-pipeline
-  - data-engineering
 title: "ETL: What It Is and Why Your Company Needs It"
+slug: what-is-etl
+date: 2024-11-29
+description: "Understand ETL: Extract, Transform, Load. Learn what data engineers actually do every day."
 draft: false
-weight: 2
-toc: true
 ---
-
 ## What is ETL?
 
 ETL means: Extract, Transform, Load.
