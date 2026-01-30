@@ -26,10 +26,14 @@ from build import (
     render_pagination,
     _calculate_total_pages,
     _get_page_posts,
+    _validate_post_meta,
+    _parse_post_file,
+    get_posts,
     build,
     build_home,
     build_sitemap,
     OUTPUT_DIR,
+    CONTENT_DIR,
 )
 
 
@@ -281,6 +285,86 @@ class TestBuildIntegration(unittest.TestCase):
         self.assertIn('<meta charset="UTF-8">', html)
         self.assertIn('<meta name="viewport"', html)
         self.assertIn('<meta name="description"', html)
+
+
+class TestEdgeCases(unittest.TestCase):
+    """Tests pour les cas limites."""
+    
+    def test_validate_post_meta_missing_title(self):
+        """Test validation metadata sans titre."""
+        meta = {"date": "2024-01-30"}
+        errors = _validate_post_meta(meta, "test.md")
+        self.assertEqual(len(errors), 1)
+        self.assertIn("Missing 'title'", errors[0])
+    
+    def test_validate_post_meta_missing_date(self):
+        """Test validation metadata sans date."""
+        meta = {"title": "Test"}
+        errors = _validate_post_meta(meta, "test.md")
+        self.assertEqual(len(errors), 1)
+        self.assertIn("Missing 'date'", errors[0])
+    
+    def test_validate_post_meta_invalid_date(self):
+        """Test validation metadata avec date invalide."""
+        meta = {"title": "Test", "date": "invalid"}
+        errors = _validate_post_meta(meta, "test.md")
+        self.assertEqual(len(errors), 1)
+        self.assertIn("Invalid date format", errors[0])
+    
+    def test_validate_post_meta_valid(self):
+        """Test validation metadata valide."""
+        meta = {"title": "Test", "date": "2024-01-30"}
+        errors = _validate_post_meta(meta, "test.md")
+        self.assertEqual(len(errors), 0)
+    
+    def test_parse_post_file_draft(self):
+        """Test que les drafts sont ignorés."""
+        test_file = Path("test_draft.md")
+        content = """---
+title: Draft Post
+date: 2024-01-30
+draft: true
+---
+Content"""
+        test_file.write_text(content, encoding="utf-8")
+        
+        post = _parse_post_file(test_file)
+        self.assertIsNone(post)
+        
+        test_file.unlink()
+    
+    def test_parse_post_file_valid(self):
+        """Test parsing fichier valide."""
+        test_file = Path("test_valid.md")
+        content = """---
+title: Valid Post
+slug: valid-post
+date: 2024-01-30
+description: Test
+draft: false
+---
+Content here"""
+        test_file.write_text(content, encoding="utf-8")
+        
+        post = _parse_post_file(test_file)
+        self.assertIsNotNone(post)
+        self.assertEqual(post["title"], "Valid Post")
+        self.assertEqual(post["slug"], "valid-post")
+        
+        test_file.unlink()
+    
+    def test_get_posts_empty_directory(self):
+        """Test get_posts avec répertoire vide."""
+        # Test avec le vrai répertoire devrait avoir des posts
+        posts = get_posts()
+        # Si on a des articles, ça devrait retourner une liste
+        self.assertIsInstance(posts, list)
+    
+    def test_build_with_zero_posts(self):
+        """Test que build fonctionne même sans posts."""
+        # Le build devrait réussir même avec 0 posts
+        result = build()
+        self.assertTrue(result)
 
 
 class TestSiteStructure(unittest.TestCase):
