@@ -26,7 +26,15 @@ style.css           # Styling
 
 ## Adding an Article
 
-Create `content/posts/my-article.md`:
+**Use the template:**
+
+```bash
+cp content/posts/_template.md content/posts/my-article.md
+# Edit the file, change draft to false
+python3 build.py
+```
+
+**Or create manually** - `content/posts/my-article.md`:
 
 ```markdown
 ---

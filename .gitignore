@@ -1,5 +1,7 @@
 node_modules/
 public/
+__pycache__/
+*.pyc
 .DS_Store
 *.swp
 *.swo

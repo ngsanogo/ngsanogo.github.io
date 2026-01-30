@@ -8,14 +8,12 @@ import re
 import html
 from pathlib import Path
 from datetime import datetime
+from config import SITE_TITLE, SITE_DESC, SITE_URL, POSTS_PER_PAGE, NAV_LINKS
 
 
-# Configuration
+# Directories
 CONTENT_DIR = Path("content")
 OUTPUT_DIR = Path("public")
-SITE_TITLE = "Issa Sanogo"
-SITE_DESC = "Senior Data Engineer"
-SITE_URL = "https://ngsanogo.github.io"
 
 OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -59,33 +57,60 @@ def parse_date(date_str):
 def markdown_to_html(text):
     """Convert markdown to HTML. Minimal but practical."""
     text = html.escape(text)
-    
-    # Headers
+    text = _convert_headers(text)
+    text = _convert_emphasis(text)
+    text = _convert_images(text)
+    text = _convert_links(text)
+    text = _convert_code(text)
+    text = _convert_lists(text)
+    text = _convert_blockquotes(text)
+    text = _convert_paragraphs(text)
+    return text
+
+
+def _convert_headers(text):
+    """Convert markdown headers to HTML."""
     text = re.sub(r'^### (.*?)$', r'<h3>\1</h3>', text, flags=re.MULTILINE)
     text = re.sub(r'^## (.*?)$', r'<h2>\1</h2>', text, flags=re.MULTILINE)
     text = re.sub(r'^# (.*?)$', r'<h1>\1</h1>', text, flags=re.MULTILINE)
-    
-    # Emphasis
+    return text
+
+
+def _convert_emphasis(text):
+    """Convert markdown emphasis (bold/italic) to HTML."""
     text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
     text = re.sub(r'\*(.*?)\*', r'<em>\1</em>', text)
     text = re.sub(r'__(.*?)__', r'<strong>\1</strong>', text)
     text = re.sub(r'_(.*?)_', r'<em>\1</em>', text)
-    
-    # Images
-    text = re.sub(r'!\[(.*?)\]\((.*?)\)', r'<img src="\2" alt="\1">', text)
-    
-    # Links
-    text = re.sub(r'\[(.*?)\]\((.*?)\)', r'<a href="\2">\1</a>', text)
-    
-    # Code
+    return text
+
+
+def _convert_images(text):
+    """Convert markdown images to HTML."""
+    return re.sub(r'!\[(.*?)\]\((.*?)\)', r'<img src="\2" alt="\1">', text)
+
+
+def _convert_links(text):
+    """Convert markdown links to HTML."""
+    return re.sub(r'\[(.*?)\]\((.*?)\)', r'<a href="\2">\1</a>', text)
+
+
+def _convert_code(text):
+    """Convert markdown code blocks and inline code to HTML."""
+    # Inline code
     text = re.sub(r'`(.*?)`', r'<code>\1</code>', text)
+    # Code blocks
     text = re.sub(
         r'```(.*?)\n(.*?)\n```',
         r'<pre><code>\2</code></pre>',
         text,
         flags=re.DOTALL
     )
-    
+    return text
+
+
+def _convert_lists(text):
+    """Convert markdown lists to HTML."""
     # Unordered lists
     text = re.sub(r'^\* (.*?)$', r'<li>\1</li>', text, flags=re.MULTILINE)
     text = re.sub(r'^- (.*?)$', r'<li>\1</li>', text, flags=re.MULTILINE)
@@ -101,17 +126,21 @@ def markdown_to_html(text):
         flags=re.DOTALL
     )
     text = re.sub(r'</ul>\n<ul>', '', text)
-    
-    # Blockquotes
-    text = re.sub(r'^> (.*?)$', r'<blockquote>\1</blockquote>', text, flags=re.MULTILINE)
-    
-    # Paragraphs
+    return text
+
+
+def _convert_blockquotes(text):
+    """Convert markdown blockquotes to HTML."""
+    return re.sub(r'^> (.*?)$', r'<blockquote>\1</blockquote>', text, flags=re.MULTILINE)
+
+
+def _convert_paragraphs(text):
+    """Convert markdown paragraphs to HTML."""
     paragraphs = text.split('\n\n')
     text = '\n\n'.join(
         f'<p>{p}</p>' if p and not p.startswith('<') else p
         for p in paragraphs
     )
-    
     return text
 
 
@@ -121,39 +150,33 @@ def load_css():
         return f.read()
 
 
-def render_html(title, content):
-    """Render complete HTML page."""
+def load_template():
+    """Load HTML template."""
+    with open("template.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+
+def render_html(title, content, description=None):
+    """Render complete HTML page from template."""
+    template = load_template()
     css = load_css()
     
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} - {SITE_TITLE}</title>
-    <meta name="description" content="{SITE_DESC}">
-    <style>{css}</style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1 class="site-title"><a href="/">{SITE_TITLE}</a></h1>
-            <p class="site-desc">{SITE_DESC}</p>
-            <nav>
-                <a href="/">Home</a>
-                <a href="/about">About</a>
-                <a href="/blog">Blog</a>
-                <a href="/cv">Resume</a>
-                <a href="/contact">Contact</a>
-            </nav>
-        </header>
-        <main>{content}</main>
-        <footer>
-            <p>&copy; {datetime.now().year} {SITE_TITLE}</p>
-        </footer>
-    </div>
-</body>
-</html>"""
+    # Build navigation
+    nav_html = '\n                '.join(
+        f'<a href="{url}">{name}</a>' for name, url in NAV_LINKS
+    )
+    
+    # Fill template
+    html_output = template.replace("{{title}}", f"{title} - {SITE_TITLE}" if title != SITE_TITLE else title)
+    html_output = html_output.replace("{{description}}", description or SITE_DESC)
+    html_output = html_output.replace("{{site_title}}", SITE_TITLE)
+    html_output = html_output.replace("{{site_desc}}", SITE_DESC)
+    html_output = html_output.replace("{{navigation}}", nav_html)
+    html_output = html_output.replace("{{content}}", content)
+    html_output = html_output.replace("{{css}}", css)
+    html_output = html_output.replace("{{year}}", str(datetime.now().year))
+    
+    return html_output
 
 
 def get_posts():
@@ -165,7 +188,20 @@ def get_posts():
         return []
     
     for md_file in posts_dir.glob("*.md"):
+        # Skip template
+        if md_file.name.startswith("_"):
+            continue
+            
         meta, body = parse_markdown_file(md_file)
+        
+        # Validation - required fields
+        if not meta.get("title"):
+            print(f"⚠️  Warning: {md_file.name} missing 'title' - skipping")
+            continue
+        
+        if not meta.get("date"):
+            print(f"⚠️  Warning: {md_file.name} missing 'date' - skipping")
+            continue
         
         # Skip drafts
         if meta.get("draft", "false").lower() == "true":
@@ -174,13 +210,14 @@ def get_posts():
         # Parse date
         date = parse_date(meta.get("date"))
         if not date:
+            print(f"⚠️  Warning: {md_file.name} invalid date format - skipping")
             continue
         
         # Parse updated date (optional)
         updated = parse_date(meta.get("updated")) or date
         
         posts.append({
-            "title": meta.get("title", md_file.stem),
+            "title": meta.get("title"),
             "slug": meta.get("slug", md_file.stem),
             "date": date,
             "updated": updated,
@@ -246,16 +283,15 @@ def build_home():
 
 
 def build_blog():
-    """Build blog with pagination (10 posts per page)."""
+    """Build blog with pagination."""
     posts = get_posts()
-    posts_per_page = 10
-    total_pages = (len(posts) + posts_per_page - 1) // posts_per_page
+    total_pages = (len(posts) + POSTS_PER_PAGE - 1) // POSTS_PER_PAGE
     
     (OUTPUT_DIR / "blog").mkdir(exist_ok=True)
     
     for page_num in range(1, total_pages + 1):
-        start_idx = (page_num - 1) * posts_per_page
-        end_idx = start_idx + posts_per_page
+        start_idx = (page_num - 1) * POSTS_PER_PAGE
+        end_idx = start_idx + POSTS_PER_PAGE
         page_posts = posts[start_idx:end_idx]
         
         posts_html = ""
@@ -308,7 +344,8 @@ def build_blog():
             {pagination_html}
         """
         
-        html = render_html("Blog", content)
+        description = f"Data engineering blog - Articles about ETL, Python, databases, and infrastructure. Page {page_num} of {total_pages}." if total_pages > 1 else "Data engineering blog - Articles about ETL, Python, databases, and infrastructure."
+        html = render_html("Blog", content, description)
         
         if page_num == 1:
             with open(OUTPUT_DIR / "blog" / "index.html", "w", encoding="utf-8") as f:
@@ -332,7 +369,8 @@ def build_posts():
         {post['body']}
         """
         
-        html = render_html(post['title'], content)
+        description = post['description'] or f"{post['title']} - {SITE_DESC}"
+        html = render_html(post['title'], content, description)
         post_dir = OUTPUT_DIR / "posts" / post['slug']
         post_dir.mkdir(exist_ok=True, parents=True)
         
@@ -342,6 +380,12 @@ def build_posts():
 
 def build_pages():
     """Build static pages (about, cv, contact)."""
+    page_descriptions = {
+        "about": "About Issa Sanogo - Data Engineer and open source advocate",
+        "cv": "Resume of Issa Sanogo - Senior Data Engineer with 8+ years experience in data infrastructure and pipelines",
+        "contact": "Contact Issa Sanogo - Get in touch via email, LinkedIn or GitHub"
+    }
+    
     for page_name in ["about", "cv", "contact"]:
         page_file = CONTENT_DIR / f"{page_name}.md"
         
@@ -350,17 +394,50 @@ def build_pages():
         
         meta, body = parse_markdown_file(page_file)
         title = meta.get("title", page_name.capitalize())
+        description = page_descriptions.get(page_name, SITE_DESC)
+        
         content = f"""
         <h1 class="page-title">{title}</h1>
         {markdown_to_html(body)}
         """
         
-        html = render_html(title, content)
+        html = render_html(title, content, description)
         page_dir = OUTPUT_DIR / page_name
         page_dir.mkdir(exist_ok=True)
         
         with open(page_dir / "index.html", "w", encoding="utf-8") as f:
             f.write(html)
+
+
+def build_sitemap():
+    """Build sitemap.xml for search engines."""
+    posts = get_posts()
+    
+    sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    
+    # Homepage
+    sitemap += f'  <url>\n    <loc>{SITE_URL}/</loc>\n'
+    sitemap += f'    <priority>1.0</priority>\n  </url>\n'
+    
+    # Blog
+    sitemap += f'  <url>\n    <loc>{SITE_URL}/blog</loc>\n'
+    sitemap += f'    <priority>0.9</priority>\n  </url>\n'
+    
+    # Static pages
+    for page, priority in [("about", "0.8"), ("cv", "0.8"), ("contact", "0.7")]:
+        sitemap += f'  <url>\n    <loc>{SITE_URL}/{page}</loc>\n'
+        sitemap += f'    <priority>{priority}</priority>\n  </url>\n'
+    
+    # Blog posts
+    for post in posts:
+        sitemap += f'  <url>\n    <loc>{SITE_URL}/posts/{post["slug"]}</loc>\n'
+        sitemap += f'    <lastmod>{post["updated"].strftime("%Y-%m-%d")}</lastmod>\n'
+        sitemap += f'    <priority>0.6</priority>\n  </url>\n'
+    
+    sitemap += '</urlset>'
+    
+    (OUTPUT_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
 
 
 def build():
@@ -370,6 +447,7 @@ def build():
     build_blog()
     build_posts()
     build_pages()
+    build_sitemap()
     print(f"✅ Site built in {OUTPUT_DIR}")
 
 
