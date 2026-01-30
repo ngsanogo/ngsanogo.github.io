@@ -1,23 +1,10 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Application
-  - Infrastructure
-date: "2024-12-04"
-lastmod: "2024-12-04"
-description: "The essential tools every data engineer needs: SQL, Python, Git, Docker, Airflow, and databases. Build your toolkit."
-tags:
-  - tools
-  - data-engineering
-  - essentials
-  - architecture
 title: "Essential Tools for Data Engineers: Build Your Toolkit"
+slug: essential-data-engineering-tools
+date: 2024-12-04
+description: "The essential tools every data engineer needs: SQL, Python, Git, Docker, Airflow, and databases. Build your toolkit."
 draft: false
-weight: 10
-toc: true
 ---
-
 ## What Tools Do Data Engineers Really Need?
 
 A lot of tools exist. Most are noise.

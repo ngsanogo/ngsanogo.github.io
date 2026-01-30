@@ -1,21 +1,10 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Application
-date: "2024-11-30"
-lastmod: "2024-11-30"
-description: "PostgreSQL basics: What it is, why it's reliable, and how to use it for data engineering work."
-tags:
-  - postgresql
-  - database
-  - sql
 title: "PostgreSQL: The Reliable Database You Should Know"
+slug: postgresql-basics
+date: 2024-11-30
+description: "PostgreSQL basics: What it is, why it's reliable, and how to use it for data engineering work."
 draft: false
-weight: 3
-toc: true
 ---
-
 ## What is PostgreSQL?
 
 PostgreSQL is a database. A powerful, reliable, free database.

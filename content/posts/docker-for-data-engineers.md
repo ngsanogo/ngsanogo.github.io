@@ -1,23 +1,10 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Application
-  - Infrastructure
-date: "2024-12-02"
-lastmod: "2024-12-02"
-description: "Docker explained for data engineers: What it is, why you need it, and how to use it for reproducible data pipelines."
-tags:
-  - docker
-  - containerization
-  - infrastructure
-  - reproducibility
 title: "Docker: How to Run Your Data Pipeline Anywhere"
+slug: docker-for-data-engineers
+date: 2024-12-02
+description: "Docker explained for data engineers: What it is, why you need it, and how to use it for reproducible data pipelines."
 draft: false
-weight: 5
-toc: true
 ---
-
 ## What is Docker?
 
 Docker puts your entire application (code, dependencies, configuration, everything) into a box that runs the same on any machine.

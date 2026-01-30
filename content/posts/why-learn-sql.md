@@ -1,21 +1,10 @@
 ---
-authors:
-  - Issa Sanogo
-categories:
-  - Application
-date: "2024-11-28"
-lastmod: "2024-11-28"
-description: "Why SQL is essential for data engineers. Learn what SQL does, how to use it, and why it's the foundation of data work."
-tags:
-  - sql
-  - databases
-  - data-engineering
 title: "Why SQL is the Most Important Skill for Data Engineers"
+slug: why-learn-sql
+date: 2024-11-28
+description: "Why SQL is essential for data engineers. Learn what SQL does, how to use it, and why it's the foundation of data work."
 draft: false
-weight: 1
-toc: true
 ---
-
 ## What is SQL?
 
 SQL is a language to talk to databases. It lets you retrieve, modify, and analyze data.
