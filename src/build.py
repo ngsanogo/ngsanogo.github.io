@@ -272,53 +272,88 @@ def render_pagination(current_page, total_pages, base_url="/blog"):
     return html
 
 
+def _validate_post_meta(meta, filename):
+    """Validate post metadata.
+    
+    Args:
+        meta: Metadata dictionary
+        filename: Filename for error messages
+    
+    Returns:
+        list: List of error messages (empty if valid)
+    """
+    errors = []
+    
+    if not meta.get("title"):
+        errors.append(f"{filename}: Missing 'title'")
+    
+    if not meta.get("date"):
+        errors.append(f"{filename}: Missing 'date'")
+    elif not parse_date(meta.get("date")):
+        errors.append(f"{filename}: Invalid date format")
+    
+    return errors
+
+
+def _parse_post_file(file_path):
+    """Parse a single post file.
+    
+    Args:
+        file_path: Path to markdown file
+    
+    Returns:
+        dict: Post data or None if invalid/draft
+    """
+    meta, body = parse_markdown_file(file_path)
+    
+    # Validate
+    errors = _validate_post_meta(meta, file_path.name)
+    if errors:
+        for error in errors:
+            logger.warning(f"{error} - skipping")
+        return None
+    
+    # Skip drafts
+    if meta.get("draft", "false").lower() == "true":
+        return None
+    
+    # Parse dates
+    date = parse_date(meta.get("date"))
+    updated = parse_date(meta.get("updated")) or date
+    
+    return {
+        "title": meta.get("title"),
+        "slug": meta.get("slug", file_path.stem),
+        "date": date,
+        "updated": updated,
+        "date_str": date.strftime(DATE_FORMAT),
+        "updated_str": updated.strftime(DATE_FORMAT) if updated != date else None,
+        "description": meta.get("description", ""),
+        "body": markdown_to_html(body),
+    }
+
+
 def get_posts():
-    """Get all published blog posts, sorted by date (newest first)."""
-    posts = []
+    """Get all published blog posts, sorted by date (newest first).
+    
+    Returns:
+        list: List of post dictionaries, sorted newest first
+    """
     posts_dir = CONTENT_DIR / "posts"
     
     if not posts_dir.exists():
+        logger.warning(f"Posts directory '{posts_dir}' not found")
         return []
     
+    posts = []
     for md_file in posts_dir.glob("*.md"):
-        # Skip template
+        # Skip template files
         if md_file.name.startswith("_"):
             continue
-            
-        meta, body = parse_markdown_file(md_file)
         
-        # Validation - required fields
-        if not meta.get("title"):
-            logger.warning(f"{md_file.name}: Missing 'title' - skipping")
-            continue
-        
-        if not meta.get("date"):
-            logger.warning(f"{md_file.name}: Missing 'date' - skipping")
-            continue
-        
-        # Skip drafts
-        if meta.get("draft", "false").lower() == "true":
-            continue
-        
-        # Parse date
-        date = parse_date(meta.get("date"))
-        if not date:
-            logger.warning(f"{md_file.name}: Invalid date format - skipping")
-            continue
-        
-        # Parse updated date (optional)
-        updated = parse_date(meta.get("updated")) or date
-        
-        posts.append({
-            "title": meta.get("title"),
-            "slug": meta.get("slug", md_file.stem),
-            "date": date,
-            "updated": updated,
-            "date_str": date.strftime(DATE_FORMAT),
-            "updated_str": updated.strftime(DATE_FORMAT) if updated != date else None,
-            "description": meta.get("description", ""),
-            "body": markdown_to_html(body),
-        })
+        post = _parse_post_file(md_file)
+        if post:
+            posts.append(post)
     
     return sorted(posts, key=lambda x: x["date"], reverse=True)
 
