@@ -12,8 +12,9 @@ from config import SITE_TITLE, SITE_DESC, SITE_URL, POSTS_PER_PAGE, NAV_LINKS
 
 
 # Directories
-CONTENT_DIR = Path("content")
-OUTPUT_DIR = Path("public")
+PROJECT_ROOT = Path(__file__).parent.parent
+CONTENT_DIR = PROJECT_ROOT / "content"
+OUTPUT_DIR = PROJECT_ROOT / "public"
 
 OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -97,15 +98,15 @@ def _convert_links(text):
 
 def _convert_code(text):
     """Convert markdown code blocks and inline code to HTML."""
-    # Inline code
-    text = re.sub(r'`(.*?)`', r'<code>\1</code>', text)
-    # Code blocks
+    # Code blocks first (before inline code to avoid conflicts)
     text = re.sub(
-        r'```(.*?)\n(.*?)\n```',
-        r'<pre><code>\2</code></pre>',
+        r'```[a-z]*\n(.*?)\n```',
+        r'<pre><code>\1</code></pre>',
         text,
         flags=re.DOTALL
     )
+    # Inline code
+    text = re.sub(r'`(.*?)`', r'<code>\1</code>', text)
     return text
 
 
@@ -145,15 +146,33 @@ def _convert_paragraphs(text):
 
 
 def load_css():
-    """Load CSS file."""
-    with open("style.css", "r", encoding="utf-8") as f:
-        return f.read()
+    """Load CSS file.
+    
+    Returns:
+        str: CSS content
+    
+    Raises:
+        FileNotFoundError: If style.css does not exist
+    """
+    css_path = Path(__file__).parent / "style.css"
+    if not css_path.exists():
+        raise FileNotFoundError("❌ style.css not found - cannot build site")
+    return css_path.read_text(encoding="utf-8")
 
 
 def load_template():
-    """Load HTML template."""
-    with open("template.html", "r", encoding="utf-8") as f:
-        return f.read()
+    """Load HTML template.
+    
+    Returns:
+        str: HTML template content
+    
+    Raises:
+        FileNotFoundError: If template.html does not exist
+    """
+    template_path = Path(__file__).parent / "template.html"
+    if not template_path.exists():
+        raise FileNotFoundError("❌ template.html not found - cannot build site")
+    return template_path.read_text(encoding="utf-8")
 
 
 def render_html(title, content, description=None):
@@ -441,14 +460,47 @@ def build_sitemap():
 
 
 def build():
-    """Build entire site."""
-    print("🔨 Building site...")
-    build_home()
-    build_blog()
-    build_posts()
-    build_pages()
-    build_sitemap()
-    print(f"✅ Site built in {OUTPUT_DIR}")
+    """Build entire site.
+    
+    Returns:
+        bool: True if build successful, False otherwise
+    """
+    # Pre-flight checks
+    src_dir = Path(__file__).parent
+    required_files = [
+        (src_dir / "style.css", "CSS stylesheet"),
+        (src_dir / "template.html", "HTML template"),
+        (src_dir / "config.py", "Configuration"),
+    ]
+    
+    missing = []
+    for file_path, description in required_files:
+        if not file_path.exists():
+            missing.append(f"  • {file_path.name} ({description})")
+    
+    if missing:
+        print("❌ Missing required files:")
+        for item in missing:
+            print(item)
+        return False
+    
+    if not CONTENT_DIR.exists():
+        print(f"❌ Content directory '{CONTENT_DIR}' not found")
+        return False
+    
+    # Build site
+    try:
+        print("🔨 Building site...")
+        build_home()
+        build_blog()
+        build_posts()
+        build_pages()
+        build_sitemap()
+        print(f"✅ Site built successfully in {OUTPUT_DIR}")
+        return True
+    except Exception as e:
+        print(f"❌ Build failed: {e}")
+        return False
 
 
 if __name__ == "__main__":
