@@ -14,14 +14,21 @@ The site is built from plain markdown files and automatically published whenever
 ## How It Works
 
 ```
+src/
+├── build.py         # Generates the website
+├── config.py        # Site configuration
+├── template.html    # HTML structure
+├── style.css        # Styling
+└── dev.py          # Local preview server
+
 content/
 ├── posts/           # My articles
 ├── about.md        # About me
 ├── cv.md           # My resume
 └── contact.md      # How to reach me
 
-build.py            # Generates the website
-style.css           # Styling
+tests/
+└── test_build.py   # Unit tests
 ```
 
 ## Adding an Article
@@ -31,7 +38,7 @@ style.css           # Styling
 ```bash
 cp content/posts/_template.md content/posts/my-article.md
 # Edit the file, change draft to false
-python3 build.py
+python3 src/build.py
 ```
 
 **Or create manually** - `content/posts/my-article.md`:
@@ -65,6 +72,24 @@ Your content...
 ```
 
 ## Building & Deploying
+
+**Local build:**
+```bash
+python3 src/build.py
+```
+
+**Local preview:**
+```bash
+python3 src/dev.py
+# Visit http://localhost:8000
+```
+
+**Run tests:**
+```bash
+python3 -m unittest discover tests/ -v
+```
+
+The site automatically builds and deploys to GitHub Pages when you push to main.
 
 ```bash
 python3 build.py
