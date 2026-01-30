@@ -6,9 +6,21 @@ Builds HTML from markdown files in content/ directory.
 
 import re
 import html
+import logging
 from pathlib import Path
 from datetime import datetime
-from config import SITE_TITLE, SITE_DESC, SITE_URL, POSTS_PER_PAGE, NAV_LINKS
+from config import (
+    SITE_TITLE, SITE_DESC, SITE_URL, POSTS_PER_PAGE, NAV_LINKS,
+    DATE_FORMAT, SITEMAP_PRIORITIES
+)
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%H:%M:%S'
+)
+logger = logging.getLogger(__name__)
 
 
 # Directories
@@ -198,6 +210,68 @@ def render_html(title, content, description=None):
     return html_output
 
 
+def render_post_item(post):
+    """Render a single post item HTML.
+    
+    Args:
+        post: Post dictionary with slug, title, date_str, description
+    
+    Returns:
+        str: HTML for post item
+    """
+    return f"""
+    <div class="post-item">
+        <h2 class="post-title"><a href="/posts/{post['slug']}">{post['title']}</a></h2>
+        <div class="post-meta"><span>{post['date_str']}</span></div>
+        <p class="post-description">{post['description']}</p>
+        <a href="/posts/{post['slug']}" class="read-more">Read more →</a>
+    </div>
+    """
+
+
+def render_pagination(current_page, total_pages, base_url="/blog"):
+    """Render pagination HTML.
+    
+    Args:
+        current_page: Current page number (1-indexed)
+        total_pages: Total number of pages
+        base_url: Base URL for pagination links
+    
+    Returns:
+        str: HTML for pagination
+    """
+    if total_pages <= 1:
+        return ""
+    
+    html = '<div class="pagination">'
+    
+    # Previous button
+    if current_page > 1:
+        prev_url = base_url if current_page == 2 else f"{base_url}/page/{current_page - 1}"
+        html += f'<a href="{prev_url}" class="read-more">← Previous</a>'
+    else:
+        html += '<span></span>'
+    
+    # Page numbers
+    html += '<div class="page-numbers">'
+    for i in range(1, total_pages + 1):
+        page_url = base_url if i == 1 else f"{base_url}/page/{i}"
+        if i == current_page:
+            html += f'<span>{i}</span>'
+        else:
+            html += f'<a href="{page_url}">{i}</a>'
+    html += '</div>'
+    
+    # Next button
+    if current_page < total_pages:
+        html += f'<a href="{base_url}/page/{current_page + 1}" class="read-more">Next →</a>'
+    else:
+        html += '<span></span>'
+    
+    html += '</div>'
+    return html
+
+
 def get_posts():
     """Get all published blog posts, sorted by date (newest first)."""
     posts = []
@@ -215,11 +289,11 @@ def get_posts():
         
         # Validation - required fields
         if not meta.get("title"):
-            print(f"⚠️  Warning: {md_file.name} missing 'title' - skipping")
+            logger.warning(f"{md_file.name}: Missing 'title' - skipping")
             continue
         
         if not meta.get("date"):
-            print(f"⚠️  Warning: {md_file.name} missing 'date' - skipping")
+            logger.warning(f"{md_file.name}: Missing 'date' - skipping")
             continue
         
         # Skip drafts
@@ -229,7 +303,7 @@ def get_posts():
         # Parse date
         date = parse_date(meta.get("date"))
         if not date:
-            print(f"⚠️  Warning: {md_file.name} invalid date format - skipping")
+            logger.warning(f"{md_file.name}: Invalid date format - skipping")
             continue
         
         # Parse updated date (optional)
@@ -240,8 +314,8 @@ def get_posts():
             "slug": meta.get("slug", md_file.stem),
             "date": date,
             "updated": updated,
-            "date_str": date.strftime("%B %d, %Y"),
-            "updated_str": updated.strftime("%B %d, %Y") if updated != date else None,
+            "date_str": date.strftime(DATE_FORMAT),
+            "updated_str": updated.strftime(DATE_FORMAT) if updated != date else None,
             "description": meta.get("description", ""),
             "body": markdown_to_html(body),
         })
@@ -266,12 +340,7 @@ def build_home():
         posts_html = f"""
         <section class="home-section">
             <h2 class="section-title">📝 Latest Post</h2>
-            <div class="post-item">
-                <h2 class="post-title"><a href="/posts/{latest_created['slug']}">{latest_created['title']}</a></h2>
-                <div class="post-meta"><span>Published: {latest_created['date_str']}</span></div>
-                <p class="post-description">{latest_created['description']}</p>
-                <a href="/posts/{latest_created['slug']}" class="read-more">Read more →</a>
-            </div>
+            {render_post_item(latest_created)}
         </section>
         """
         
@@ -279,12 +348,7 @@ def build_home():
             posts_html += f"""
         <section class="home-section">
             <h2 class="section-title">🔄 Recently Updated</h2>
-            <div class="post-item">
-                <h2 class="post-title"><a href="/posts/{latest_updated['slug']}">{latest_updated['title']}</a></h2>
-                <div class="post-meta"><span>Updated: {latest_updated['updated_str'] or latest_updated['date_str']}</span></div>
-                <p class="post-description">{latest_updated['description']}</p>
-                <a href="/posts/{latest_updated['slug']}" class="read-more">Read more →</a>
-            </div>
+            {render_post_item(latest_updated)}
         </section>
             """
         
@@ -301,79 +365,95 @@ def build_home():
         f.write(html)
 
 
+def _calculate_total_pages(total_posts, posts_per_page):
+    """Calculate total number of pages for pagination.
+    
+    Args:
+        total_posts: Total number of posts
+        posts_per_page: Posts per page
+    
+    Returns:
+        int: Total pages needed
+    """
+    return (total_posts + posts_per_page - 1) // posts_per_page
+
+
+def _get_page_posts(posts, page_num, posts_per_page):
+    """Get posts for a specific page.
+    
+    Args:
+        posts: List of all posts
+        page_num: Page number (1-indexed)
+        posts_per_page: Posts per page
+    
+    Returns:
+        list: Posts for the page
+    """
+    start_idx = (page_num - 1) * posts_per_page
+    end_idx = start_idx + posts_per_page
+    return posts[start_idx:end_idx]
+
+
+def _build_blog_page_content(posts, page_num, total_pages):
+    """Build content for a blog page.
+    
+    Args:
+        posts: Posts to display on this page
+        page_num: Current page number
+        total_pages: Total number of pages
+    
+    Returns:
+        str: HTML content for the page
+    """
+    posts_html = "".join(render_post_item(post) for post in posts)
+    pagination_html = render_pagination(page_num, total_pages, "/blog")
+    page_info = f" (Page {page_num} of {total_pages})" if total_pages > 1 else ""
+    
+    return f"""
+        <h1 class="page-title">Blog</h1>
+        <p>All posts about data engineering, tools, and best practices.{page_info}</p>
+        {posts_html}
+        {pagination_html}
+    """
+
+
+def _write_blog_page(html_content, page_num, total_pages):
+    """Write blog page to file.
+    
+    Args:
+        html_content: HTML content to write
+        page_num: Page number (1-indexed)
+        total_pages: Total pages (for description)
+    """
+    description = (
+        f"Data engineering blog - Articles about ETL, Python, databases, and infrastructure. "
+        f"Page {page_num} of {total_pages}." if total_pages > 1 
+        else "Data engineering blog - Articles about ETL, Python, databases, and infrastructure."
+    )
+    html = render_html("Blog", html_content, description)
+    
+    if page_num == 1:
+        output_path = OUTPUT_DIR / "blog" / "index.html"
+    else:
+        page_dir = OUTPUT_DIR / "blog" / "page" / str(page_num)
+        page_dir.mkdir(exist_ok=True, parents=True)
+        output_path = page_dir / "index.html"
+    
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(html)
+
+
 def build_blog():
     """Build blog with pagination."""
     posts = get_posts()
-    total_pages = (len(posts) + POSTS_PER_PAGE - 1) // POSTS_PER_PAGE
+    total_pages = _calculate_total_pages(len(posts), POSTS_PER_PAGE)
     
     (OUTPUT_DIR / "blog").mkdir(exist_ok=True)
     
     for page_num in range(1, total_pages + 1):
-        start_idx = (page_num - 1) * POSTS_PER_PAGE
-        end_idx = start_idx + POSTS_PER_PAGE
-        page_posts = posts[start_idx:end_idx]
-        
-        posts_html = ""
-        for post in page_posts:
-            posts_html += f"""
-            <div class="post-item">
-                <h2 class="post-title"><a href="/posts/{post['slug']}">{post['title']}</a></h2>
-                <div class="post-meta"><span>{post['date_str']}</span></div>
-                <p class="post-description">{post['description']}</p>
-                <a href="/posts/{post['slug']}" class="read-more">Read more →</a>
-            </div>
-            """
-        
-        # Pagination
-        pagination_html = ""
-        if total_pages > 1:
-            pagination_html = '<div class="pagination">'
-            
-            # Previous button
-            if page_num > 1:
-                prev_url = "/blog" if page_num == 2 else f"/blog/page/{page_num - 1}"
-                pagination_html += f'<a href="{prev_url}" class="read-more">← Previous</a>'
-            else:
-                pagination_html += '<span></span>'
-            
-            # Page numbers
-            page_numbers = '<div class="page-numbers">'
-            for i in range(1, total_pages + 1):
-                page_url = "/blog" if i == 1 else f"/blog/page/{i}"
-                if i == page_num:
-                    page_numbers += f'<span>{i}</span>'
-                else:
-                    page_numbers += f'<a href="{page_url}">{i}</a>'
-            page_numbers += '</div>'
-            pagination_html += page_numbers
-            
-            # Next button
-            if page_num < total_pages:
-                pagination_html += f'<a href="/blog/page/{page_num + 1}" class="read-more">Next →</a>'
-            else:
-                pagination_html += '<span></span>'
-            
-            pagination_html += '</div>'
-        
-        page_info = f" (Page {page_num} of {total_pages})" if total_pages > 1 else ""
-        content = f"""
-            <h1 class="page-title">Blog</h1>
-            <p>All posts about data engineering, tools, and best practices.{page_info}</p>
-            {posts_html}
-            {pagination_html}
-        """
-        
-        description = f"Data engineering blog - Articles about ETL, Python, databases, and infrastructure. Page {page_num} of {total_pages}." if total_pages > 1 else "Data engineering blog - Articles about ETL, Python, databases, and infrastructure."
-        html = render_html("Blog", content, description)
-        
-        if page_num == 1:
-            with open(OUTPUT_DIR / "blog" / "index.html", "w", encoding="utf-8") as f:
-                f.write(html)
-        else:
-            page_dir = OUTPUT_DIR / "blog" / "page" / str(page_num)
-            page_dir.mkdir(exist_ok=True, parents=True)
-            with open(page_dir / "index.html", "w", encoding="utf-8") as f:
-                f.write(html)
+        page_posts = _get_page_posts(posts, page_num, POSTS_PER_PAGE)
+        content = _build_blog_page_content(page_posts, page_num, total_pages)
+        _write_blog_page(content, page_num, total_pages)
 
 
 def build_posts():
@@ -437,22 +517,22 @@ def build_sitemap():
     
     # Homepage
     sitemap += f'  <url>\n    <loc>{SITE_URL}/</loc>\n'
-    sitemap += f'    <priority>1.0</priority>\n  </url>\n'
+    sitemap += f'    <priority>{SITEMAP_PRIORITIES["home"]}</priority>\n  </url>\n'
     
     # Blog
     sitemap += f'  <url>\n    <loc>{SITE_URL}/blog</loc>\n'
-    sitemap += f'    <priority>0.9</priority>\n  </url>\n'
+    sitemap += f'    <priority>{SITEMAP_PRIORITIES["blog"]}</priority>\n  </url>\n'
     
     # Static pages
-    for page, priority in [("about", "0.8"), ("cv", "0.8"), ("contact", "0.7")]:
+    for page in ["about", "cv", "contact"]:
         sitemap += f'  <url>\n    <loc>{SITE_URL}/{page}</loc>\n'
-        sitemap += f'    <priority>{priority}</priority>\n  </url>\n'
+        sitemap += f'    <priority>{SITEMAP_PRIORITIES["pages"]}</priority>\n  </url>\n'
     
     # Blog posts
     for post in posts:
         sitemap += f'  <url>\n    <loc>{SITE_URL}/posts/{post["slug"]}</loc>\n'
         sitemap += f'    <lastmod>{post["updated"].strftime("%Y-%m-%d")}</lastmod>\n'
-        sitemap += f'    <priority>0.6</priority>\n  </url>\n'
+        sitemap += f'    <priority>{SITEMAP_PRIORITIES["posts"]}</priority>\n  </url>\n'
     
     sitemap += '</urlset>'
     
@@ -479,27 +559,32 @@ def build():
             missing.append(f"  • {file_path.name} ({description})")
     
     if missing:
-        print("❌ Missing required files:")
+        logger.error("Missing required files:")
         for item in missing:
-            print(item)
+            logger.error(item)
         return False
     
     if not CONTENT_DIR.exists():
-        print(f"❌ Content directory '{CONTENT_DIR}' not found")
+        logger.error(f"Content directory '{CONTENT_DIR}' not found")
         return False
     
     # Build site
     try:
-        print("🔨 Building site...")
+        logger.info("🔨 Building site...")
         build_home()
+        logger.info("✓ Homepage built")
         build_blog()
+        logger.info("✓ Blog pages built")
         build_posts()
+        logger.info("✓ Individual posts built")
         build_pages()
+        logger.info("✓ Static pages built")
         build_sitemap()
-        print(f"✅ Site built successfully in {OUTPUT_DIR}")
+        logger.info("✓ Sitemap generated")
+        logger.info(f"✅ Site built successfully in {OUTPUT_DIR}")
         return True
     except Exception as e:
-        print(f"❌ Build failed: {e}")
+        logger.error(f"Build failed: {e}", exc_info=True)
         return False
 
 
