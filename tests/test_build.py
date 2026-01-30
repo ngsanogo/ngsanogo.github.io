@@ -22,6 +22,14 @@ from build import (
     _convert_code,
     _convert_lists,
     _convert_blockquotes,
+    render_post_item,
+    render_pagination,
+    _calculate_total_pages,
+    _get_page_posts,
+    build,
+    build_home,
+    build_sitemap,
+    OUTPUT_DIR,
 )
 
 
@@ -160,6 +168,119 @@ This is a test post.
         self.assertIn("# Just content", body)
         
         test_file.unlink()
+
+
+class TestTemplateRendering(unittest.TestCase):
+    """Tests pour les templates HTML."""
+    
+    def test_render_post_item(self):
+        """Test génération HTML d'un post item."""
+        post = {
+            "slug": "test-post",
+            "title": "Test Post",
+            "date_str": "January 30, 2024",
+            "description": "Test description"
+        }
+        html = render_post_item(post)
+        
+        self.assertIn("post-item", html)
+        self.assertIn("Test Post", html)
+        self.assertIn("/posts/test-post", html)
+        self.assertIn("Test description", html)
+    
+    def test_render_pagination_single_page(self):
+        """Test pagination avec une seule page."""
+        html = render_pagination(1, 1)
+        self.assertEqual(html, "")
+    
+    def test_render_pagination_multiple_pages(self):
+        """Test pagination avec plusieurs pages."""
+        html = render_pagination(2, 3)
+        
+        self.assertIn("pagination", html)
+        self.assertIn("Previous", html)
+        self.assertIn("Next", html)
+        self.assertIn('href="/blog"', html)  # Page 1 uses /blog not /blog/page/1
+        self.assertIn("/blog/page/3", html)
+
+
+class TestBuildHelpers(unittest.TestCase):
+    """Tests pour les fonctions helper de build."""
+    
+    def test_calculate_total_pages(self):
+        """Test calcul du nombre de pages."""
+        self.assertEqual(_calculate_total_pages(10, 10), 1)
+        self.assertEqual(_calculate_total_pages(11, 10), 2)
+        self.assertEqual(_calculate_total_pages(25, 10), 3)
+        self.assertEqual(_calculate_total_pages(0, 10), 0)
+    
+    def test_get_page_posts(self):
+        """Test récupération des posts d'une page."""
+        posts = [{"id": i} for i in range(25)]
+        
+        page1 = _get_page_posts(posts, 1, 10)
+        self.assertEqual(len(page1), 10)
+        self.assertEqual(page1[0]["id"], 0)
+        
+        page2 = _get_page_posts(posts, 2, 10)
+        self.assertEqual(len(page2), 10)
+        self.assertEqual(page2[0]["id"], 10)
+        
+        page3 = _get_page_posts(posts, 3, 10)
+        self.assertEqual(len(page3), 5)
+        self.assertEqual(page3[0]["id"], 20)
+
+
+class TestBuildIntegration(unittest.TestCase):
+    """Tests d'intégration pour le build complet."""
+    
+    def test_build_complete(self):
+        """Test build complet du site."""
+        result = build()
+        self.assertTrue(result, "Build should succeed")
+        
+        # Vérifier fichiers générés
+        self.assertTrue((OUTPUT_DIR / "index.html").exists(), "Homepage should exist")
+        self.assertTrue((OUTPUT_DIR / "sitemap.xml").exists(), "Sitemap should exist")
+        self.assertTrue((OUTPUT_DIR / "blog" / "index.html").exists(), "Blog should exist")
+    
+    def test_homepage_content(self):
+        """Test contenu de la homepage."""
+        build_home()
+        html = (OUTPUT_DIR / "index.html").read_text()
+        
+        self.assertIn("<title>", html)
+        self.assertIn("Issa Sanogo", html)
+        self.assertIn("Welcome", html)
+    
+    def test_sitemap_valid_xml(self):
+        """Test validité du sitemap XML."""
+        build_sitemap()
+        sitemap = (OUTPUT_DIR / "sitemap.xml").read_text()
+        
+        self.assertIn('<?xml version="1.0"', sitemap)
+        self.assertIn('<urlset', sitemap)
+        self.assertIn('</urlset>', sitemap)
+        self.assertIn(f'<loc>https://ngsanogo.github.io/</loc>', sitemap)
+    
+    def test_html_structure_valid(self):
+        """Test structure HTML basique."""
+        build_home()
+        html = (OUTPUT_DIR / "index.html").read_text()
+        
+        # Check HTML5 structure
+        self.assertIn("<!DOCTYPE html>", html)
+        self.assertIn("<html", html)
+        self.assertIn("</html>", html)
+        self.assertIn("<head>", html)
+        self.assertIn("</head>", html)
+        self.assertIn("<body>", html)
+        self.assertIn("</body>", html)
+        
+        # Check meta tags
+        self.assertIn('<meta charset="UTF-8">', html)
+        self.assertIn('<meta name="viewport"', html)
+        self.assertIn('<meta name="description"', html)
 
 
 class TestSiteStructure(unittest.TestCase):
