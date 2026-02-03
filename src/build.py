@@ -187,7 +187,7 @@ def load_template():
     return template_path.read_text(encoding="utf-8")
 
 
-def render_html(title, content, description=None):
+def render_html(title, content, description=None, canonical_path="/", schema_type="WebPage"):
     """Render complete HTML page from template."""
     template = load_template()
     css = load_css()
@@ -197,9 +197,18 @@ def render_html(title, content, description=None):
         f'<a href="{url}">{name}</a>' for name, url in NAV_LINKS
     )
     
+    # Build canonical URL
+    canonical_url = f"{SITE_URL}{canonical_path}"
+    
+    # Build Schema.org JSON-LD
+    schema_json = _build_schema_json(title, description or SITE_DESC, canonical_url, schema_type)
+    
     # Fill template
-    html_output = template.replace("{{title}}", f"{title} - {SITE_TITLE}" if title != SITE_TITLE else title)
+    page_title = f"{title} - {SITE_TITLE}" if title != SITE_TITLE else title
+    html_output = template.replace("{{title}}", page_title)
     html_output = html_output.replace("{{description}}", description or SITE_DESC)
+    html_output = html_output.replace("{{canonical_url}}", canonical_url)
+    html_output = html_output.replace("{{schema_json}}", schema_json)
     html_output = html_output.replace("{{site_title}}", SITE_TITLE)
     html_output = html_output.replace("{{site_desc}}", SITE_DESC)
     html_output = html_output.replace("{{navigation}}", nav_html)
@@ -208,6 +217,73 @@ def render_html(title, content, description=None):
     html_output = html_output.replace("{{year}}", str(datetime.now().year))
     
     return html_output
+
+
+def _build_schema_json(title, description, url, schema_type):
+    """Build Schema.org JSON-LD for SEO."""
+    import json
+    
+    # Base Person schema (always present)
+    person_schema = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Issa Sanogo",
+        "url": SITE_URL,
+        "jobTitle": "Data Engineer Senior",
+        "description": "Data Engineer Senior · Chef de Projet Data · Data Product Owner",
+        "sameAs": [
+            "https://www.linkedin.com/in/ngsanogo/",
+            "https://github.com/ngsanogo"
+        ],
+        "knowsAbout": [
+            "Data Engineering",
+            "Python",
+            "SQL",
+            "ETL",
+            "Data Warehouse",
+            "Apache Airflow",
+            "Docker",
+            "PostgreSQL"
+        ]
+    }
+    
+    # Page-specific schema
+    page_schema = {
+        "@context": "https://schema.org",
+        "@type": schema_type,
+        "name": title,
+        "description": description,
+        "url": url,
+        "author": {
+            "@type": "Person",
+            "name": "Issa Sanogo"
+        }
+    }
+    
+    # Combine schemas
+    if schema_type == "WebPage" and url == SITE_URL + "/":
+        # Homepage: include Website schema
+        schemas = [
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "Issa Sanogo",
+                "url": SITE_URL,
+                "description": SITE_DESC
+            },
+            person_schema
+        ]
+    elif schema_type == "Article":
+        schemas = [page_schema]
+    else:
+        schemas = [page_schema, person_schema]
+    
+    # Generate script tags
+    script_tags = "\n    ".join(
+        f'<script type="application/ld+json">{json.dumps(s, ensure_ascii=False)}</script>'
+        for s in schemas
+    )
+    return script_tags
 
 
 def render_post_item(post):
@@ -362,11 +438,33 @@ def build_home():
     """Build homepage."""
     posts = get_posts()
     
+    # Home page intro - proposition de valeur claire en 5 secondes
+    home_intro = """
+        <h1 class="page-title">Issa Sanogo</h1>
+        <p><strong>Data Engineer Senior · Chef de Projet Data · Data Product Owner</strong></p>
+        
+        <div class="highlight-box">
+            <p>Je structure vos <strong>plateformes data</strong>, assure la <strong>qualité de vos données</strong> et pilote vos <strong>projets data transverses</strong>.</p>
+        </div>
+        
+        <div class="tech-stack">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">SQL</span>
+            <span class="tech-tag">Airflow</span>
+            <span class="tech-tag">Docker</span>
+            <span class="tech-tag">PostgreSQL</span>
+            <span class="tech-tag">ETL</span>
+            <span class="tech-tag">Data Warehouse</span>
+        </div>
+        
+        <p style="margin-top: 2rem;">
+            <a href="/projects" class="cta-button">Voir mes projets</a>
+            <a href="/contact" class="read-more" style="margin-left: 1.5rem;">Me contacter →</a>
+        </p>
+    """
+    
     if not posts:
-        content = """
-        <h1 class="page-title">Welcome</h1>
-        <p>Data Engineer with expertise in building data infrastructure, pipelines, and analytics solutions.</p>
-        """
+        content = home_intro
     else:
         latest_created = posts[0]
         posts_by_updated = sorted(posts, key=lambda x: x["updated"], reverse=True)
@@ -374,7 +472,7 @@ def build_home():
         
         posts_html = f"""
         <section class="home-section">
-            <h2 class="section-title">📝 Latest Post</h2>
+            <h2 class="section-title">📝 Dernier article</h2>
             {render_post_item(latest_created)}
         </section>
         """
@@ -382,20 +480,25 @@ def build_home():
         if latest_updated['slug'] != latest_created['slug']:
             posts_html += f"""
         <section class="home-section">
-            <h2 class="section-title">🔄 Recently Updated</h2>
+            <h2 class="section-title">🔄 Récemment mis à jour</h2>
             {render_post_item(latest_updated)}
         </section>
             """
         
-        posts_html += f'<p class="view-all"><a href="/blog" class="read-more">View all {len(posts)} posts →</a></p>'
+        posts_html += f'<p class="view-all"><a href="/blog" class="read-more">Voir les {len(posts)} articles →</a></p>'
         
         content = f"""
-        <h1 class="page-title">Welcome</h1>
-        <p>Data Engineer with expertise in building data infrastructure, pipelines, and analytics solutions.</p>
+        {home_intro}
         {posts_html}
         """
     
-    html = render_html(SITE_TITLE, content)
+    html = render_html(
+        SITE_TITLE, 
+        content, 
+        "Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. Plateformes data, qualité des données, pilotage produit.",
+        canonical_path="/",
+        schema_type="WebPage"
+    )
     with open(OUTPUT_DIR / "index.html", "w", encoding="utf-8") as f:
         f.write(html)
 
@@ -461,11 +564,12 @@ def _write_blog_page(html_content, page_num, total_pages):
         total_pages: Total pages (for description)
     """
     description = (
-        f"Data engineering blog - Articles about ETL, Python, databases, and infrastructure. "
-        f"Page {page_num} of {total_pages}." if total_pages > 1 
-        else "Data engineering blog - Articles about ETL, Python, databases, and infrastructure."
+        f"Blog Data Engineering - Articles sur ETL, Python, SQL, pipelines de données. "
+        f"Page {page_num} sur {total_pages}." if total_pages > 1 
+        else "Blog Data Engineering - Articles sur ETL, Python, SQL, pipelines de données et bonnes pratiques."
     )
-    html = render_html("Blog", html_content, description)
+    canonical_path = "/blog" if page_num == 1 else f"/blog/page/{page_num}"
+    html = render_html("Blog", html_content, description, canonical_path=canonical_path)
     
     if page_num == 1:
         output_path = OUTPUT_DIR / "blog" / "index.html"
@@ -504,7 +608,8 @@ def build_posts():
         """
         
         description = post['description'] or f"{post['title']} - {SITE_DESC}"
-        html = render_html(post['title'], content, description)
+        canonical_path = f"/posts/{post['slug']}"
+        html = render_html(post['title'], content, description, canonical_path=canonical_path, schema_type="Article")
         post_dir = OUTPUT_DIR / "posts" / post['slug']
         post_dir.mkdir(exist_ok=True, parents=True)
         
@@ -513,14 +618,16 @@ def build_posts():
 
 
 def build_pages():
-    """Build static pages (about, cv, contact)."""
-    page_descriptions = {
-        "about": "About Issa Sanogo - Data Engineer and open source advocate",
-        "cv": "Resume of Issa Sanogo - Senior Data Engineer with 8+ years experience in data infrastructure and pipelines",
-        "contact": "Contact Issa Sanogo - Get in touch via email, LinkedIn or GitHub"
+    """Build static pages (about, cv, contact, projects)."""
+    # Default descriptions SEO-optimized (used if not in frontmatter)
+    default_descriptions = {
+        "about": "Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. Plateformes data, qualité des données, pilotage produit.",
+        "cv": "CV d'Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. Plateformes data, qualité des données, pilotage produit.",
+        "contact": "Contactez Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. Disponible pour missions et collaborations.",
+        "projects": "Projets data d'Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. Plateformes data et gouvernance."
     }
     
-    for page_name in ["about", "cv", "contact"]:
+    for page_name in ["about", "cv", "contact", "projects"]:
         page_file = CONTENT_DIR / f"{page_name}.md"
         
         if not page_file.exists():
@@ -528,14 +635,16 @@ def build_pages():
         
         meta, body = parse_markdown_file(page_file)
         title = meta.get("title", page_name.capitalize())
-        description = page_descriptions.get(page_name, SITE_DESC)
+        # Use description from frontmatter if available, else use default
+        description = meta.get("description") or default_descriptions.get(page_name, SITE_DESC)
         
         content = f"""
         <h1 class="page-title">{title}</h1>
         {markdown_to_html(body)}
         """
         
-        html = render_html(title, content, description)
+        canonical_path = f"/{page_name}"
+        html = render_html(title, content, description, canonical_path=canonical_path)
         page_dir = OUTPUT_DIR / page_name
         page_dir.mkdir(exist_ok=True)
         
@@ -559,7 +668,7 @@ def build_sitemap():
     sitemap += f'    <priority>{SITEMAP_PRIORITIES["blog"]}</priority>\n  </url>\n'
     
     # Static pages
-    for page in ["about", "cv", "contact"]:
+    for page in ["about", "cv", "contact", "projects"]:
         sitemap += f'  <url>\n    <loc>{SITE_URL}/{page}</loc>\n'
         sitemap += f'    <priority>{SITEMAP_PRIORITIES["pages"]}</priority>\n  </url>\n'
     

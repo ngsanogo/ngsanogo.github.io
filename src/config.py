@@ -2,7 +2,7 @@
 
 # Site information
 SITE_TITLE = "Issa Sanogo"
-SITE_DESC = "Senior Data Engineer"
+SITE_DESC = "Data Engineer Senior · Chef de Projet Data · Data Product Owner"
 SITE_URL = "https://ngsanogo.github.io"
 
 # Build settings
@@ -10,10 +10,11 @@ POSTS_PER_PAGE = 10
 
 # Navigation links (in order)
 NAV_LINKS = [
-    ("Home", "/"),
-    ("About", "/about"),
+    ("Accueil", "/"),
+    ("À propos", "/about"),
+    ("Projets", "/projects"),
     ("Blog", "/blog"),
-    ("Resume", "/cv"),
+    ("CV", "/cv"),
     ("Contact", "/contact"),
 ]
 
