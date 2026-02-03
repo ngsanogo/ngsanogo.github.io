@@ -4,7 +4,6 @@
     --secondary: #555;          /* Slightly darker gray for better readability */
     --accent: #0066cc;
     --light: #f5f5f5;
-    --spacing: 1.5rem;          /* Explicit: consistent spacing */
 }
 
 /* Zen Principle: "Explicit is better than implicit" */
