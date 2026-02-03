@@ -310,3 +310,81 @@ img {
     border-radius: 6px;
     margin: 1.5rem 0;
 }
+
+/* Footer links */
+.footer-links {
+    margin-bottom: 1rem;
+}
+
+.footer-links a {
+    color: var(--secondary);
+    text-decoration: none;
+    margin: 0 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
+.footer-links span {
+    color: var(--secondary);
+}
+
+/* Stack technique visual */
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.tech-tag {
+    background: var(--light);
+    color: var(--primary);
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* CTA Button */
+.cta-button {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: background 0.2s ease;
+}
+
+.cta-button:hover {
+    background: #0052a3;
+    color: white;
+}
+
+/* Highlight box */
+.highlight-box {
+    background: var(--light);
+    border-left: 4px solid var(--accent);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 6px 6px 0;
+}
+
+.highlight-box p {
+    margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    html { font-size: 16px; }
+    .container { padding: 1.5rem 1rem; }
+    nav { gap: 1.5rem; }
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; }
+    .page-title { font-size: 1.7rem; }
+}

@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
     <meta name="description" content="{{description}}">
+    
+    <!-- SEO & Indexation -->
+    <link rel="canonical" href="{{canonical_url}}">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Issa Sanogo">
+    
+    <!-- Open Graph (Facebook, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{title}}">
+    <meta property="og:description" content="{{description}}">
+    <meta property="og:url" content="{{canonical_url}}">
+    <meta property="og:site_name" content="Issa Sanogo">
+    <meta property="og:locale" content="fr_FR">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{title}}">
+    <meta name="twitter:description" content="{{description}}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    
+    <!-- Schema.org JSON-LD -->
+    {{schema_json}}
+    
     <style>{{css}}</style>
 </head>
 <body>
@@ -18,6 +43,13 @@
         </header>
         <main>{{content}}</main>
         <footer>
+            <div class="footer-links">
+                <a href="https://www.linkedin.com/in/ngsanogo/" target="_blank" rel="noopener">LinkedIn</a>
+                <span>·</span>
+                <a href="https://github.com/ngsanogo" target="_blank" rel="noopener">GitHub</a>
+                <span>·</span>
+                <a href="mailto:ngsanogo@proton.me">Email</a>
+            </div>
             <p>&copy; {{year}} {{site_title}}</p>
         </footer>
     </div>
