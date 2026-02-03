@@ -1,9 +1,11 @@
 /* Zen Principle: "Beautiful is better than ugly" + "Readability counts" */
 :root {
     --primary: #1a1a1a;        /* Dark text for strong contrast */
-    --secondary: #555;          /* Slightly darker gray for better readability */
-    --accent: #0066cc;
-    --light: #f5f5f5;
+    --secondary: #4a4a4a;      /* Softer gray for supporting text */
+    --accent: #2563eb;         /* Blue professionnel, calme */
+    --accent-dark: #1d4ed8;
+    --light: #f8f9fa;          /* Fond subtil */
+    --border: #e5e7eb;
 }
 
 /* Zen Principle: "Explicit is better than implicit" */
@@ -14,37 +16,39 @@
 }
 
 html {
-    font-size: 18px;            /* Larger base for readability */
+    font-size: 17px;            /* Base lisible */
 }
 
 /* Zen Principle: "Readability counts" + "Simple is better than complex" */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, sans-serif;
     color: var(--primary);
     background: white;
-    line-height: 1.7;           /* Increased from 1.6 for breathing room */
+    line-height: 1.75;
     max-width: 100%;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* Zen Principle: "Sparse is better than dense" */
 .container {
-    max-width: 680px;           /* Narrower for focus */
+    max-width: 640px;           /* Lecture optimale */
     margin: 0 auto;
-    padding: 2rem 1.5rem;       /* More vertical breathing room */
+    padding: 3rem 1.5rem;
 }
 
-/* Zen Principle: "Flat is better than nested" - Simple header */
+/* Header épuré et centré */
 header {
     text-align: center;
-    margin-bottom: 4rem;        /* More white space */
+    margin-bottom: 4rem;
     padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
 }
 
 .site-title {
-    font-size: 2.2rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    margin-bottom: 0.75rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.5rem;
 }
 
 .site-title a {
@@ -52,58 +56,68 @@ header {
     text-decoration: none;
 }
 
-/* Zen Principle: "There should be one obvious way to do it" */
 .site-title a:hover {
     color: var(--accent);
-    transition: color 0.15s ease;
+    transition: color 0.2s ease;
 }
 
 .site-desc {
     color: var(--secondary);
-    font-size: 1.05rem;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
-/* Zen Principle: "Flat is better than nested" - Direct navigation */
+/* Navigation simple */
 nav {
     display: flex;
-    gap: 2.5rem;               /* More breathing room */
+    gap: 2rem;
     justify-content: center;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     flex-wrap: wrap;
 }
 
-/* Zen Principle: "Explicit is better than implicit" - Clear links */
 nav a {
-    color: var(--primary);      /* Darker for clarity */
+    color: var(--secondary);
     text-decoration: none;
     font-weight: 500;
-    font-size: 1rem;
-    padding-bottom: 2px;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.2s ease;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
 }
 
 nav a:hover {
-    border-bottom-color: var(--accent);
+    color: var(--accent);
 }
 
-/* Zen Principle: "Sparse is better than dense" */
+/* Main content */
 main {
-    margin: 3rem 0;
+    margin: 2rem 0;
 }
 
 .page-title {
     font-size: 2rem;
-    margin-bottom: 2rem;        /* More space */
+    margin-bottom: 0.5rem;
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
 }
 
-/* Zen Principle: "Simple is better than complex" */
+.tagline {
+    color: var(--secondary);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.home-context {
+    color: var(--secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* Post items */
 .post-item {
-    margin-bottom: 3.5rem;      /* Increased spacing between posts */
-    padding-bottom: 2.5rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
 }
 
 .post-item:last-child {
@@ -112,115 +126,101 @@ main {
 }
 
 .post-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
     line-height: 1.4;
-    font-weight: 700;
+    font-weight: 600;
 }
 
-/* Zen Principle: "Explicit is better than implicit" - Clear, obvious links */
+/* Links in post titles */
 .post-title a {
     color: var(--primary);
     text-decoration: none;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.2s ease;
+    transition: color 0.2s ease;
 }
 
 .post-title a:hover {
-    border-bottom-color: var(--accent);
+    color: var(--accent);
 }
 
 .post-meta {
     color: var(--secondary);
-    font-size: 0.95rem;
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
 }
 
 .post-description {
-    margin-top: 1rem;
-    color: var(--primary);
-    line-height: 1.7;
+    margin-top: 0.75rem;
+    color: var(--secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
 
-/* Zen Principle: "Explicit is better than implicit" - Clear call to action */
+/* Read more link */
 .read-more {
     color: var(--accent);
-    font-weight: 600;
+    font-weight: 500;
     display: inline-block;
-    margin-top: 1rem;
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
+    margin-top: 0.75rem;
+    text-decoration: none;
+    font-size: 0.95rem;
 }
 
 .read-more:hover {
-    color: #0052a3;
+    text-decoration: underline;
 }
 
-/* Zen Principle: "Readability counts" */
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     margin-bottom: 1rem;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.3;
+    letter-spacing: -0.025em;
 }
 
-h1 {
-    font-size: 2.2rem;
-}
-
-h2 {
-    font-size: 1.7rem;
-}
-
-h3 {
-    font-size: 1.4rem;
-}
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.15rem; }
 
 p {
-    margin-bottom: 1.5rem;       /* More space between paragraphs */
+    margin-bottom: 1.25rem;
 }
 
-
-/* Zen Principle: "Sparse is better than dense" */
+/* Lists */
 ul, ol {
-    margin-left: 2rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.8;
+    margin-left: 1.5rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
 }
 
 li {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
-/* Zen Principle: "Explicit is better than implicit" - Links look like links */
+/* Links */
 a {
     color: var(--accent);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
+    text-decoration: none;
 }
 
 a:hover {
-    color: #0052a3;
-    text-decoration-thickness: 2px;
+    text-decoration: underline;
 }
 
+/* Code */
 code {
     background: var(--light);
-    padding: 0.25rem 0.5rem;
+    padding: 0.2rem 0.4rem;
     border-radius: 4px;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.9em;
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    font-size: 0.875em;
     color: var(--primary);
 }
 
 pre {
     background: var(--light);
-    padding: 1.5rem;
+    padding: 1.25rem;
     border-radius: 6px;
     overflow-x: auto;
     margin-bottom: 1.5rem;
@@ -232,87 +232,94 @@ pre code {
     padding: 0;
 }
 
-/* Zen Principle: "Simple is better than complex" */
+/* Blockquote - sobre, élégant */
 blockquote {
-    border-left: 4px solid var(--accent);
-    padding-left: 1.5rem;
+    border-left: 3px solid var(--border);
+    padding-left: 1.25rem;
     color: var(--secondary);
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     font-style: italic;
 }
 
+/* Footer */
 footer {
     text-align: center;
-    margin-top: 5rem;          /* More separation */
-    padding-top: 2.5rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
     color: var(--secondary);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
-/* Zen Principle: "Flat is better than nested" - Simple pagination */
+/* Pagination */
 .pagination {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 3rem;
-    padding-top: 2.5rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
 }
 
 .page-numbers {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
-/* Zen Principle: "Explicit is better than implicit" - Clear active state */
 .page-numbers a,
 .page-numbers span {
-    padding: 0.5rem 0.75rem;
+    padding: 0.4rem 0.75rem;
     text-decoration: none;
     color: var(--secondary);
-    border: 1px solid transparent;
     border-radius: 4px;
+    font-size: 0.9rem;
     transition: all 0.2s ease;
 }
 
 .page-numbers a:hover {
-    border-color: var(--accent);
+    background: var(--light);
     color: var(--accent);
 }
 
 .page-numbers span {
-    font-weight: bold;
+    font-weight: 600;
     color: white;
     background: var(--accent);
-    border-color: var(--accent);
 }
 
 /* Home sections */
 .home-section {
-    margin-top: 3rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
 }
 
 .section-title {
-    font-size: 1.3rem;
+    font-size: 1rem;
     margin-bottom: 1.5rem;
     font-weight: 600;
+    color: var(--secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
 }
 
 .view-all {
     text-align: center;
-    margin-top: 3rem;
+    margin-top: 2rem;
 }
 
 /* Images */
 img {
     max-width: 100%;
     height: auto;
-    border-radius: 6px;
+    border-radius: 4px;
     margin: 1.5rem 0;
 }
 
 /* Footer links */
 .footer-links {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .footer-links a {
@@ -327,63 +334,54 @@ img {
 }
 
 .footer-links span {
-    color: var(--secondary);
+    color: var(--border);
 }
 
-/* Stack technique visual */
-.tech-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1rem 0;
-}
-
-.tech-tag {
-    background: var(--light);
-    color: var(--primary);
-    padding: 0.35rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-/* CTA Button */
+/* CTA Button - sobre */
 .cta-button {
     display: inline-block;
-    background: var(--accent);
+    background: var(--primary);
     color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
+    padding: 0.6rem 1.25rem;
+    border-radius: 4px;
     text-decoration: none;
-    font-weight: 600;
-    margin-top: 1rem;
+    font-weight: 500;
+    font-size: 0.95rem;
     transition: background 0.2s ease;
 }
 
 .cta-button:hover {
-    background: #0052a3;
+    background: var(--accent);
     color: white;
+    text-decoration: none;
 }
 
-/* Highlight box */
+/* Highlight box - centered */
 .highlight-box {
     background: var(--light);
-    border-left: 4px solid var(--accent);
     padding: 1.25rem 1.5rem;
-    margin: 2rem 0;
-    border-radius: 0 6px 6px 0;
+    margin: 1.5rem 0;
+    border-radius: 6px;
+    text-align: center;
 }
 
 .highlight-box p {
     margin-bottom: 0;
+    font-size: 1.05rem;
+    line-height: 1.6;
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 600px) {
     html { font-size: 16px; }
-    .container { padding: 1.5rem 1rem; }
-    nav { gap: 1.5rem; }
-    h1 { font-size: 1.8rem; }
-    h2 { font-size: 1.4rem; }
-    .page-title { font-size: 1.7rem; }
+    .container { padding: 2rem 1rem; }
+    nav { gap: 1.25rem; }
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.25rem; }
+    .page-title { font-size: 1.6rem; }
+    .cta-button { 
+        display: block;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
 }

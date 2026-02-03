@@ -1,94 +1,101 @@
 ---
-title: CV
-description: "CV d'Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. 8+ ans d'expérience en structuration de plateformes data et qualité des données."
+title: Resume — Issa Sanogo
+description: "Issa Sanogo's resume - Senior Data Engineer. 8+ years of experience in data platform architecture, data quality, and project leadership."
 ---
 
-# Issa SANOGO
+# Issa Sanogo
 
-## Data Engineer Senior · Chef de Projet Data · Data Product Owner
+**Senior Data Engineer**
 
-📍 Bezons, France | 📞 [+33 6 51 98 52 79](tel:+33651985279) | ✉ [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
-
-🔗 [LinkedIn](https://www.linkedin.com/in/ngsanogo) | [GitHub](https://github.com/ngsanogo)
-
----
-
-## Profil
-
-Data Engineer senior avec une forte orientation pilotage et produit. Spécialisé dans la **structuration de plateformes data** et la **qualité des données**. Habitué à cadrer les besoins métiers, piloter des sujets transverses et accompagner les équipes dans la mise en œuvre de solutions data fiables et exploitables.
+Paris area, France · [ngsanogo@proton.me](mailto:ngsanogo@proton.me) · [LinkedIn](https://www.linkedin.com/in/ngsanogo) · [GitHub](https://github.com/ngsanogo)
 
 ---
 
-## Expériences professionnelles
+## Summary
+
+Data Engineer with 8 years of experience, specialized in **data platform architecture** and **data quality**.
+
+Accustomed to demanding contexts (healthcare, medical research), I scope business requirements, lead cross-functional projects, and guide teams toward reliable, actionable data solutions.
+
+---
+
+## Experience
 
 ### Data Engineer — Padoa
-📍 Paris, France | 📅 Août 2025 – Présent
+Paris · August 2025 – Present
 
-- Reprise de données clients depuis des sources variées
-- Refonte et industrialisation du pipeline d'intégration (fortes volumétries)
-- Participation aux décisions techniques avec la squad plateforme
-- Collaboration avec les référents métiers et les clients
-- Maintenance et évolution de la base produit
+Occupational health SaaS company.
 
-### Data Engineer — Peasy Anglais
-📍 Annecy, France | 📅 Mars 2025 – Juillet 2025
+- Client data migration from various sources
+- Pipeline redesign and industrialization (high volumes)
+- Technical decision-making with the platform squad
+- Collaboration with business stakeholders and clients
+- Product database maintenance and evolution
 
-- Construction et optimisation des bases de données
-- Mise en place de pipelines d'intégration (nettoyage, standardisation, structuration)
-- Contribution à l'architecture data : modélisation, règles de gestion, documentation
-- Amélioration de la gouvernance et des processus CRM
-- Création de dashboards automatisés et accompagnement des équipes
+### Data Engineer — Peasy
+Annecy · March 2025 – July 2025
+
+EdTech startup.
+
+- Database construction and optimization
+- Integration pipeline implementation (cleaning, standardization, structuring)
+- Data architecture contribution: modeling, business rules, documentation
+- CRM governance and process improvement
+- Automated dashboard creation and team enablement
 
 ### Data Engineer — Institut Jérôme Lejeune
-📍 Paris, France | 📅 Octobre 2021 – Janvier 2025
+Paris · October 2021 – January 2025 (3 years)
 
-- Diagnostic des référentiels de données (patients, échantillons, recherche)
-- Mise en place d'un data warehouse et développement des flux ETL
-- Identification des besoins data stratégiques
-- Conception de dashboards pour les équipes médicales et la direction
-- Pilotage, évolution et gouvernance des outils Data
-- Accompagnement des équipes médicales et scientifiques
+Specialized medical research institute.
+
+- Data repository diagnostic (patients, samples, research)
+- Data warehouse implementation and ETL workflow development
+- Strategic data needs identification
+- Dashboard design for medical teams and management
+- Data tool governance and evolution leadership
+- Medical and scientific team support
 
 ### Data Manager — AP-HP
-📍 Boulogne-Billancourt, France | 📅 Septembre 2017 – Septembre 2021
+Boulogne-Billancourt · September 2017 – September 2021 (4 years)
 
-- Prise en charge du datamanagement d'études cliniques
-- Administration de bases de données
-- Développement et automatisation de rapports
+Paris public hospital system (largest in France).
 
----
-
-## Formation
-
-### Master 2 en Ingénierie Mathématique Appliquée aux Sciences du Vivant
-**Université de Paris** | 📅 2016 – 2017
-
-Mathématiques appliquées, Biostatistiques, Programmation, Bases de données, Recueil de données
+- Clinical trial data management
+- Database administration
+- Report development and automation
 
 ---
 
-## Compétences techniques
+## Education
 
-**Langages** : Python, R, SQL
+### Master's Degree — Applied Mathematics for Life Sciences
+Université de Paris · 2016 – 2017
 
-**Bases de données** : PostgreSQL, SQL Server, MySQL, NoSQL
-
-**Orchestration & DevOps** : Airflow, Docker, Git, GitHub
-
-**Visualisation** : Power BI, Tableau, Looker Studio
-
-**Gestion de projet** : Jira, Confluence
+Applied mathematics, biostatistics, programming, databases.
 
 ---
 
-## Langues
+## Skills
 
-- 🇫🇷 **Français** — Langue maternelle
-- 🇬🇧 **Anglais** — Niveau professionnel
+**Languages** — Python, R, SQL
+
+**Databases** — PostgreSQL, SQL Server, MySQL
+
+**Orchestration** — Airflow, Docker, Git
+
+**Visualization** — Power BI, Tableau, Looker Studio
+
+**Project Management** — Jira, Confluence
 
 ---
 
-<p style="margin-top: 2rem;">
-    <a href="/contact" class="cta-button">Me contacter</a>
-    <a href="/projects" class="read-more" style="margin-left: 1.5rem;">Voir mes projets →</a>
+## Languages
+
+French (native) · English (professional)
+
+---
+
+<p style="margin-top: 2rem; text-align: center;">
+    <a href="/contact" class="cta-button">Get in touch</a>
+    <a href="/projects" class="read-more" style="margin-left: 1.5rem;">View my work →</a>
 </p>
