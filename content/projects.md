@@ -1,88 +1,98 @@
 ---
-title: Projets
-description: "Projets data d'Issa Sanogo - Data warehouses, pipelines ETL, industrialisation data, gouvernance. Cas concrets avec stack et résultats."
+title: Work — Issa Sanogo
+description: "Data engineering projects: data warehouses, ETL pipelines, industrialization, data governance. Healthcare, research, and SaaS contexts."
 ---
 
-# Projets
+# Work
 
-Sélection de projets réalisés dans le cadre de mes missions professionnelles. Chaque projet illustre une approche pragmatique : **comprendre le besoin métier**, proposer une solution adaptée, et **assurer la qualité des livrables**.
-
----
-
-## 🏥 Industrialisation de plateforme data — Santé au travail
-
-**Contexte** : Entreprise SaaS dans le secteur de la santé au travail, avec des besoins de reprise et d'intégration de données clients à forte volumétrie.
-
-**Mission** :
-- Reprise de données clients depuis des sources variées
-- Refonte et industrialisation du pipeline d'intégration
-- Ingestion de fortes volumétries avec garantie de fiabilité
-- Participation aux décisions techniques avec la squad plateforme
-- Coordination avec les référents métiers et les clients
-
-**Stack** : Python, SQL, Airflow
+These projects illustrate how I work: understand the context, structure progressively, and deliver solutions that last.
 
 ---
 
-## 📚 Structuration data pour une EdTech
+## Data Integration Platform Industrialization
 
-**Contexte** : Entreprise de technologie éducative en croissance, avec des données dispersées et des besoins de qualité et de structuration.
+**Sector**: Occupational Health (SaaS)
 
-**Mission** :
-- Construction et optimisation des bases de données
-- Mise en place de pipelines d'intégration (nettoyage, standardisation, structuration)
-- Contribution à l'architecture data : modélisation et règles de gestion
-- Amélioration de la gouvernance et des processus CRM
-- Création de dashboards automatisés
-- Accompagnement des équipes dans l'usage des outils data
+A SaaS company needed to integrate data from new clients across varied sources, with high volumes and strict reliability requirements.
 
-**Stack** : Python, SQL, MySQL, Looker Studio
+**What I did:**
+- Client data migration from heterogeneous systems
+- Pipeline redesign to industrialize the integration process
+- Reliable ingestion implementation for high volumes
+- Technical decision-making with the platform squad
+- Coordination with business stakeholders and clients
 
----
-
-## 🔬 Data warehouse pour un institut de recherche médicale
-
-**Contexte** : Institut de recherche spécialisé avec des référentiels de données dispersés (patients, échantillons, recherche) et un besoin de centralisation.
-
-**Mission** :
-- Diagnostic des référentiels existants et plan d'action
-- Conception et mise en place d'un data warehouse
-- Développement des flux ETL associés
-- Identification des besoins data stratégiques
-- Dashboards pour les équipes médicales et la direction
-- Pilotage et gouvernance des outils et pratiques Data
-- Accompagnement des équipes médicales et scientifiques
-
-**Stack** : Python, R, SQL Server, PostgreSQL, Tableau, Power BI, Docker
+**Stack**: Python, SQL, Airflow
 
 ---
 
-## 🏛️ Datamanagement d'études cliniques — AP-HP
+## EdTech Startup Data Structuring
 
-**Contexte** : Plus grand système hospitalier de France, avec des exigences strictes de gestion des données d'études cliniques.
+**Sector**: Educational Technology
 
-**Mission** :
-- Prise en charge complète du datamanagement d'études cliniques
-- Administration de bases de données
-- Développement et automatisation de rapports
+A growing company with data scattered across multiple tools, lacking consolidated vision or governance.
 
-**Stack** : R, MySQL
+**What I did:**
+- Database construction and optimization
+- Integration pipelines: cleaning, standardization, structuring
+- Data architecture contribution: modeling, business rules
+- CRM governance and process improvement
+- Automated dashboards for operational tracking
+- Team enablement for data tool adoption
 
----
-
-## Approche
-
-Chaque projet suit une méthodologie pragmatique :
-
-1. **Cadrer le besoin métier** — Comprendre le problème avant de proposer une solution
-2. **Privilégier la simplicité** — Solutions maintenables et évolutives
-3. **Assurer la qualité** — Données fiables et exploitables
-4. **Documenter** — Transmission et autonomie des équipes
-5. **Accompagner** — Formation et adoption des outils
+**Stack**: Python, SQL, MySQL, Looker Studio
 
 ---
 
-<p style="margin-top: 2rem;">
-    <a href="/contact" class="cta-button">Discuter d'un projet</a>
-    <a href="/cv" class="read-more" style="margin-left: 1.5rem;">Voir mon CV →</a>
+## Medical Research Data Warehouse
+
+**Sector**: Research Institute (Healthcare)
+
+A research institute with scattered data repositories: patients, biological samples, research data. Need to centralize, ensure reliability, and make data actionable for medical and scientific teams.
+
+**What I did:**
+- Existing repository diagnostic and action plan definition
+- Data warehouse design and implementation
+- ETL workflow development
+- Strategic data needs identification with leadership
+- Dashboards for medical teams and management
+- Data tool and practice governance leadership
+- Medical and scientific team support
+
+**Duration**: 3 years
+
+**Stack**: Python, R, SQL Server, PostgreSQL, Tableau, Power BI, Docker
+
+---
+
+## Clinical Trial Data Management
+
+**Sector**: Public Hospital (AP-HP)
+
+Clinical trial data management at France's largest hospital system, with strict regulatory requirements.
+
+**What I did:**
+- Complete clinical trial data management ownership
+- Database administration
+- Report development and automation
+
+**Duration**: 4 years
+
+**Stack**: R, MySQL
+
+---
+
+## What these projects have in common
+
+They share key characteristics:
+
+- **Demanding contexts** — Healthcare, medical research, sensitive data
+- **Long-term vision** — Multi-year engagements, not one-off interventions
+- **Beyond technical** — Business coordination, governance, team support
+
+---
+
+<p style="margin-top: 2rem; text-align: center;">
+    <a href="/contact" class="cta-button">Discuss a project</a>
+    <a href="/cv" class="read-more" style="margin-left: 1.5rem;">View my resume →</a>
 </p>

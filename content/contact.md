@@ -1,45 +1,42 @@
 ---
-title: Contact
-description: "Contactez Issa Sanogo - Data Engineer Senior disponible pour missions data engineering, pilotage de projets et conseil. Réponse sous 48h."
+title: Contact — Issa Sanogo
+description: "Contact Issa Sanogo, Senior Data Engineer. Data engineering projects, consulting, data platform architecture. Paris area."
 ---
 
 # Contact
 
-Disponible pour des **missions en data engineering**, du **pilotage de projets data**, ou simplement pour échanger sur des sujets techniques.
+Open to discussions about **data engineering**, **data platform architecture**, or **project collaboration**.
 
 ---
 
-## Me contacter
+## Get in touch
 
-📧 **Email** : [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
+**Email** — [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
 
-💼 **LinkedIn** : [linkedin.com/in/ngsanogo](https://www.linkedin.com/in/ngsanogo/)
+**LinkedIn** — [linkedin.com/in/ngsanogo](https://www.linkedin.com/in/ngsanogo/)
 
-💻 **GitHub** : [github.com/ngsanogo](https://github.com/ngsanogo)
-
----
-
-## Domaines d'intervention
-
-- **Structuration de plateformes data** — Architecture, data warehouse, pipelines ETL
-- **Pilotage de projets data** — Cadrage, coordination, delivery
-- **Qualité et gouvernance des données** — Standards, validation, documentation
-- **Industrialisation** — Pipelines d'intégration, automatisation, scalabilité
-- **Accompagnement d'équipes** — Formation, bonnes pratiques, autonomisation
+**GitHub** — [github.com/ngsanogo](https://github.com/ngsanogo)
 
 ---
 
-## Informations pratiques
+## What I can help with
 
-📍 **Localisation** : Région parisienne (Bezons)
-
-🚀 **Disponibilité** : Ouvert aux opportunités
-
-⏱️ **Délai de réponse** : Sous 48h
+- Data platform architecture
+- Integration pipelines and ETL workflows
+- Data quality and governance
+- Cross-functional data project leadership
+- Team enablement and training
 
 ---
 
-<p style="margin-top: 2rem;">
-    <a href="mailto:ngsanogo@proton.me" class="cta-button">Envoyer un email</a>
-    <a href="/cv" class="read-more" style="margin-left: 1.5rem;">Voir mon CV →</a>
+## Practical info
+
+**Location** — Paris area, France
+
+**Response time** — Within 48 hours
+
+---
+
+<p style="margin-top: 2rem; text-align: center;">
+    <a href="mailto:ngsanogo@proton.me" class="cta-button">Send an email</a>
 </p>
