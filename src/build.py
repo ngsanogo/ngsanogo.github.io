@@ -228,8 +228,8 @@ def _build_schema_json(title, description, url, schema_type):
         "@type": "Person",
         "name": "Issa Sanogo",
         "url": SITE_URL,
-        "jobTitle": "Data Engineer Senior",
-        "description": "Data Engineer Senior · Chef de Projet Data · Data Product Owner",
+        "jobTitle": "Senior Data Engineer",
+        "description": "Senior Data Engineer — Data platforms & data quality",
         "sameAs": [
             "https://www.linkedin.com/in/ngsanogo/",
             "https://github.com/ngsanogo"
@@ -299,7 +299,7 @@ def render_post_item(post):
         <h2 class="post-title"><a href="/posts/{post['slug']}">{post['title']}</a></h2>
         <div class="post-meta"><span>{post['date_str']}</span></div>
         <p class="post-description">{post['description']}</p>
-        <a href="/posts/{post['slug']}" class="read-more">Lire la suite →</a>
+        <a href="/posts/{post['slug']}" class="read-more">Read more →</a>
     </div>
     """
 
@@ -323,7 +323,7 @@ def render_pagination(current_page, total_pages, base_url="/blog"):
     # Previous button
     if current_page > 1:
         prev_url = base_url if current_page == 2 else f"{base_url}/page/{current_page - 1}"
-        html += f'<a href="{prev_url}" class="read-more">← Précédent</a>'
+        html += f'<a href="{prev_url}" class="read-more">← Previous</a>'
     else:
         html += '<span></span>'
     
@@ -339,7 +339,7 @@ def render_pagination(current_page, total_pages, base_url="/blog"):
     
     # Next button
     if current_page < total_pages:
-        html += f'<a href="{base_url}/page/{current_page + 1}" class="read-more">Suivant →</a>'
+        html += f'<a href="{base_url}/page/{current_page + 1}" class="read-more">Next →</a>'
     else:
         html += '<span></span>'
     
@@ -437,28 +437,22 @@ def build_home():
     """Build homepage."""
     posts = get_posts()
     
-    # Home page intro - proposition de valeur claire en 5 secondes
+    # Home page intro - clear value proposition in 5 seconds
     home_intro = """
-        <h1 class="page-title">Issa Sanogo</h1>
-        <p><strong>Data Engineer Senior · Chef de Projet Data · Data Product Owner</strong></p>
+        <div style="text-align: center;">
+            <h1 class="page-title">Issa Sanogo</h1>
+            <p class="tagline">Senior Data Engineer</p>
+        </div>
         
         <div class="highlight-box">
-            <p>Je structure vos <strong>plateformes data</strong>, assure la <strong>qualité de vos données</strong> et pilote vos <strong>projets data transverses</strong>.</p>
+            <p>I build <strong>data platforms</strong> and ensure <strong>data quality</strong> in contexts where reliability is non-negotiable.</p>
         </div>
         
-        <div class="tech-stack">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">SQL</span>
-            <span class="tech-tag">Airflow</span>
-            <span class="tech-tag">Docker</span>
-            <span class="tech-tag">PostgreSQL</span>
-            <span class="tech-tag">ETL</span>
-            <span class="tech-tag">Data Warehouse</span>
-        </div>
+        <p class="home-context" style="text-align: center;">8 years of experience in healthcare, medical research, and SaaS. I scope business needs, build solutions that last, and enable teams.</p>
         
-        <p style="margin-top: 2rem;">
-            <a href="/projects" class="cta-button">Voir mes projets</a>
-            <a href="/contact" class="read-more" style="margin-left: 1.5rem;">Me contacter →</a>
+        <p style="margin-top: 2rem; text-align: center;">
+            <a href="/about" class="cta-button">Learn more</a>
+            <a href="/contact" class="read-more" style="margin-left: 1.5rem;">Get in touch →</a>
         </p>
     """
     
@@ -466,25 +460,14 @@ def build_home():
         content = home_intro
     else:
         latest_created = posts[0]
-        posts_by_updated = sorted(posts, key=lambda x: x["updated"], reverse=True)
-        latest_updated = posts_by_updated[0]
         
         posts_html = f"""
         <section class="home-section">
-            <h2 class="section-title">📝 Dernier article</h2>
+            <h2 class="section-title">Latest Writing</h2>
             {render_post_item(latest_created)}
+            <p style="text-align: center;"><a href="/blog" class="read-more">View all posts →</a></p>
         </section>
         """
-        
-        if latest_updated['slug'] != latest_created['slug']:
-            posts_html += f"""
-        <section class="home-section">
-            <h2 class="section-title">🔄 Récemment mis à jour</h2>
-            {render_post_item(latest_updated)}
-        </section>
-            """
-        
-        posts_html += f'<p class="view-all"><a href="/blog" class="read-more">Voir les {len(posts)} articles →</a></p>'
         
         content = f"""
         {home_intro}
@@ -494,7 +477,7 @@ def build_home():
     html = render_html(
         SITE_TITLE, 
         content, 
-        "Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. Plateformes data, qualité des données, pilotage produit.",
+        "Issa Sanogo - Senior Data Engineer. Data platforms, data quality, cross-functional project leadership.",
         canonical_path="/",
         schema_type="WebPage"
     )
@@ -544,11 +527,11 @@ def _build_blog_page_content(posts, page_num, total_pages):
     """
     posts_html = "".join(render_post_item(post) for post in posts)
     pagination_html = render_pagination(page_num, total_pages, "/blog")
-    page_info = f" (Page {page_num} sur {total_pages})" if total_pages > 1 else ""
+    page_info = f" (Page {page_num} of {total_pages})" if total_pages > 1 else ""
     
     return f"""
-        <h1 class="page-title">Blog</h1>
-        <p>Articles sur le data engineering, les outils et les bonnes pratiques.{page_info}</p>
+        <h1 class="page-title" style="text-align: center;">Writing</h1>
+        <p style="text-align: center;">Articles on data engineering, tools, and best practices.{page_info}</p>
         {posts_html}
         {pagination_html}
     """
@@ -563,12 +546,12 @@ def _write_blog_page(html_content, page_num, total_pages):
         total_pages: Total pages (for description)
     """
     description = (
-        f"Blog Data Engineering - Articles sur ETL, Python, SQL, pipelines de données. "
-        f"Page {page_num} sur {total_pages}." if total_pages > 1 
-        else "Blog Data Engineering - Articles sur ETL, Python, SQL, pipelines de données et bonnes pratiques."
+        f"Data Engineering Blog - Articles on ETL, Python, SQL, data pipelines. "
+        f"Page {page_num} of {total_pages}." if total_pages > 1 
+        else "Data Engineering Blog - Articles on ETL, Python, SQL, data pipelines and best practices."
     )
     canonical_path = "/blog" if page_num == 1 else f"/blog/page/{page_num}"
-    html = render_html("Blog", html_content, description, canonical_path=canonical_path)
+    html = render_html("Writing", html_content, description, canonical_path=canonical_path)
     
     if page_num == 1:
         output_path = OUTPUT_DIR / "blog" / "index.html"

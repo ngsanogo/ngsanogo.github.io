@@ -1,68 +1,64 @@
 ---
-title: À propos
-description: "Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. 8+ ans d'expérience en plateformes data et qualité des données."
+title: About — Issa Sanogo
+description: "Senior Data Engineer with 8+ years of experience. Specialized in data platform architecture, data quality, and cross-functional project leadership."
 ---
 
-# À propos
+# About
 
-## Data Engineer Senior · Chef de Projet Data · Data Product Owner
+Since 2017, I've been building data systems in contexts where **reliability is non-negotiable**: healthcare, medical research, patient data.
 
-Depuis 2017, j'accompagne des organisations dans la **structuration de leurs plateformes data** et l'amélioration de la **qualité de leurs données**.
-
-Mon approche combine expertise technique et vision produit : je ne construis pas des pipelines pour construire des pipelines, mais pour **résoudre des problèmes métier concrets**.
-
----
-
-## Ce que j'apporte
-
-### 🔧 Expertise technique
-- Architecture de data warehouses et flux ETL
-- Pipelines d'intégration haute volumétrie
-- Standards de qualité et gouvernance des données
-
-### 🎯 Vision produit
-- Cadrage des besoins métiers avant toute solution technique
-- Priorisation basée sur l'impact réel
-- Documentation et transmission aux équipes
-
-### 🤝 Pilotage transverse
-- Coordination entre équipes techniques et métiers
-- Accompagnement des utilisateurs dans l'adoption des outils
-- Gouvernance et bonnes pratiques data
+This experience taught me one thing: the value of a data platform is not measured by its technical complexity, but by the **trust** you can place in its data.
 
 ---
 
-## Parcours
+## My approach
 
-**2025 - Présent** — Data Engineer chez Padoa. Reprise de données clients, industrialisation de pipelines d'intégration à forte volumétrie, collaboration avec les équipes produit et métier.
+I'm not an engineer who just codes pipelines. I'm someone who **understands business needs**, proposes adapted solutions, and ensures they work in the long run.
 
-**2025** — Data Engineer chez Peasy Anglais. Construction de la stack data, pipelines d'intégration, dashboards automatisés.
+In practice, this means:
 
-**2021 - 2025** — Data Engineer à l'Institut Jérôme Lejeune. Mise en place d'un data warehouse, diagnostic et gouvernance des référentiels de données, accompagnement des équipes médicales et scientifiques.
-
-**2017 - 2021** — Data Manager à l'AP-HP. Datamanagement d'études cliniques, administration de bases de données, automatisation de rapports.
-
----
-
-## Stack technique
-
-**Langages** : Python, R, SQL
-
-**Data** : PostgreSQL, SQL Server, MySQL, Airflow, Docker
-
-**Outils** : Power BI, Tableau, Looker Studio, Git, Jira, Confluence
+- **Scope before building** — Understand the real problem, not the imagined one
+- **Favor simplicity** — A maintainable solution beats a technical feat
+- **Ensure quality** — Reliable, documented, actionable data
+- **Support teams** — Transfer knowledge, train, enable autonomy
 
 ---
 
-## Approche
+## Background
 
-> Les meilleurs systèmes data sont ceux qui servent réellement les besoins métier.
+### 8 years of data structuring
 
-Je privilégie les solutions **simples et maintenables**. La qualité des données est un prérequis, pas une option. Chaque projet commence par comprendre le besoin avant de proposer une solution technique.
+My career follows a common thread: transforming raw data into actionable insights, in environments where errors have consequences.
+
+**2025 — Padoa** (Occupational Health SaaS)
+Client data migration, high-volume pipeline industrialization. Platform squad work, coordination with business and clients.
+
+**2025 — Peasy** (EdTech)
+Built the complete data stack. Integration pipelines, CRM governance, automated dashboards.
+
+**2021-2025 — Institut Jérôme Lejeune** (Medical Research)
+3 years structuring data repositories for a research institute: patients, biological samples, research data. Data warehouse implementation, governance, support for medical and scientific teams.
+
+**2017-2021 — AP-HP** (Public Hospital)
+4 years of clinical trial data management at France's largest hospital system. Database administration, report automation.
 
 ---
 
-<p style="margin-top: 2rem;">
-    <a href="/projects" class="cta-button">Voir mes projets</a>
-    <a href="/contact" class="read-more" style="margin-left: 1.5rem;">Me contacter →</a>
+## Beliefs
+
+> *Simple is better than complex. Readability counts.*
+
+These Zen of Python principles guide my work. I believe the best data systems are:
+
+- **Understandable** by those who use them
+- **Maintainable** by those who inherit them
+- **Reliable** for those who make decisions with them
+
+Tech hype doesn't interest me. What interests me is data that truly serves those who need it.
+
+---
+
+<p style="margin-top: 2rem; text-align: center;">
+    <a href="/cv" class="cta-button">View full resume</a>
+    <a href="/contact" class="read-more" style="margin-left: 1.5rem;">Get in touch →</a>
 </p>
