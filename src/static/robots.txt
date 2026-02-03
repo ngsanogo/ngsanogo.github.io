@@ -1,0 +1,9 @@
+# robots.txt - https://ngsanogo.github.io
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://ngsanogo.github.io/sitemap.xml
+
+# Disallow unnecessary paths
+Disallow: /*.pdf$

@@ -28,6 +28,8 @@ from build import (
     _get_page_posts,
     _validate_post_meta,
     _parse_post_file,
+    _build_schema_json,
+    copy_static_files,
     get_posts,
     build,
     build_home,
@@ -202,8 +204,8 @@ class TestTemplateRendering(unittest.TestCase):
         html = render_pagination(2, 3)
         
         self.assertIn("pagination", html)
-        self.assertIn("Previous", html)
-        self.assertIn("Next", html)
+        self.assertIn("Précédent", html)
+        self.assertIn("Suivant", html)
         self.assertIn('href="/blog"', html)  # Page 1 uses /blog not /blog/page/1
         self.assertIn("/blog/page/3", html)
 
@@ -255,7 +257,8 @@ class TestBuildIntegration(unittest.TestCase):
         
         self.assertIn("<title>", html)
         self.assertIn("Issa Sanogo", html)
-        self.assertIn("Welcome", html)
+        # Le site est en français, vérifier le contenu FR
+        self.assertIn("Data Engineer Senior", html)
     
     def test_sitemap_valid_xml(self):
         """Test validité du sitemap XML."""
@@ -383,6 +386,61 @@ class TestSiteStructure(unittest.TestCase):
         self.assertTrue((root / "src/template.html").exists())
         self.assertTrue((root / "src/style.css").exists())
         self.assertTrue((root / "src/build.py").exists())
+    
+    def test_static_files_exist(self):
+        """Vérifier que les fichiers statiques existent."""
+        root = Path(__file__).parent.parent
+        self.assertTrue((root / "src/static/robots.txt").exists())
+        self.assertTrue((root / "src/static/404.html").exists())
+        self.assertTrue((root / "src/static/favicon.svg").exists())
+
+
+class TestSEOFeatures(unittest.TestCase):
+    """Tests pour les fonctionnalités SEO."""
+    
+    def test_schema_json_homepage(self):
+        """Test Schema.org JSON-LD pour la homepage."""
+        from config import SITE_URL, SITE_DESC
+        schema = _build_schema_json("Issa Sanogo", SITE_DESC, f"{SITE_URL}/", "WebPage")
+        
+        self.assertIn("application/ld+json", schema)
+        self.assertIn("WebSite", schema)
+        self.assertIn("Person", schema)
+        self.assertIn("Issa Sanogo", schema)
+    
+    def test_schema_json_article(self):
+        """Test Schema.org JSON-LD pour un article."""
+        from config import SITE_URL
+        schema = _build_schema_json("Test Article", "Description", f"{SITE_URL}/posts/test", "Article")
+        
+        self.assertIn("application/ld+json", schema)
+        self.assertIn("Article", schema)
+        self.assertIn("Test Article", schema)
+    
+    def test_static_files_copied_after_build(self):
+        """Test que les fichiers statiques sont copiés après le build."""
+        build()
+        
+        self.assertTrue((OUTPUT_DIR / "robots.txt").exists())
+        self.assertTrue((OUTPUT_DIR / "404.html").exists())
+        self.assertTrue((OUTPUT_DIR / "favicon.svg").exists())
+    
+    def test_html_has_canonical_url(self):
+        """Test que les pages HTML ont une URL canonique."""
+        build_home()
+        html = (OUTPUT_DIR / "index.html").read_text()
+        
+        self.assertIn('rel="canonical"', html)
+        self.assertIn('https://ngsanogo.github.io/', html)
+    
+    def test_html_has_open_graph(self):
+        """Test que les pages HTML ont les balises Open Graph."""
+        build_home()
+        html = (OUTPUT_DIR / "index.html").read_text()
+        
+        self.assertIn('og:title', html)
+        self.assertIn('og:description', html)
+        self.assertIn('og:url', html)
 
 
 if __name__ == "__main__":

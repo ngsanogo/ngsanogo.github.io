@@ -20,11 +20,15 @@ Site statique généré en Python avec **zéro dépendance externe**.
 ```
 ngsanogo.github.io/
 ├── src/                      # Code source
-│   ├── build.py             # Générateur site (27 fonctions)
+│   ├── build.py             # Générateur site
 │   ├── config.py            # Configuration centralisée
 │   ├── template.html        # Structure HTML
-│   ├── style.css            # Styles CSS (312 lignes)
-│   └── dev.py               # Serveur développement
+│   ├── style.css            # Styles CSS
+│   ├── dev.py               # Serveur développement
+│   └── static/              # Fichiers statiques
+│       ├── robots.txt       # Instructions crawlers
+│       ├── 404.html         # Page erreur
+│       └── favicon.svg      # Favicon
 │
 ├── content/                  # Contenu markdown
 │   ├── posts/               # Articles blog
@@ -32,16 +36,20 @@ ngsanogo.github.io/
 │   │   └── *.md            # Articles (13 actuels)
 │   ├── about.md            # Page À propos
 │   ├── cv.md               # CV/Resume
-│   └── contact.md          # Contact
+│   ├── contact.md          # Contact
+│   └── projects.md         # Projets
 │
 ├── tests/                    # Tests unitaires
-│   └── test_build.py        # 23 tests (100% passing)
+│   └── test_build.py        # 37 tests (100% passing)
 │
 ├── public/                   # Sortie générée (gitignored)
 │   ├── index.html
 │   ├── blog/               # Pages blog paginées
 │   ├── posts/              # Articles individuels
-│   └── sitemap.xml
+│   ├── sitemap.xml
+│   ├── robots.txt
+│   ├── 404.html
+│   └── favicon.svg
 │
 ├── .github/workflows/
 │   └── deploy.yml           # CI/CD (test → build → deploy)
@@ -130,16 +138,18 @@ DEV_SERVER_PORT = 8000
 
 ## Tests (tests/test_build.py)
 
-**23 tests organisés en 6 suites :**
+**37 tests organisés en 7 suites :**
 
 1. **TestMarkdownParsing** - Conversion markdown
 2. **TestFrontmatterParsing** - YAML parsing
 3. **TestTemplateRendering** - Templates HTML
 4. **TestBuildHelpers** - Fonctions helper
 5. **TestBuildIntegration** - Build complet
-6. **TestSiteStructure** - Vérification fichiers
+6. **TestEdgeCases** - Cas limites
+7. **TestSEOFeatures** - SEO (Schema.org, Open Graph, canonical)
+8. **TestSiteStructure** - Vérification fichiers
 
-**Coverage : ~80%**
+**Coverage : ~85%**
 
 ## Commandes Développement
 

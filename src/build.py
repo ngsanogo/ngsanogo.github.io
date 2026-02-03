@@ -6,6 +6,7 @@ Builds HTML from markdown files in content/ directory.
 
 import re
 import html
+import json
 import logging
 from pathlib import Path
 from datetime import datetime
@@ -221,8 +222,6 @@ def render_html(title, content, description=None, canonical_path="/", schema_typ
 
 def _build_schema_json(title, description, url, schema_type):
     """Build Schema.org JSON-LD for SEO."""
-    import json
-    
     # Base Person schema (always present)
     person_schema = {
         "@context": "https://schema.org",
@@ -300,7 +299,7 @@ def render_post_item(post):
         <h2 class="post-title"><a href="/posts/{post['slug']}">{post['title']}</a></h2>
         <div class="post-meta"><span>{post['date_str']}</span></div>
         <p class="post-description">{post['description']}</p>
-        <a href="/posts/{post['slug']}" class="read-more">Read more →</a>
+        <a href="/posts/{post['slug']}" class="read-more">Lire la suite →</a>
     </div>
     """
 
@@ -324,7 +323,7 @@ def render_pagination(current_page, total_pages, base_url="/blog"):
     # Previous button
     if current_page > 1:
         prev_url = base_url if current_page == 2 else f"{base_url}/page/{current_page - 1}"
-        html += f'<a href="{prev_url}" class="read-more">← Previous</a>'
+        html += f'<a href="{prev_url}" class="read-more">← Précédent</a>'
     else:
         html += '<span></span>'
     
@@ -340,7 +339,7 @@ def render_pagination(current_page, total_pages, base_url="/blog"):
     
     # Next button
     if current_page < total_pages:
-        html += f'<a href="{base_url}/page/{current_page + 1}" class="read-more">Next →</a>'
+        html += f'<a href="{base_url}/page/{current_page + 1}" class="read-more">Suivant →</a>'
     else:
         html += '<span></span>'
     
@@ -545,11 +544,11 @@ def _build_blog_page_content(posts, page_num, total_pages):
     """
     posts_html = "".join(render_post_item(post) for post in posts)
     pagination_html = render_pagination(page_num, total_pages, "/blog")
-    page_info = f" (Page {page_num} of {total_pages})" if total_pages > 1 else ""
+    page_info = f" (Page {page_num} sur {total_pages})" if total_pages > 1 else ""
     
     return f"""
         <h1 class="page-title">Blog</h1>
-        <p>All posts about data engineering, tools, and best practices.{page_info}</p>
+        <p>Articles sur le data engineering, les outils et les bonnes pratiques.{page_info}</p>
         {posts_html}
         {pagination_html}
     """
@@ -683,6 +682,20 @@ def build_sitemap():
     (OUTPUT_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
 
 
+def copy_static_files():
+    """Copy static files (robots.txt, 404.html, favicon.svg) to output directory."""
+    import shutil
+    
+    static_dir = Path(__file__).parent / "static"
+    if not static_dir.exists():
+        logger.warning(f"Static directory '{static_dir}' not found - skipping static files")
+        return
+    
+    for static_file in static_dir.iterdir():
+        if static_file.is_file():
+            shutil.copy2(static_file, OUTPUT_DIR / static_file.name)
+
+
 def build():
     """Build entire site.
     
@@ -725,6 +738,8 @@ def build():
         logger.info("✓ Static pages built")
         build_sitemap()
         logger.info("✓ Sitemap generated")
+        copy_static_files()
+        logger.info("✓ Static files copied")
         logger.info(f"✅ Site built successfully in {OUTPUT_DIR}")
         return True
     except Exception as e:
