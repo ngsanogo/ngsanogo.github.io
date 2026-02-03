@@ -1,9 +1,18 @@
-node_modules/
+# Generated output
 public/
+
+# Python cache
 __pycache__/
 *.pyc
+
+# OS files
 .DS_Store
+
+# Editor files
 *.swp
 *.swo
 *~
 .vscode/
+
+# Test artifacts
+test_*.md
