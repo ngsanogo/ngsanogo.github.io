@@ -55,11 +55,3 @@ services:
       start_period: 5s
     labels:
       - "com.ngsanogo.service=prod"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 128M
-        reservations:
-          cpus: '0.1'
-          memory: 32M
