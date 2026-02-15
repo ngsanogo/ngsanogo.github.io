@@ -1,5 +1,5 @@
 ---
-title: Contact — Issa Sanogo
+title: Contact
 description: "Contact Issa Sanogo, Senior Data Engineer. Data engineering projects, consulting, data platform architecture. Paris area."
 cta:
   - label: "Send an email"
