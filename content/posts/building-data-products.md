@@ -96,7 +96,7 @@ Problem-first approach to data product development.
 def data_first_thinking():
     """
     "We have click data. Let's build a clickstream dashboard."
-    
+
     Problems with this approach:
     - No defined user
     - No defined problem
@@ -111,17 +111,17 @@ def problem_first_thinking():
     """
     Problem: Marketing can't measure campaign effectiveness.
     User: Marketing analytics team (5 people)
-    
+
     Questions to answer:
     - Which campaigns drive conversions?
     - What's the cost per acquisition by channel?
     - How do campaigns perform over time?
-    
+
     Data needed:
     - Click/impression data (ad platforms)
     - Conversion events (product database)
     - Spend data (finance system)
-    
+
     Success criteria:
     - Marketing can self-serve campaign analysis
     - Weekly campaign reviews use the product
@@ -153,7 +153,7 @@ from typing import List
 @dataclass
 class UserPersona:
     """Define your data product's user."""
-    
+
     role: str
     team: str
     technical_level: str  # low, medium, high
@@ -161,7 +161,7 @@ class UserPersona:
     pain_points: List[str]
     goals: List[str]
     usage_frequency: str  # daily, weekly, monthly
-    
+
 
 # Example persona
 marketing_analyst = UserPersona(
@@ -191,18 +191,18 @@ def validate_product_fit(product_features: List[str], persona: UserPersona) -> d
     """
     addressed = []
     unaddressed = []
-    
+
     pain_point_keywords = {
         "combining data": ["integrated", "unified", "single source"],
         "numbers don't match": ["consistent", "validated", "single source of truth"],
         "historical trends": ["time series", "historical", "trending"],
         "rely on data team": ["self-serve", "no-code", "drag and drop"]
     }
-    
+
     for pain in persona.pain_points:
         pain_lower = pain.lower()
         is_addressed = False
-        
+
         for keyword, solutions in pain_point_keywords.items():
             if keyword in pain_lower:
                 for feature in product_features:
@@ -210,10 +210,10 @@ def validate_product_fit(product_features: List[str], persona: UserPersona) -> d
                         addressed.append((pain, feature))
                         is_addressed = True
                         break
-        
+
         if not is_addressed:
             unaddressed.append(pain)
-    
+
     return {
         "addressed_pain_points": addressed,
         "unaddressed_pain_points": unaddressed,
@@ -244,36 +244,36 @@ from datetime import datetime
 @dataclass
 class SuccessMetric:
     """Define a measurable success metric."""
-    
+
     name: str
     metric_type: str  # adoption, engagement, impact
     target: float
     current: Optional[float] = None
     measurement_method: str = ""
-    
+
 
 @dataclass
 class DataProductMetrics:
     """Complete metrics package for a data product."""
-    
+
     product_name: str
     launch_date: datetime
     metrics: List[SuccessMetric]
-    
+
     def health_check(self) -> dict:
         """Assess overall product health."""
-        
+
         results = {
             "adoption": [],
             "engagement": [],
             "impact": []
         }
-        
+
         for metric in self.metrics:
             if metric.current is not None:
                 achievement = metric.current / metric.target * 100
                 status = "green" if achievement >= 80 else "yellow" if achievement >= 50 else "red"
-                
+
                 results[metric.metric_type].append({
                     "name": metric.name,
                     "target": metric.target,
@@ -281,7 +281,7 @@ class DataProductMetrics:
                     "achievement": f"{achievement:.0f}%",
                     "status": status
                 })
-        
+
         return results
 
 
@@ -305,7 +305,7 @@ clv_dashboard_metrics = DataProductMetrics(
             current=85,
             measurement_method="Users who completed training / total users"
         ),
-        
+
         # Engagement
         SuccessMetric(
             name="Average Session Duration",
@@ -321,7 +321,7 @@ clv_dashboard_metrics = DataProductMetrics(
             current=7,
             measurement_method="Average filter interactions per session"
         ),
-        
+
         # Impact
         SuccessMetric(
             name="Campaign Targeting Improvement",
@@ -436,7 +436,7 @@ def waterfall_build():
     Week 3-4: Build all transformation
     Week 5-6: Build all loading
     Week 7-8: Integration and testing
-    
+
     Problem: No working product until week 8.
     No user feedback until the end.
     """
@@ -449,15 +449,15 @@ def incremental_build():
     Week 1-2: Basic LTV calculation (one source, simple calc)
              - Users can see basic LTV scores
              - Get feedback on approach
-    
+
     Week 3-4: Add acquisition channel dimension
              - Users can segment by channel
              - Validate channel mapping
-    
+
     Week 5-6: Add predictive LTV model
              - Users get forward-looking view
              - Refine model based on feedback
-    
+
     Week 7-8: Add self-serve filters and exports
              - Full product capability
              - Based on 6 weeks of feedback

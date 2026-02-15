@@ -100,19 +100,19 @@ class ValidationResult:
 def validate_customer_record(record: dict) -> ValidationResult:
     """Validate a customer record before ingestion."""
     errors = []
-    
+
     # Required fields
     required_fields = ['customer_id', 'email', 'created_at']
     for field in required_fields:
         if field not in record or record[field] is None:
             errors.append(f"Missing required field: {field}")
-    
+
     # Email format validation
     if 'email' in record and record['email']:
         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(email_pattern, record['email']):
             errors.append(f"Invalid email format: {record['email']}")
-    
+
     # Date validation
     if 'created_at' in record and record['created_at']:
         try:
@@ -121,12 +121,12 @@ def validate_customer_record(record: dict) -> ValidationResult:
                 errors.append("created_at cannot be in the future")
         except ValueError:
             errors.append(f"Invalid date format: {record['created_at']}")
-    
+
     # Customer ID format
     if 'customer_id' in record and record['customer_id']:
         if not str(record['customer_id']).startswith('CUST-'):
             errors.append(f"Invalid customer_id format: {record['customer_id']}")
-    
+
     return ValidationResult(
         is_valid=len(errors) == 0,
         errors=errors
@@ -182,21 +182,21 @@ class MetricBounds:
     metric_name: str
     min_value: float
     max_value: float
-    
+
 def calculate_dynamic_bounds(historical_values: list[float], sigma: float = 3.0) -> tuple:
     """Calculate bounds based on historical distribution."""
     if len(historical_values) < 7:
         raise ValueError("Need at least 7 historical values for bounds calculation")
-    
+
     avg = mean(historical_values)
     std = stdev(historical_values)
-    
+
     return (avg - sigma * std, avg + sigma * std)
 
 def check_metric_anomaly(current_value: float, historical_values: list[float], metric_name: str):
     """Check if current value is anomalous compared to history."""
     min_bound, max_bound = calculate_dynamic_bounds(historical_values)
-    
+
     if current_value < min_bound or current_value > max_bound:
         return {
             'is_anomaly': True,
