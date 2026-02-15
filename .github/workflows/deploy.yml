@@ -61,7 +61,7 @@ jobs:
       - name: Check links
         uses: lycheeverse/lychee-action@v1
         with:
-          args: 'public/ --no-progress'
+          args: 'public/ --no-progress --accept 200,301,302,307,308'
           fail: true
       
       - name: Setup Pages
