@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.ref == 'refs/heads/main' && 'pages' || format('{0}-{1}', github.workflow, github.ref) }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
@@ -54,7 +54,6 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           args: 'public/ --no-progress --accept 200,301,302,307,308'
-          fail: false
         continue-on-error: true
 
       - name: Setup Pages
