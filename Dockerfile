@@ -1,7 +1,7 @@
 # ----------------------------
 # Stage 1 — Builder
 # ----------------------------
-FROM python:3.11-slim AS builder
+FROM python:3.14-slim AS builder
 
 # Security: non-root user
 RUN addgroup --system app && adduser --system --ingroup app app
@@ -23,7 +23,7 @@ RUN python3 src/build.py
 # ----------------------------
 # Stage 2 — Runtime (minimal)
 # ----------------------------
-FROM python:3.11-slim AS runtime
+FROM python:3.14-slim AS runtime
 
 RUN addgroup --system app && adduser --system --ingroup app app
 
