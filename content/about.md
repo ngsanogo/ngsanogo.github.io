@@ -1,9 +1,14 @@
 ---
 title: About — Issa Sanogo
 description: "Senior Data Engineer with 8+ years of experience. Specialized in data platform architecture, data quality, and cross-functional project leadership."
+cta:
+  - label: "View full resume"
+    url: "/cv/"
+    style: primary
+  - label: "Get in touch →"
+    url: "/contact/"
+    style: secondary
 ---
-
-# About
 
 Since 2017, I've been building data systems in contexts where **reliability is non-negotiable**: healthcare, medical research, patient data.
 

@@ -4,7 +4,7 @@ slug: multipass
 date: 2024-03-21
 description: "What is Multipass? Learn how to quickly create and manage lightweight Linux virtual machines on Windows, Mac, and Linux for development and testing."
 draft: false
-updated: 2024-12-04
+lastmod: 2024-12-04
 ---
 ## What is Multipass?
 

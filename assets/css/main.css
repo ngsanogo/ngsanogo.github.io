@@ -1,42 +1,40 @@
-/* Zen Principle: "Beautiful is better than ugly" + "Readability counts" */
+/* --- Variables --- */
 :root {
-    --primary: #1a1a1a;        /* Dark text for strong contrast */
-    --secondary: #4a4a4a;      /* Softer gray for supporting text */
-    --accent: #2563eb;         /* Blue professionnel, calme */
+    --primary: #1a1a1a;
+    --secondary: #4a4a4a;
+    --accent: #2563eb;
     --accent-dark: #1d4ed8;
-    --light: #f8f9fa;          /* Fond subtil */
+    --light: #f8f9fa;
     --border: #e5e7eb;
 }
 
-/* Zen Principle: "Explicit is better than implicit" */
+/* --- Reset --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* --- Base --- */
 html {
-    font-size: 17px;            /* Base lisible */
+    font-size: 17px;
 }
 
-/* Zen Principle: "Readability counts" + "Simple is better than complex" */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, sans-serif;
     color: var(--primary);
     background: white;
     line-height: 1.75;
-    max-width: 100%;
     -webkit-font-smoothing: antialiased;
 }
 
-/* Zen Principle: "Sparse is better than dense" */
 .container {
-    max-width: 640px;           /* Lecture optimale */
+    max-width: 640px;
     margin: 0 auto;
     padding: 3rem 1.5rem;
 }
 
-/* Header épuré et centré */
+/* --- Header --- */
 header {
     text-align: center;
     margin-bottom: 4rem;
@@ -65,7 +63,7 @@ header {
     line-height: 1.5;
 }
 
-/* Navigation simple */
+/* --- Navigation --- */
 nav {
     display: flex;
     gap: 2rem;
@@ -86,7 +84,7 @@ nav a:hover {
     color: var(--accent);
 }
 
-/* Main content */
+/* --- Main content --- */
 main {
     margin: 2rem 0;
 }
@@ -114,25 +112,19 @@ main {
     text-align: center;
 }
 
-/* Hero section - homepage */
+/* --- Hero (homepage) --- */
 .hero {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-/* Article header - blog posts */
+/* --- Article header --- */
 .article-header {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.home-context {
-    color: var(--secondary);
-    font-size: 1rem;
-    line-height: 1.7;
-}
-
-/* Post items */
+/* --- Post items --- */
 .post-item {
     margin-bottom: 2.5rem;
     padding-bottom: 2rem;
@@ -151,7 +143,6 @@ main {
     font-weight: 600;
 }
 
-/* Links in post titles */
 .post-title a {
     color: var(--primary);
     text-decoration: none;
@@ -175,7 +166,6 @@ main {
     font-size: 0.95rem;
 }
 
-/* Read more link */
 .read-more {
     color: var(--accent);
     font-weight: 500;
@@ -189,7 +179,7 @@ main {
     text-decoration: underline;
 }
 
-/* Typography */
+/* --- Typography --- */
 h1, h2, h3, h4, h5, h6 {
     margin-top: 2.5rem;
     margin-bottom: 1rem;
@@ -206,7 +196,7 @@ p {
     margin-bottom: 1.25rem;
 }
 
-/* Lists */
+/* --- Lists --- */
 ul, ol {
     margin-left: 1.5rem;
     margin-bottom: 1.25rem;
@@ -217,7 +207,7 @@ li {
     margin-bottom: 0.5rem;
 }
 
-/* Links */
+/* --- Links --- */
 a {
     color: var(--accent);
     text-decoration: none;
@@ -227,7 +217,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Code */
+/* --- Code --- */
 code {
     background: var(--light);
     padding: 0.2rem 0.4rem;
@@ -246,15 +236,26 @@ pre {
     line-height: 1.5;
 }
 
-.code-block {
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* Hugo syntax highlighting wrapper */
+.highlight {
     position: relative;
-    padding-top: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.highlight pre {
+    margin-bottom: 0;
 }
 
 .copy-button {
     position: absolute;
-    top: 0.6rem;
-    right: 0.6rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 1;
     font-size: 0.75rem;
     background: white;
     color: var(--secondary);
@@ -270,12 +271,7 @@ pre {
     border-color: var(--secondary);
 }
 
-pre code {
-    background: none;
-    padding: 0;
-}
-
-/* Blockquote - sobre, élégant */
+/* --- Blockquote --- */
 blockquote {
     border-left: 3px solid var(--border);
     padding-left: 1.25rem;
@@ -284,15 +280,15 @@ blockquote {
     font-style: italic;
 }
 
-/* Horizontal Rule */
+/* --- Horizontal Rule --- */
 hr {
     border: none;
     border-top: 1px solid var(--border);
     margin: 2.5rem 0;
 }
 
-/* Footer */
-footer {
+/* --- Footer --- */
+footer[role="contentinfo"] {
     text-align: center;
     margin-top: 4rem;
     padding-top: 2rem;
@@ -301,7 +297,26 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Pagination */
+.footer-links {
+    margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+    color: var(--secondary);
+    text-decoration: none;
+    margin: 0 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
+.footer-links span {
+    color: var(--border);
+}
+
+/* --- Pagination --- */
 .pagination {
     display: flex;
     justify-content: space-between;
@@ -337,7 +352,7 @@ footer {
     background: var(--accent);
 }
 
-/* Home sections */
+/* --- Home sections --- */
 .home-section {
     margin-top: 4rem;
     padding-top: 2rem;
@@ -359,7 +374,7 @@ footer {
     margin-top: 2rem;
 }
 
-/* Images */
+/* --- Images --- */
 img {
     max-width: 100%;
     height: auto;
@@ -367,29 +382,8 @@ img {
     margin: 1.5rem 0;
 }
 
-/* Footer links */
-.footer-links {
-    margin-bottom: 0.75rem;
-}
-
-.footer-links a {
-    color: var(--secondary);
-    text-decoration: none;
-    margin: 0 0.5rem;
-    transition: color 0.2s ease;
-}
-
-.footer-links a:hover {
-    color: var(--accent);
-}
-
-.footer-links span {
-    color: var(--border);
-}
-
-/* Buttons */
-.button-primary,
-.cta-button {
+/* --- Buttons --- */
+.button-primary {
     display: inline-block;
     background: var(--primary);
     color: white;
@@ -401,8 +395,7 @@ img {
     transition: background 0.2s ease;
 }
 
-.button-primary:hover,
-.cta-button:hover {
+.button-primary:hover {
     background: var(--accent);
     color: white;
     text-decoration: none;
@@ -423,7 +416,7 @@ img {
     text-decoration: underline;
 }
 
-/* Article Footer - CTA zone at end of articles */
+/* --- Article footer --- */
 .article-footer {
     margin-top: 3rem;
     padding-top: 2rem;
@@ -435,7 +428,7 @@ img {
     flex-wrap: wrap;
 }
 
-/* Highlight box - centered */
+/* --- Highlight box --- */
 .highlight-box {
     background: var(--light);
     padding: 1.25rem 1.5rem;
@@ -450,7 +443,25 @@ img {
     line-height: 1.6;
 }
 
-/* Responsive */
+/* --- 404 page --- */
+.error-page {
+    text-align: center;
+    padding: 4rem 0;
+}
+
+.error-page h1 {
+    font-size: 4rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.error-page p {
+    color: var(--secondary);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+/* --- Responsive --- */
 @media (max-width: 600px) {
     html { font-size: 16px; }
     .container { padding: 2rem 1rem; }
@@ -458,9 +469,4 @@ img {
     h1 { font-size: 1.5rem; }
     h2 { font-size: 1.25rem; }
     .page-title { font-size: 1.6rem; }
-    .cta-button { 
-        display: block;
-        text-align: center;
-        margin-bottom: 1rem;
-    }
 }

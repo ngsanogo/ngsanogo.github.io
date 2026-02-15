@@ -1,0 +1,12 @@
+{{ define "main" }}
+<article>
+    <header class="article-header">
+        <h1 class="page-title">{{ .Title }}</h1>
+        <div class="post-meta"><span>{{ .Date.Format "January 02, 2006" }}</span></div>
+    </header>
+    {{ .Content }}
+    <footer class="article-footer">
+        <a href="/blog/" class="button-secondary">← All posts</a>
+    </footer>
+</article>
+{{ end }}

@@ -3,8 +3,8 @@ title: "Testing Data Pipelines: What Actually Matters"
 slug: testing-data-pipelines
 date: 2026-02-15
 description: "How to test data pipelines. Unit tests, integration tests, data tests. What works in production, what doesn't."
-category: testing
-tags: testing, data-quality, python, best-practices
+categories: ["testing"]
+tags: ["testing", "data-quality", "python", "best-practices"]
 draft: false
 ---
 

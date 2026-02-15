@@ -3,8 +3,8 @@ title: "Idempotent Pipelines: Run Twice, Get Same Result"
 slug: idempotent-pipelines
 date: 2026-02-16
 description: "How to build idempotent data pipelines. Run them multiple times safely. Prevent duplicate data and ensure reliable reprocessing."
-category: data-engineering
-tags: pipelines, best-practices, reliability
+categories: ["data-engineering"]
+tags: ["pipelines", "best-practices", "reliability"]
 draft: false
 ---
 

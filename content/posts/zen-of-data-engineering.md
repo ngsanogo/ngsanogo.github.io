@@ -3,8 +3,8 @@ title: "The Zen of Data Engineering: Writing Code That Lasts"
 slug: zen-of-data-engineering
 date: 2026-02-02
 description: "Apply Python's Zen principles to data engineering. Learn why simple pipelines beat complex ones, how to write maintainable ETL code, and practical patterns for readable data transformations."
-category: python
-tags: python, best-practices, data-engineering, clean-code
+categories: ["python"]
+tags: ["python", "best-practices", "data-engineering", "clean-code"]
 draft: false
 ---
 

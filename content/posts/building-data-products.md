@@ -3,8 +3,8 @@ title: "Building Data Products: From Engineer to Product Thinker"
 slug: building-data-products
 date: 2026-01-31
 description: "How data engineers can think like product managers. Learn to build data products that users actually want. Move from feature delivery to value creation."
-category: product-data
-tags: data-products, product-thinking, data-engineering, stakeholder-management
+categories: ["product-data"]
+tags: ["data-products", "product-thinking", "data-engineering", "stakeholder-management"]
 draft: false
 ---
 

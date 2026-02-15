@@ -1,9 +1,11 @@
 ---
 title: Contact — Issa Sanogo
 description: "Contact Issa Sanogo, Senior Data Engineer. Data engineering projects, consulting, data platform architecture. Paris area."
+cta:
+  - label: "Send an email"
+    url: "mailto:ngsanogo@proton.me"
+    style: primary
 ---
-
-# Contact
 
 Open to discussions about **data engineering**, **data platform architecture**, or **project collaboration**.
 
