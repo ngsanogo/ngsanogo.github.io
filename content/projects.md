@@ -1,5 +1,5 @@
 ---
-title: Work
+title: Projects
 description: "Data engineering projects: data warehouses, ETL pipelines, industrialization, data governance. Healthcare, research, and SaaS contexts."
 cta:
   - label: "Discuss a project"
