@@ -55,10 +55,3 @@ These Zen of Python principles guide my work. I believe the best data systems ar
 - **Reliable** for those who make decisions with them
 
 Tech hype doesn't interest me. What interests me is data that truly serves those who need it.
-
----
-
-<p style="margin-top: 2rem; text-align: center;">
-    <a href="/cv" class="cta-button">View full resume</a>
-    <a href="/contact" class="read-more" style="margin-left: 1.5rem;">Get in touch →</a>
-</p>

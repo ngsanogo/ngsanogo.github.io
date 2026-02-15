@@ -45,18 +45,16 @@ header {
 }
 
 .site-title {
+    display: inline-block;
     font-size: 1.75rem;
     font-weight: 600;
     letter-spacing: -0.025em;
     margin-bottom: 0.5rem;
-}
-
-.site-title a {
     color: var(--primary);
     text-decoration: none;
 }
 
-.site-title a:hover {
+.site-title:hover {
     color: var(--accent);
     transition: color 0.2s ease;
 }
@@ -105,6 +103,19 @@ main {
 .tagline {
     color: var(--secondary);
     font-size: 1.1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Hero section - homepage */
+.hero {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Article header - blog posts */
+.article-header {
+    text-align: center;
     margin-bottom: 2rem;
 }
 
@@ -345,7 +356,8 @@ img {
     color: var(--border);
 }
 
-/* CTA Button - sobre */
+/* Buttons */
+.button-primary,
 .cta-button {
     display: inline-block;
     background: var(--primary);
@@ -358,10 +370,38 @@ img {
     transition: background 0.2s ease;
 }
 
+.button-primary:hover,
 .cta-button:hover {
     background: var(--accent);
     color: white;
     text-decoration: none;
+}
+
+.button-secondary {
+    display: inline-block;
+    color: var(--accent);
+    padding: 0.6rem 1.25rem;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+.button-secondary:hover {
+    color: var(--accent-dark);
+    text-decoration: underline;
+}
+
+/* Article Footer - CTA zone at end of articles */
+.article-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 /* Highlight box - centered */
