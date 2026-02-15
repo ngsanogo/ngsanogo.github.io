@@ -34,9 +34,3 @@ Open to discussions about **data engineering**, **data platform architecture**, 
 **Location** — Paris area, France
 
 **Response time** — Within 48 hours
-
----
-
-<p style="margin-top: 2rem; text-align: center;">
-    <a href="mailto:ngsanogo@proton.me" class="cta-button">Send an email</a>
-</p>
