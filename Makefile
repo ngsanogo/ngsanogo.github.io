@@ -43,13 +43,13 @@ all: clean test build
 	@echo "✅ All tasks complete"
 
 docker-build:
-	@echo "🐳 Building Docker image..."
-	@docker build -t ngsanogo-blog:latest .
+	@echo "🐳 Building site in Docker..."
+	@docker compose --profile build run --rm build
 
 docker-test:
 	@echo "🧪 Running tests in Docker..."
-	@docker compose run --rm test
+	@docker compose --profile test run --rm test
 
 docker-dev:
 	@echo "🌐 Starting dev server in Docker..."
-	@docker compose up dev
+	@docker compose --profile dev up --build
