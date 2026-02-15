@@ -72,7 +72,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: deployment
         uses: actions/deploy-pages@v4
-      
+
       - name: Deployment status
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
