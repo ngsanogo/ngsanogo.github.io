@@ -8,7 +8,7 @@
     <p>8 years of experience in healthcare, medical research, and SaaS. I scope business needs, build solutions that last, and enable teams.</p>
 </div>
 
-<div class="article-footer">
+<div class="hero-cta">
     <a href="/about/" class="button-primary">Learn more</a>
     <a href="/contact/" class="button-secondary">Get in touch →</a>
 </div>
@@ -16,8 +16,8 @@
 {{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
 {{ $latest := first 1 $posts }}
 {{ if $latest }}
-<section aria-labelledby="writing-heading" class="home-section">
-    <h2 id="writing-heading" class="section-title">Latest Writing</h2>
+<section aria-labelledby="blog-heading" class="home-section">
+    <h2 id="blog-heading" class="section-title">Latest Post</h2>
     {{ range $latest }}
     <div class="post-item">
         <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
