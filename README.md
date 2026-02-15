@@ -13,8 +13,6 @@ Docker + Docker Compose
 
 ## Usage
 
-## Usage
-
 | Task | Command |
 |------|---------|
 | Dev server (hot reload) | `make dev` |
@@ -33,6 +31,40 @@ make dev
 ```
 
 Open http://localhost:1313
+
+## Contributing
+
+### Adding a new blog post
+
+Create a new markdown file in `content/posts/` with YAML frontmatter:
+
+```markdown
+---
+title: "Your Post Title"
+slug: your-post-slug
+date: 2026-02-15
+description: "Brief description of your post"
+categories: ["category"]
+tags: ["tag1", "tag2"]
+draft: false
+---
+
+Your content here...
+```
+
+### Running linting locally
+
+Run all linters and formatters:
+
+```bash
+make lint
+```
+
+Or run pre-commit on all files:
+
+```bash
+pre-commit run --all-files
+```
 
 ## Deploy
 
