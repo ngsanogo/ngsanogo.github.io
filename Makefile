@@ -32,4 +32,14 @@ clean:
 
 lint:
 	@echo "🔍 Running linters..."
+	@command -v pre-commit >/dev/null 2>&1 || { \
+		echo "❌ Error: pre-commit is not installed"; \
+		echo ""; \
+		echo "Install it with:"; \
+		echo "  brew install pre-commit  # macOS"; \
+		echo "  pip install pre-commit   # or with pip"; \
+		echo ""; \
+		echo "Then run: pre-commit install"; \
+		exit 1; \
+	}
 	@pre-commit run --all-files
