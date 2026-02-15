@@ -31,8 +31,6 @@ In practice, this means:
 
 ## Background
 
-### 8 years of data structuring
-
 My career follows a common thread: transforming raw data into actionable insights, in environments where errors have consequences.
 
 **2025 — Padoa** (Occupational Health SaaS)
