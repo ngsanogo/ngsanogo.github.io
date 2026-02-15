@@ -3,8 +3,12 @@ languageCode = "en"
 title = "Issa Sanogo"
 buildFuture = false
 
-# No taxonomy pages needed
-disableKinds = ["taxonomy", "term", "RSS"]
+# Keep feeds disabled, enable taxonomy/term pages
+disableKinds = ["RSS"]
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
 
 [pagination]
   pagerSize = 10
