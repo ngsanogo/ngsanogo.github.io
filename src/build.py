@@ -99,7 +99,7 @@ def markdown_to_html(text):
         return f"CODEBLOCK{len(code_blocks) - 1}PLACEHOLDER"
     
     # Extract and convert code blocks FIRST (before any other processing)
-    text = re.sub(r'```[a-z]*\n.*?\n```', save_code_block, text, flags=re.DOTALL)
+    text = re.sub(r'```[a-zA-Z0-9_-]*\n.*?\n```', save_code_block, text, flags=re.DOTALL)
     text = re.sub(r'`([^`]+)`', save_inline_code, text)
     
     # Extract HTML blocks to preserve them (avoid escaping intentional HTML)
@@ -137,10 +137,12 @@ def markdown_to_html(text):
 
 def _convert_single_code_block(block_text):
     """Convert a single code block to HTML."""
-    match = re.match(r'```[a-z]*\n(.*)\n```', block_text, re.DOTALL)
+    match = re.match(r'```([a-zA-Z0-9_-]+)?\n(.*)\n```', block_text, re.DOTALL)
     if match:
-        code_content = html.escape(match.group(1))
-        return f'<pre><code>{code_content}</code></pre>'
+        language = (match.group(1) or "").strip()
+        code_content = html.escape(match.group(2))
+        lang_class = f" language-{language}" if language else ""
+        return f'<pre class="code-block"><code class="{lang_class.strip()}">{code_content}</code></pre>'
     return block_text
 
 
@@ -585,8 +587,8 @@ def _build_blog_page_content(posts, page_num, total_pages):
     page_info = f" (Page {page_num} of {total_pages})" if total_pages > 1 else ""
     
     return f"""
-        <h1 class="page-title" style="text-align: center;">Writing</h1>
-        <p style="text-align: center;">Articles on data engineering, tools, and best practices.{page_info}</p>
+        <h1 class="page-title">Writing</h1>
+        <p class="page-subtitle">Articles on data engineering, tools, and best practices.{page_info}</p>
         {posts_html}
         {pagination_html}
     """
