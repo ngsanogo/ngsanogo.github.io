@@ -3,6 +3,8 @@ title: "ETL: What It Is and Why Your Company Needs It"
 slug: what-is-etl
 date: 2024-11-29
 description: "Understand ETL: Extract, Transform, Load. Learn what data engineers actually do every day."
+categories: ["data-engineering"]
+tags: ["etl", "data-pipelines", "data-engineering"]
 draft: false
 ---
 ## What is ETL?

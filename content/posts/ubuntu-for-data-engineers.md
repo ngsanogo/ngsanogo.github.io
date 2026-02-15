@@ -3,6 +3,8 @@ title: "Ubuntu: The Linux Distribution Data Engineers Choose"
 slug: ubuntu-for-data-engineers
 date: 2024-12-05
 description: "Ubuntu for data engineers: Why it's the best Linux distribution, how to use it, and getting started."
+categories: ["fundamentals"]
+tags: ["ubuntu", "linux", "data-engineering"]
 draft: false
 ---
 ## What is Ubuntu?
