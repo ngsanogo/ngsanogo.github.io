@@ -34,6 +34,18 @@ Open http://localhost:1313
 
 ## Contributing
 
+### Setup pre-commit hooks (recommended)
+
+Install pre-commit to automatically check code quality before commits:
+
+```bash
+brew install pre-commit  # macOS
+# or pip install pre-commit
+pre-commit install
+```
+
+After installation, hooks will run automatically on `git commit` and fix issues like trailing whitespace.
+
 ### Adding a new blog post
 
 Create a new markdown file in `content/posts/` with YAML frontmatter:
