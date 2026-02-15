@@ -3,6 +3,8 @@ title: "Docker: How to Run Your Data Pipeline Anywhere"
 slug: docker-for-data-engineers
 date: 2024-12-02
 description: "Docker explained for data engineers: What it is, why you need it, and how to use it for reproducible data pipelines."
+categories: ["tools"]
+tags: ["docker", "containers", "data-engineering"]
 draft: false
 ---
 ## What is Docker?

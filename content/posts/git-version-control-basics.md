@@ -3,6 +3,8 @@ title: "Git: Version Control Every Data Engineer Needs"
 slug: git-version-control-basics
 date: 2024-12-01
 description: "Why data engineers need Git. Learn version control, why it matters, and how to use it daily."
+categories: ["tools"]
+tags: ["git", "version-control", "best-practices"]
 draft: false
 ---
 ## What is Git?

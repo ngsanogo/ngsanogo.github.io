@@ -3,6 +3,8 @@ title: "Linux Fundamentals: How It Works and Why Data Engineers Use It"
 slug: linux-fundamentals
 date: 2024-11-24
 description: "Linux fundamentals for data engineers: How it works, why it matters, and essential concepts explained."
+categories: ["fundamentals"]
+tags: ["linux", "fundamentals", "data-engineering"]
 draft: false
 ---
 ## What is Linux?

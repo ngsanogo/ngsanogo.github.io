@@ -3,6 +3,8 @@ title: "R in Data Engineering: When and How to Use It"
 slug: r-for-data-engineering
 date: 2024-11-25
 description: "Why R matters in data engineering: When to use it, how to integrate it with Python, and real examples."
+categories: ["programming"]
+tags: ["r", "data-engineering", "programming"]
 draft: false
 ---
 ## What is R?

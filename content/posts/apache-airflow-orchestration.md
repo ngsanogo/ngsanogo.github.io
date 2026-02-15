@@ -3,6 +3,8 @@ title: "Apache Airflow: Orchestrate Your Data Pipelines"
 slug: apache-airflow-orchestration
 date: 2024-12-03
 description: "Apache Airflow explained: How data engineers schedule and monitor data pipelines at scale."
+categories: ["tools"]
+tags: ["airflow", "orchestration", "data-pipelines", "data-engineering"]
 draft: false
 ---
 ## What is Apache Airflow?

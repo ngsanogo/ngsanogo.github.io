@@ -3,6 +3,8 @@ title: "Databases (SGBD): The Foundation of Data Storage"
 slug: databases-sgbd-fundamentals
 date: 2024-11-26
 description: "Understanding databases (SGBD): What they are, how they work, and why every data engineer needs to know them."
+categories: ["fundamentals"]
+tags: ["databases", "fundamentals", "data-engineering"]
 draft: false
 ---
 ## What is a Database?

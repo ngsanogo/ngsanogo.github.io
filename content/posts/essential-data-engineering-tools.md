@@ -3,6 +3,8 @@ title: "Essential Tools for Data Engineers: Build Your Toolkit"
 slug: essential-data-engineering-tools
 date: 2024-12-04
 description: "The essential tools every data engineer needs: SQL, Python, Git, Docker, Airflow, and databases. Build your toolkit."
+categories: ["tools"]
+tags: ["tools", "data-engineering", "best-practices"]
 draft: false
 ---
 ## What Tools Do Data Engineers Really Need?
