@@ -15,6 +15,8 @@ Open to discussions about **data engineering**, **data platform architecture**, 
 
 **Email** — [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
 
+**Phone** — [+33 6 51 98 52 79](tel:+33651985279)
+
 **LinkedIn** — [linkedin.com/in/ngsanogo](https://www.linkedin.com/in/ngsanogo/)
 
 **GitHub** — [github.com/ngsanogo](https://github.com/ngsanogo)
