@@ -37,7 +37,7 @@ LABEL org.opencontainers.image.source="https://github.com/ngsanogo/ngsanogo.gith
 # Copy custom nginx config with security headers
 RUN cat <<'EOF' > /etc/nginx/conf.d/default.conf
 server {
-    listen 80;
+    listen 8080;
     server_name _;
     root /usr/share/nginx/html;
     index index.html;
@@ -53,9 +53,13 @@ EOF
 
 COPY --from=build /site/public /usr/share/nginx/html
 
-EXPOSE 80
+RUN chown -R nginx:nginx /usr/share/nginx/html /var/cache/nginx /var/run
+
+USER nginx
+
+EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
