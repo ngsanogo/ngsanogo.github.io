@@ -1,20 +1,40 @@
-# Static site generator — Python 3.11 stdlib only.
-# Light image, non-root user, minimal layers.
-# https://github.com/ngsanogo/ngsanogo.github.io
+# ----------------------------
+# Stage 1 — Builder
+# ----------------------------
+FROM python:3.11-slim AS builder
 
-FROM python:3.11-slim
-
-# Single layer for system user
+# Security: non-root user
 RUN addgroup --system app && adduser --system --ingroup app app
 
 WORKDIR /app
 
-# Copy project (see .dockerignore to exclude public/, .git, cache)
+# Copy source
 COPY --chown=app:app . .
+
+# Ensure workspace directory itself remains writable after copy operations
+RUN chown -R app:app /app
+
+USER app
+
+# Build static site
+RUN python3 src/build.py
+
+
+# ----------------------------
+# Stage 2 — Runtime (minimal)
+# ----------------------------
+FROM python:3.11-slim AS runtime
+
+RUN addgroup --system app && adduser --system --ingroup app app
+
+WORKDIR /app
+
+# Copy only what is needed to serve
+COPY --from=builder --chown=app:app /app/public ./public
+COPY --from=builder --chown=app:app /app/src ./src
 
 USER app
 
 EXPOSE 8000
 
-# Default: build then serve (override in docker-compose for test/build)
-CMD ["sh", "-c", "python3 src/build.py && python3 src/dev.py"]
+CMD ["python3", "src/dev.py"]
