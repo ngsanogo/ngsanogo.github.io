@@ -92,10 +92,3 @@ Applied mathematics, biostatistics, programming, databases.
 ## Languages
 
 French (native) · English (professional)
-
----
-
-<p style="margin-top: 2rem; text-align: center;">
-    <a href="/contact" class="cta-button">Get in touch</a>
-    <a href="/projects" class="read-more" style="margin-left: 1.5rem;">View my work →</a>
-</p>

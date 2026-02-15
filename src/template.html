@@ -34,15 +34,15 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1 class="site-title"><a href="/">{{site_title}}</a></h1>
+        <header role="banner">
+            <a href="/" class="site-title">{{site_title}}</a>
             <p class="site-desc">{{site_desc}}</p>
-            <nav>
+            <nav role="navigation" aria-label="Main navigation">
                 {{navigation}}
             </nav>
         </header>
-        <main>{{content}}</main>
-        <footer>
+        <main role="main">{{content}}</main>
+        <footer role="contentinfo">
             <div class="footer-links">
                 <a href="https://www.linkedin.com/in/ngsanogo/" target="_blank" rel="noopener">LinkedIn</a>
                 <span>·</span>

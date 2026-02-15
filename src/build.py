@@ -83,6 +83,25 @@ def parse_date(date_str):
 
 def markdown_to_html(text):
     """Convert markdown to HTML. Minimal but practical."""
+    # CRITICAL FIX: Process code blocks FIRST to prevent # comments becoming headers
+    code_blocks = []
+    
+    def save_code_block(match):
+        # Convert the code block to HTML immediately
+        code_html = _convert_single_code_block(match.group(0))
+        code_blocks.append(code_html)
+        return f"CODEBLOCK{len(code_blocks) - 1}PLACEHOLDER"
+    
+    def save_inline_code(match):
+        # Convert inline code to HTML immediately
+        code_html = f"<code>{html.escape(match.group(1))}</code>"
+        code_blocks.append(code_html)
+        return f"CODEBLOCK{len(code_blocks) - 1}PLACEHOLDER"
+    
+    # Extract and convert code blocks FIRST (before any other processing)
+    text = re.sub(r'```[a-z]*\n.*?\n```', save_code_block, text, flags=re.DOTALL)
+    text = re.sub(r'`([^`]+)`', save_inline_code, text)
+    
     # Extract HTML blocks to preserve them (avoid escaping intentional HTML)
     html_blocks = []
     def save_html(match):
@@ -95,22 +114,34 @@ def markdown_to_html(text):
     # Now escape remaining text
     text = html.escape(text)
     
-    # Convert markdown
+    # Convert markdown (skip _convert_code since we already handled it)
     text = _convert_horizontal_rules(text)
     text = _convert_headers(text)
     text = _convert_emphasis(text)
     text = _convert_images(text)
     text = _convert_links(text)
-    text = _convert_code(text)
     text = _convert_lists(text)
     text = _convert_blockquotes(text)
     text = _convert_paragraphs(text)
     
-    # Restore HTML blocks
+    # Restore code blocks FIRST (they're already HTML)
+    for i, block in enumerate(code_blocks):
+        text = text.replace(f"CODEBLOCK{i}PLACEHOLDER", block)
+    
+    # Then restore HTML blocks
     for i, block in enumerate(html_blocks):
         text = text.replace(f"HTMLBLOCK{i}PLACEHOLDER", block)
     
     return text
+
+
+def _convert_single_code_block(block_text):
+    """Convert a single code block to HTML."""
+    match = re.match(r'```[a-z]*\n(.*)\n```', block_text, re.DOTALL)
+    if match:
+        code_content = html.escape(match.group(1))
+        return f'<pre><code>{code_content}</code></pre>'
+    return block_text
 
 
 def _convert_horizontal_rules(text):
@@ -463,23 +494,21 @@ def build_home(posts=None):
     if posts is None:
         posts = get_posts()
     
-    # Home page intro - clear value proposition in 5 seconds
+    # Home page intro - clear value proposition (no H1 with name - that's in header)
     home_intro = """
-        <div style="text-align: center;">
-            <h1 class="page-title">Issa Sanogo</h1>
-            <p class="tagline">Senior Data Engineer</p>
+        <div class="hero">
+            <h1 class="page-title">Data Engineering for Reliability and Trust</h1>
+            <p class="tagline">Building data platforms where quality is non-negotiable</p>
         </div>
         
         <div class="highlight-box">
-            <p>I build <strong>data platforms</strong> and ensure <strong>data quality</strong> in contexts where reliability is non-negotiable.</p>
+            <p>8 years of experience in healthcare, medical research, and SaaS. I scope business needs, build solutions that last, and enable teams.</p>
         </div>
         
-        <p class="home-context" style="text-align: center;">8 years of experience in healthcare, medical research, and SaaS. I scope business needs, build solutions that last, and enable teams.</p>
-        
-        <p style="margin-top: 2rem; text-align: center;">
-            <a href="/about" class="cta-button">Learn more</a>
-            <a href="/contact" class="read-more" style="margin-left: 1.5rem;">Get in touch →</a>
-        </p>
+        <div class="article-footer">
+            <a href="/about" class="button-primary">Learn more</a>
+            <a href="/contact" class="button-secondary">Get in touch →</a>
+        </div>
     """
     
     if not posts:
@@ -488,10 +517,10 @@ def build_home(posts=None):
         latest_created = posts[0]
         
         posts_html = f"""
-        <section class="home-section">
-            <h2 class="section-title">Latest Writing</h2>
+        <section aria-labelledby="writing-heading" class="home-section">
+            <h2 id="writing-heading" class="section-title">Latest Writing</h2>
             {render_post_item(latest_created)}
-            <p style="text-align: center;"><a href="/blog" class="read-more">View all posts →</a></p>
+            <p class="view-all"><a href="/blog" class="read-more">View all posts →</a></p>
         </section>
         """
         
@@ -612,9 +641,16 @@ def build_posts(posts=None):
     
     for post in posts:
         content = f"""
-        <h1 class="page-title">{post['title']}</h1>
-        <div class="post-meta"><span>{post['date_str']}</span></div>
-        {post['body']}
+        <article>
+            <header class="article-header">
+                <h1 class="page-title">{post['title']}</h1>
+                <div class="post-meta"><span>{post['date_str']}</span></div>
+            </header>
+            {post['body']}
+            <footer class="article-footer">
+                <a href="/blog" class="button-secondary">← All posts</a>
+            </footer>
+        </article>
         """
         
         description = post['description'] or f"{post['title']} - {SITE_DESC}"
@@ -635,6 +671,33 @@ def build_pages():
         "contact": "Contact Issa Sanogo — Senior Data Engineer. Consulting and collaborations.",
         "projects": "Projects — data engineering and data platform work by Issa Sanogo.",
     }
+    
+    # Define appropriate CTAs for each page
+    page_footers = {
+        "about": """
+            <footer class="article-footer">
+                <a href="/cv" class="button-primary">View full resume</a>
+                <a href="/contact" class="button-secondary">Get in touch →</a>
+            </footer>
+        """,
+        "cv": """
+            <footer class="article-footer">
+                <a href="/contact" class="button-primary">Get in touch</a>
+                <a href="/projects" class="button-secondary">View my work →</a>
+            </footer>
+        """,
+        "projects": """
+            <footer class="article-footer">
+                <a href="/contact" class="button-primary">Discuss a project</a>
+                <a href="/cv" class="button-secondary">View my resume →</a>
+            </footer>
+        """,
+        "contact": """
+            <footer class="article-footer">
+                <a href="mailto:ngsanogo@proton.me" class="button-primary">Send an email</a>
+            </footer>
+        """,
+    }
 
     for page_name in STATIC_PAGES:
         page_file = CONTENT_DIR / f"{page_name}.md"
@@ -650,9 +713,13 @@ def build_pages():
         # Remove the first H1 from body if it exists (we add our own with page-title class)
         body = re.sub(r'^#\s+.*?$', '', body, count=1, flags=re.MULTILINE).strip()
         
+        # Wrap in semantic article with footer
         content = f"""
-        <h1 class="page-title">{title}</h1>
-        {markdown_to_html(body)}
+        <article>
+            <h1 class="page-title">{title}</h1>
+            {markdown_to_html(body)}
+            {page_footers.get(page_name, '')}
+        </article>
         """
         
         canonical_path = f"/{page_name}"
