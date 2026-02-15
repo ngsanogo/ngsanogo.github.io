@@ -1,0 +1,32 @@
+{{ define "main" }}
+<h1 class="page-title">{{ .Title }}</h1>
+<p class="page-subtitle">Posts in this {{ .Data.Singular }}.</p>
+{{ range .Pages }}
+<div class="post-item">
+    <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    <div class="post-meta">
+        <span>{{ .Date.Format "January 02, 2006" }}</span>
+        {{ with .Params.categories }}
+        <span class="meta-sep">·</span>
+        <span class="post-taxonomy-inline">
+            <span class="taxonomy-label">Categories:</span>
+            {{ range $index, $cat := . }}
+            <a class="taxonomy-link" href="{{ (print "/categories/" ($cat | urlize) "/") | relLangURL }}">{{ $cat }}</a>{{ if lt $index (sub (len .) 1) }},{{ end }}
+            {{ end }}
+        </span>
+        {{ end }}
+        {{ with .Params.tags }}
+        <span class="meta-sep">·</span>
+        <span class="post-taxonomy-inline">
+            <span class="taxonomy-label">Tags:</span>
+            {{ range $index, $tag := . }}
+            <a class="taxonomy-link" href="{{ (print "/tags/" ($tag | urlize) "/") | relLangURL }}">{{ $tag }}</a>{{ if lt $index (sub (len .) 1) }},{{ end }}
+            {{ end }}
+        </span>
+        {{ end }}
+    </div>
+    <p class="post-description">{{ .Description }}</p>
+    <a href="{{ .RelPermalink }}" class="read-more">Read more →</a>
+</div>
+{{ end }}
+{{ end }}
