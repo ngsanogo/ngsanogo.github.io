@@ -54,7 +54,6 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           args: 'public/ --no-progress --accept 200,301,302,307,308'
-          fail: false
         continue-on-error: true
 
       - name: Setup Pages
