@@ -9,12 +9,29 @@ Personal site and blog — **Issa Sanogo**, Senior Data Engineer.
 
 ## Requirements
 
-Docker + Docker Compose
+- Docker + Docker Compose
+- Python 3.8+ (for local linting with pre-commit)
+
+## Quick start
+
+```bash
+git clone https://github.com/ngsanogo/ngsanogo.github.io.git
+cd ngsanogo.github.io
+
+# Setup dev environment (venv + pre-commit hooks)
+make setup
+
+# Start dev server
+make dev
+```
+
+Open http://localhost:1313
 
 ## Usage
 
 | Task | Command |
 |------|---------|
+| Setup dev environment | `make setup` |
 | Dev server (hot reload) | `make dev` |
 | Build site | `make build` |
 | Run tests | `make test` |
@@ -22,29 +39,22 @@ Docker + Docker Compose
 | Clean output | `make clean` |
 | Lint and format | `make lint` |
 
-## Quick start
-
-```bash
-git clone https://github.com/ngsanogo/ngsanogo.github.io.git
-cd ngsanogo.github.io
-make dev
-```
-
-Open http://localhost:1313
-
 ## Contributing
 
-### Setup pre-commit hooks (recommended)
+### First-time setup
 
-Install pre-commit to automatically check code quality before commits:
+Run `make setup` to create a Python virtual environment and install pre-commit hooks:
 
 ```bash
-brew install pre-commit  # macOS
-# or pip install pre-commit
-pre-commit install
+make setup
 ```
 
-After installation, hooks will run automatically on `git commit` and fix issues like trailing whitespace.
+This will:
+- Create a `.venv` directory with isolated Python dependencies
+- Install pre-commit and other dev tools
+- Setup git hooks to automatically check code quality before commits
+
+**Note:** All tools run in the venv - nothing is installed globally on your system.
 
 ### Adding a new blog post
 
@@ -72,10 +82,10 @@ Run all linters and formatters:
 make lint
 ```
 
-Or run pre-commit on all files:
+Or run pre-commit directly (from venv):
 
 ```bash
-pre-commit run --all-files
+.venv/bin/pre-commit run --all-files
 ```
 
 ## Deploy
