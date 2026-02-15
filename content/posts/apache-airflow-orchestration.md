@@ -51,22 +51,22 @@ with DAG(
     schedule="@daily",
     catchup=False
 ) as dag:
-    
+
     extract_task = PythonOperator(
         task_id="extract",
         python_callable=extract
     )
-    
+
     transform_task = PythonOperator(
         task_id="transform",
         python_callable=transform
     )
-    
+
     load_task = PythonOperator(
         task_id="load",
         python_callable=load
     )
-    
+
     extract_task >> transform_task >> load_task
 ```
 
@@ -157,25 +157,25 @@ with DAG(
     schedule="0 6 * * *",  # Every day at 6 AM
     catchup=False
 ) as dag:
-    
+
     extract_sales = PostgresOperator(
         task_id="extract_sales",
         postgres_conn_id="sales_db",
         sql="SELECT * FROM sales WHERE date = '{{ ds }}'"
     )
-    
+
     calculate_metrics = PythonOperator(
         task_id="calculate_metrics",
         python_callable=calculate_daily_metrics
     )
-    
+
     send_report = EmailOperator(
         task_id="send_report",
         to="manager@company.com",
         subject="Daily Sales Report {{ ds }}",
         html_content="See attached report."
     )
-    
+
     extract_sales >> calculate_metrics >> send_report
 ```
 

@@ -82,7 +82,7 @@ class DatabaseConfig:
     database: str
     user: str
     password: str
-    
+
     @property
     def connection_string(self) -> str:
         return f"postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
@@ -98,7 +98,7 @@ class PipelineConfig:
 
 def load_config() -> PipelineConfig:
     """Load configuration from environment variables."""
-    
+
     source_db = DatabaseConfig(
         host=os.getenv('SOURCE_DB_HOST', 'localhost'),
         port=int(os.getenv('SOURCE_DB_PORT', '5432')),
@@ -106,7 +106,7 @@ def load_config() -> PipelineConfig:
         user=os.getenv('SOURCE_DB_USER', 'user'),
         password=os.getenv('SOURCE_DB_PASSWORD', '')
     )
-    
+
     target_db = DatabaseConfig(
         host=os.getenv('TARGET_DB_HOST', 'localhost'),
         port=int(os.getenv('TARGET_DB_PORT', '5432')),
@@ -114,7 +114,7 @@ def load_config() -> PipelineConfig:
         user=os.getenv('TARGET_DB_USER', 'user'),
         password=os.getenv('TARGET_DB_PASSWORD', '')
     )
-    
+
     return PipelineConfig(
         source_db=source_db,
         target_db=target_db,
@@ -143,18 +143,18 @@ logger = logging.getLogger(__name__)
 def extract_orders(connection_string: str, process_date: date) -> pd.DataFrame:
     """
     Extract orders for a specific date.
-    
+
     Args:
         connection_string: Database connection string
         process_date: Date to extract
-        
+
     Returns:
         DataFrame with orders
     """
     logger.info(f"Extracting orders for {process_date}")
-    
+
     engine = create_engine(connection_string)
-    
+
     query = text("""
         SELECT
             order_id,
@@ -166,11 +166,11 @@ def extract_orders(connection_string: str, process_date: date) -> pd.DataFrame:
         FROM orders
         WHERE DATE(order_date) = :process_date
     """)
-    
+
     df = pd.read_sql(query, engine, params={'process_date': process_date})
-    
+
     logger.info(f"Extracted {len(df)} orders")
-    
+
     return df
 ```
 
@@ -190,23 +190,23 @@ logger = logging.getLogger(__name__)
 def clean_orders(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean orders data.
-    
+
     - Remove duplicates
     - Drop nulls in critical fields
     - Standardize status values
     """
     logger.info(f"Cleaning {len(df)} orders")
-    
+
     # Remove duplicates
     original_count = len(df)
     df = df.drop_duplicates(subset=['order_id'])
     duplicates_removed = original_count - len(df)
     if duplicates_removed > 0:
         logger.warning(f"Removed {duplicates_removed} duplicate orders")
-    
+
     # Drop nulls
     df = df.dropna(subset=['order_id', 'customer_id', 'amount'])
-    
+
     # Standardize status
     status_map = {
         'complete': 'completed',
@@ -214,9 +214,9 @@ def clean_orders(df: pd.DataFrame) -> pd.DataFrame:
         'cancelled': 'canceled'
     }
     df['status'] = df['status'].str.lower().replace(status_map)
-    
+
     logger.info(f"Cleaned data: {len(df)} orders remaining")
-    
+
     return df
 
 
@@ -225,14 +225,14 @@ def calculate_metrics(df: pd.DataFrame) -> pd.DataFrame:
     Calculate derived metrics.
     """
     df = df.copy()
-    
+
     # Flag high-value orders
     df['is_high_value'] = df['amount'] > 1000
-    
+
     # Extract date parts
     df['order_month'] = pd.to_datetime(df['order_date']).dt.to_period('M')
     df['order_year'] = pd.to_datetime(df['order_date']).dt.year
-    
+
     return df
 ```
 
@@ -254,16 +254,16 @@ logger = logging.getLogger(__name__)
 def load_orders(df: pd.DataFrame, connection_string: str, process_date: date):
     """
     Load orders to warehouse (idempotent).
-    
+
     Args:
         df: DataFrame to load
         connection_string: Target database connection
         process_date: Date partition to load
     """
     logger.info(f"Loading {len(df)} orders for {process_date}")
-    
+
     engine = create_engine(connection_string)
-    
+
     with engine.begin() as conn:
         # Delete existing data for this date (idempotent)
         conn.execute(
@@ -271,7 +271,7 @@ def load_orders(df: pd.DataFrame, connection_string: str, process_date: date):
             {'date': process_date}
         )
         logger.info(f"Deleted existing orders for {process_date}")
-    
+
     # Insert new data
     df.to_sql(
         'orders',
@@ -280,7 +280,7 @@ def load_orders(df: pd.DataFrame, connection_string: str, process_date: date):
         if_exists='append',
         index=False
     )
-    
+
     logger.info(f"Successfully loaded {len(df)} orders")
 ```
 
@@ -317,30 +317,30 @@ def run_pipeline(process_date: datetime.date):
     Run the full pipeline for a specific date.
     """
     logger.info(f"Starting pipeline for {process_date}")
-    
+
     # Load config
     config = load_config()
-    
+
     try:
         # Extract
         df = extract_orders(
             config.source_db.connection_string,
             process_date
         )
-        
+
         # Transform
         df = clean_orders(df)
         df = calculate_metrics(df)
-        
+
         # Load
         load_orders(
             df,
             config.target_db.connection_string,
             process_date
         )
-        
+
         logger.info(f"Pipeline completed successfully for {process_date}")
-        
+
     except Exception as e:
         logger.error(f"Pipeline failed: {e}")
         raise
@@ -349,11 +349,11 @@ def run_pipeline(process_date: datetime.date):
 if __name__ == '__main__':
     # Default: yesterday
     process_date = datetime.now().date() - timedelta(days=1)
-    
+
     # Or from command line: python run_daily_pipeline.py 2025-01-15
     if len(sys.argv) > 1:
         process_date = datetime.strptime(sys.argv[1], '%Y-%m-%d').date()
-    
+
     run_pipeline(process_date)
 ```
 
@@ -375,18 +375,18 @@ from scripts.run_daily_pipeline import run_pipeline
 
 def backfill(start_date: datetime.date, end_date: datetime.date):
     """Backfill pipeline for date range."""
-    
+
     current_date = start_date
-    
+
     while current_date <= end_date:
         print(f"Processing {current_date}")
-        
+
         try:
             run_pipeline(current_date)
         except Exception as e:
             print(f"Failed for {current_date}: {e}")
             # Continue with next date
-        
+
         current_date += timedelta(days=1)
 
 
@@ -395,10 +395,10 @@ if __name__ == '__main__':
         print("Usage: python backfill_date_range.py START_DATE END_DATE")
         print("Example: python backfill_date_range.py 2025-01-01 2025-01-31")
         sys.exit(1)
-    
+
     start = datetime.strptime(sys.argv[1], '%Y-%m-%d').date()
     end = datetime.strptime(sys.argv[2], '%Y-%m-%d').date()
-    
+
     backfill(start, end)
 ```
 

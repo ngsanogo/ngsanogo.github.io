@@ -49,9 +49,9 @@ from sqlalchemy import create_engine
 
 def extract_daily_orders(source_engine, process_date: datetime) -> pd.DataFrame:
     """Extract orders for a specific date from source system."""
-    
+
     query = """
-    SELECT 
+    SELECT
         order_id,
         customer_id,
         order_date,
@@ -62,23 +62,23 @@ def extract_daily_orders(source_engine, process_date: datetime) -> pd.DataFrame:
     FROM orders
     WHERE DATE(order_date) = %(process_date)s
     """
-    
+
     return pd.read_sql(
-        query, 
-        source_engine, 
+        query,
+        source_engine,
         params={'process_date': process_date.date()}
     )
 
 
 def transform_orders(df: pd.DataFrame) -> pd.DataFrame:
     """Apply business transformations to order data."""
-    
+
     transformed = df.copy()
-    
+
     # Calculate derived metrics
     transformed['is_high_value'] = transformed['total_amount'] > 1000
     transformed['order_month'] = pd.to_datetime(transformed['order_date']).dt.to_period('M')
-    
+
     # Standardize status values
     status_mapping = {
         'complete': 'completed',
@@ -87,25 +87,25 @@ def transform_orders(df: pd.DataFrame) -> pd.DataFrame:
         'cancel': 'canceled'
     }
     transformed['status'] = transformed['status'].str.lower().replace(status_mapping)
-    
+
     # Add processing metadata
     transformed['etl_loaded_at'] = datetime.now()
-    
+
     return transformed
 
 
 def load_to_warehouse(df: pd.DataFrame, warehouse_engine, target_table: str):
     """Load transformed data to warehouse, replacing existing date partition."""
-    
+
     # Delete existing data for this date (idempotent reload)
     process_date = df['order_date'].iloc[0]
-    
+
     with warehouse_engine.begin() as conn:
         conn.execute(
             f"DELETE FROM {target_table} WHERE DATE(order_date) = %(d)s",
             {'d': process_date}
         )
-    
+
     # Insert new data
     df.to_sql(
         target_table,
@@ -118,33 +118,33 @@ def load_to_warehouse(df: pd.DataFrame, warehouse_engine, target_table: str):
 def run_daily_batch(process_date: datetime = None):
     """
     Run daily batch pipeline.
-    
+
     Args:
         process_date: Date to process. Defaults to yesterday.
     """
     if process_date is None:
         process_date = datetime.now() - timedelta(days=1)
-    
+
     source_engine = create_engine(SOURCE_CONNECTION)
     warehouse_engine = create_engine(WAREHOUSE_CONNECTION)
-    
+
     # Extract
     print(f"Extracting orders for {process_date.date()}")
     orders = extract_daily_orders(source_engine, process_date)
     print(f"Extracted {len(orders)} orders")
-    
+
     if len(orders) == 0:
         print("No orders to process")
         return
-    
+
     # Transform
     print("Applying transformations")
     transformed = transform_orders(orders)
-    
+
     # Load
     print("Loading to warehouse")
     load_to_warehouse(transformed, warehouse_engine, 'fact_orders')
-    
+
     print(f"Pipeline complete: {len(transformed)} orders loaded")
 
 
@@ -226,10 +226,10 @@ dag = DAG(
 
 def extract_incremental(**context):
     """Extract orders since last successful run."""
-    
+
     execution_date = context['execution_date']
     prev_execution = context['prev_execution_date_success'] or execution_date - timedelta(hours=1)
-    
+
     # Extract orders modified since last run
     query = """
     SELECT *
@@ -237,41 +237,41 @@ def extract_incremental(**context):
     WHERE updated_at >= %(start)s
       AND updated_at < %(end)s
     """
-    
+
     orders = pd.read_sql(query, SOURCE_ENGINE, params={
         'start': prev_execution,
         'end': execution_date
     })
-    
+
     # Store for next task
     context['ti'].xcom_push(key='order_count', value=len(orders))
-    
+
     # Save to staging
     orders.to_parquet(f'/tmp/orders_{execution_date.isoformat()}.parquet')
 
 
 def transform(**context):
     """Transform staged orders."""
-    
+
     execution_date = context['execution_date']
-    
+
     orders = pd.read_parquet(f'/tmp/orders_{execution_date.isoformat()}.parquet')
-    
+
     # Apply transformations (same as batch)
     transformed = transform_orders(orders)
-    
+
     transformed.to_parquet(f'/tmp/orders_transformed_{execution_date.isoformat()}.parquet')
 
 
 def load(**context):
     """Load to warehouse with upsert logic."""
-    
+
     execution_date = context['execution_date']
-    
+
     transformed = pd.read_parquet(
         f'/tmp/orders_transformed_{execution_date.isoformat()}.parquet'
     )
-    
+
     # Upsert: update existing, insert new
     upsert_to_warehouse(transformed, 'fact_orders', key_columns=['order_id'])
 
@@ -362,21 +362,21 @@ class OrderEvent:
 class StreamProcessor:
     """
     Simple stream processor demonstrating the pattern.
-    
+
     In production, this would be Kafka Streams, Flink, or Spark Streaming.
     """
-    
+
     def __init__(self):
         self.handlers: list[Callable] = []
         self.state: dict = {}  # Would be state store in production
-    
+
     def register_handler(self, handler: Callable):
         """Register a handler for processing events."""
         self.handlers.append(handler)
-    
+
     def process(self, event_stream: Generator[OrderEvent, None, None]):
         """Process events from stream."""
-        
+
         for event in event_stream:
             for handler in self.handlers:
                 try:
@@ -391,15 +391,15 @@ class StreamProcessor:
 def calculate_customer_total(event: OrderEvent, state: dict):
     """
     Maintain running total per customer.
-    
+
     This demonstrates stateful stream processing.
     """
     customer_key = f"customer_total:{event.customer_id}"
-    
+
     current_total = state.get(customer_key, 0)
     new_total = current_total + event.amount
     state[customer_key] = new_total
-    
+
     # Would emit to downstream or update real-time store
     print(f"Customer {event.customer_id} total: {new_total}")
 
@@ -407,7 +407,7 @@ def calculate_customer_total(event: OrderEvent, state: dict):
 def detect_high_value_order(event: OrderEvent, state: dict):
     """
     Detect and alert on high-value orders.
-    
+
     This demonstrates event-driven alerting.
     """
     if event.amount > 10000:
@@ -425,31 +425,31 @@ def detect_high_value_order(event: OrderEvent, state: dict):
 def track_order_velocity(event: OrderEvent, state: dict):
     """
     Track order velocity in sliding window.
-    
+
     This demonstrates windowed aggregation.
     """
     window_key = "order_velocity"
     window_duration = 300  # 5 minutes in seconds
-    
+
     # Get current window
     current_window = state.get(window_key, [])
-    
+
     # Add new event
     current_window.append({
         'timestamp': event.timestamp.timestamp(),
         'amount': event.amount
     })
-    
+
     # Remove events outside window
     cutoff = datetime.now().timestamp() - window_duration
     current_window = [e for e in current_window if e['timestamp'] > cutoff]
-    
+
     state[window_key] = current_window
-    
+
     # Calculate metrics
     order_count = len(current_window)
     total_amount = sum(e['amount'] for e in current_window)
-    
+
     print(f"5-min window: {order_count} orders, ${total_amount:.2f} total")
 
 
@@ -457,13 +457,13 @@ def track_order_velocity(event: OrderEvent, state: dict):
 
 def simulate_event_stream() -> Generator[OrderEvent, None, None]:
     """Simulate an event stream for demonstration."""
-    
+
     events = [
         OrderEvent('e1', 'o1', 'c1', 150.00, 'created', datetime.now()),
         OrderEvent('e2', 'o2', 'c2', 15000.00, 'created', datetime.now()),
         OrderEvent('e3', 'o3', 'c1', 75.00, 'created', datetime.now()),
     ]
-    
+
     for event in events:
         yield event
 
@@ -473,7 +473,7 @@ if __name__ == "__main__":
     processor.register_handler(calculate_customer_total)
     processor.register_handler(detect_high_value_order)
     processor.register_handler(track_order_velocity)
-    
+
     processor.process(simulate_event_stream())
 ```
 
