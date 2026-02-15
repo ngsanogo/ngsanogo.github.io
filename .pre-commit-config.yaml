@@ -20,4 +20,4 @@ repos:
     hooks:
       - id: markdownlint
         args: ["--config", ".markdownlint.yml"]
-        files: "\\.(md)$"
+        files: '\\.(md|markdown)$'
