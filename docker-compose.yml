@@ -1,0 +1,26 @@
+# Local development and CI-like commands — no Python required on host.
+# See README for usage.
+
+services:
+  test:
+    build: .
+    command: python3 -m unittest discover tests/ -v
+    volumes:
+      - .:/app
+
+  build:
+    build: .
+    command: python3 src/build.py
+    volumes:
+      - .:/app
+
+  dev:
+    build: .
+    command: sh -c "python3 src/build.py && python3 src/dev.py"
+    ports:
+      - "8000:8000"
+    environment:
+      DEV_SERVER_HOST: "0.0.0.0"
+      DEV_SERVER_PORT: "8000"
+    volumes:
+      - .:/app

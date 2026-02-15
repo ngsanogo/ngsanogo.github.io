@@ -4,15 +4,24 @@ Simple static site builder with zero external dependencies.
 Builds HTML from markdown files in content/ directory.
 """
 
-import re
 import html
 import json
 import logging
-from pathlib import Path
+import re
+import shutil
+import sys
 from datetime import datetime
+from pathlib import Path
+
 from config import (
-    SITE_TITLE, SITE_DESC, SITE_URL, POSTS_PER_PAGE, NAV_LINKS,
-    DATE_FORMAT, SITEMAP_PRIORITIES
+    DATE_FORMAT,
+    NAV_LINKS,
+    POSTS_PER_PAGE,
+    SITE_DESC,
+    SITE_TITLE,
+    SITE_URL,
+    SITEMAP_PRIORITIES,
+    STATIC_PAGES,
 )
 
 # Configure logging
@@ -30,6 +39,10 @@ CONTENT_DIR = PROJECT_ROOT / "content"
 OUTPUT_DIR = PROJECT_ROOT / "public"
 
 OUTPUT_DIR.mkdir(exist_ok=True)
+
+# Cache for template and CSS (one read per process; avoids repeated I/O during build)
+_cached_template = None
+_cached_css = None
 
 
 def parse_markdown_file(file_path):
@@ -70,7 +83,20 @@ def parse_date(date_str):
 
 def markdown_to_html(text):
     """Convert markdown to HTML. Minimal but practical."""
+    # Extract HTML blocks to preserve them (avoid escaping intentional HTML)
+    html_blocks = []
+    def save_html(match):
+        html_blocks.append(match.group(0))
+        return f"HTMLBLOCK{len(html_blocks) - 1}PLACEHOLDER"
+    
+    # Match HTML blocks (opening tag to closing tag)
+    text = re.sub(r'<([a-zA-Z][a-zA-Z0-9]*)[^>]*>.*?</\1>', save_html, text, flags=re.DOTALL)
+    
+    # Now escape remaining text
     text = html.escape(text)
+    
+    # Convert markdown
+    text = _convert_horizontal_rules(text)
     text = _convert_headers(text)
     text = _convert_emphasis(text)
     text = _convert_images(text)
@@ -79,7 +105,17 @@ def markdown_to_html(text):
     text = _convert_lists(text)
     text = _convert_blockquotes(text)
     text = _convert_paragraphs(text)
+    
+    # Restore HTML blocks
+    for i, block in enumerate(html_blocks):
+        text = text.replace(f"HTMLBLOCK{i}PLACEHOLDER", block)
+    
     return text
+
+
+def _convert_horizontal_rules(text):
+    """Convert markdown horizontal rules to HTML."""
+    return re.sub(r'^---$', r'<hr>', text, flags=re.MULTILINE)
 
 
 def _convert_headers(text):
@@ -100,13 +136,17 @@ def _convert_emphasis(text):
 
 
 def _convert_images(text):
-    """Convert markdown images to HTML."""
-    return re.sub(r'!\[(.*?)\]\((.*?)\)', r'<img src="\2" alt="\1">', text)
+    """Convert markdown images to HTML with lazy loading."""
+    return re.sub(r'!\[(.*?)\]\((.*?)\)', r'<img src="\2" alt="\1" loading="lazy">', text)
 
 
 def _convert_links(text):
-    """Convert markdown links to HTML."""
-    return re.sub(r'\[(.*?)\]\((.*?)\)', r'<a href="\2">\1</a>', text)
+    """Convert markdown links to HTML. External links get rel='noopener noreferrer'."""
+    def repl(m):
+        label, url = m.group(1), m.group(2)
+        attrs = ' rel="noopener noreferrer"' if url.startswith(('http://', 'https://')) else ''
+        return f'<a href="{url}"{attrs}>{label}</a>'
+    return re.sub(r'\[(.*?)\]\((.*?)\)', repl, text)
 
 
 def _convert_code(text):
@@ -152,40 +192,34 @@ def _convert_paragraphs(text):
     """Convert markdown paragraphs to HTML."""
     paragraphs = text.split('\n\n')
     text = '\n\n'.join(
-        f'<p>{p}</p>' if p and not p.startswith('<') else p
+        f'<p>{p}</p>' if p and not p.startswith('<') and 'HTMLBLOCK' not in p else p
         for p in paragraphs
     )
     return text
 
 
 def load_css():
-    """Load CSS file.
-    
-    Returns:
-        str: CSS content
-    
-    Raises:
-        FileNotFoundError: If style.css does not exist
-    """
+    """Load CSS file (cached after first read)."""
+    global _cached_css
+    if _cached_css is not None:
+        return _cached_css
     css_path = Path(__file__).parent / "style.css"
     if not css_path.exists():
         raise FileNotFoundError("❌ style.css not found - cannot build site")
-    return css_path.read_text(encoding="utf-8")
+    _cached_css = css_path.read_text(encoding="utf-8")
+    return _cached_css
 
 
 def load_template():
-    """Load HTML template.
-    
-    Returns:
-        str: HTML template content
-    
-    Raises:
-        FileNotFoundError: If template.html does not exist
-    """
+    """Load HTML template (cached after first read)."""
+    global _cached_template
+    if _cached_template is not None:
+        return _cached_template
     template_path = Path(__file__).parent / "template.html"
     if not template_path.exists():
         raise FileNotFoundError("❌ template.html not found - cannot build site")
-    return template_path.read_text(encoding="utf-8")
+    _cached_template = template_path.read_text(encoding="utf-8")
+    return _cached_template
 
 
 def render_html(title, content, description=None, canonical_path="/", schema_type="WebPage"):
@@ -409,33 +443,25 @@ def _parse_post_file(file_path):
 
 
 def get_posts():
-    """Get all published blog posts, sorted by date (newest first).
-    
-    Returns:
-        list: List of post dictionaries, sorted newest first
-    """
+    """Return all published blog posts, sorted by date (newest first)."""
     posts_dir = CONTENT_DIR / "posts"
-    
     if not posts_dir.exists():
         logger.warning(f"Posts directory '{posts_dir}' not found")
         return []
-    
     posts = []
     for md_file in posts_dir.glob("*.md"):
-        # Skip template files
         if md_file.name.startswith("_"):
             continue
-        
         post = _parse_post_file(md_file)
         if post:
             posts.append(post)
-    
     return sorted(posts, key=lambda x: x["date"], reverse=True)
 
 
-def build_home():
-    """Build homepage."""
-    posts = get_posts()
+def build_home(posts=None):
+    """Build homepage. Uses posts if provided, else loads via get_posts()."""
+    if posts is None:
+        posts = get_posts()
     
     # Home page intro - clear value proposition in 5 seconds
     home_intro = """
@@ -564,9 +590,10 @@ def _write_blog_page(html_content, page_num, total_pages):
         f.write(html)
 
 
-def build_blog():
-    """Build blog with pagination."""
-    posts = get_posts()
+def build_blog(posts=None):
+    """Build blog with pagination. Uses posts if provided, else loads via get_posts()."""
+    if posts is None:
+        posts = get_posts()
     total_pages = _calculate_total_pages(len(posts), POSTS_PER_PAGE)
     
     (OUTPUT_DIR / "blog").mkdir(exist_ok=True)
@@ -577,9 +604,10 @@ def build_blog():
         _write_blog_page(content, page_num, total_pages)
 
 
-def build_posts():
-    """Build individual blog post pages."""
-    posts = get_posts()
+def build_posts(posts=None):
+    """Build individual blog post pages. Uses posts if provided, else loads via get_posts()."""
+    if posts is None:
+        posts = get_posts()
     (OUTPUT_DIR / "posts").mkdir(exist_ok=True)
     
     for post in posts:
@@ -601,15 +629,14 @@ def build_posts():
 
 def build_pages():
     """Build static pages (about, cv, contact, projects)."""
-    # Default descriptions SEO-optimized (used if not in frontmatter)
     default_descriptions = {
-        "about": "Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. Plateformes data, qualité des données, pilotage produit.",
-        "cv": "CV d'Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. Plateformes data, qualité des données, pilotage produit.",
-        "contact": "Contactez Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. Disponible pour missions et collaborations.",
-        "projects": "Projets data d'Issa Sanogo - Data Engineer Senior, Chef de Projet Data, Data Product Owner. Plateformes data et gouvernance."
+        "about": "Senior Data Engineer — data platforms, data quality, cross-functional leadership. Issa Sanogo.",
+        "cv": "Resume — Issa Sanogo, Senior Data Engineer. Data platforms, ETL, data quality.",
+        "contact": "Contact Issa Sanogo — Senior Data Engineer. Consulting and collaborations.",
+        "projects": "Projects — data engineering and data platform work by Issa Sanogo.",
     }
-    
-    for page_name in ["about", "cv", "contact", "projects"]:
+
+    for page_name in STATIC_PAGES:
         page_file = CONTENT_DIR / f"{page_name}.md"
         
         if not page_file.exists():
@@ -619,6 +646,9 @@ def build_pages():
         title = meta.get("title", page_name.capitalize())
         # Use description from frontmatter if available, else use default
         description = meta.get("description") or default_descriptions.get(page_name, SITE_DESC)
+        
+        # Remove the first H1 from body if it exists (we add our own with page-title class)
+        body = re.sub(r'^#\s+.*?$', '', body, count=1, flags=re.MULTILINE).strip()
         
         content = f"""
         <h1 class="page-title">{title}</h1>
@@ -634,10 +664,10 @@ def build_pages():
             f.write(html)
 
 
-def build_sitemap():
-    """Build sitemap.xml for search engines."""
-    posts = get_posts()
-    
+def build_sitemap(posts=None):
+    """Build sitemap.xml for search engines. Uses posts if provided, else loads via get_posts()."""
+    if posts is None:
+        posts = get_posts()
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n'
     sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     
@@ -649,10 +679,10 @@ def build_sitemap():
     sitemap += f'  <url>\n    <loc>{SITE_URL}/blog</loc>\n'
     sitemap += f'    <priority>{SITEMAP_PRIORITIES["blog"]}</priority>\n  </url>\n'
     
-    # Static pages
-    for page in ["about", "cv", "contact", "projects"]:
-        sitemap += f'  <url>\n    <loc>{SITE_URL}/{page}</loc>\n'
-        sitemap += f'    <priority>{SITEMAP_PRIORITIES["pages"]}</priority>\n  </url>\n'
+    for page in STATIC_PAGES:
+        if (CONTENT_DIR / f"{page}.md").exists():
+            sitemap += f'  <url>\n    <loc>{SITE_URL}/{page}</loc>\n'
+            sitemap += f'    <priority>{SITEMAP_PRIORITIES["pages"]}</priority>\n  </url>\n'
     
     # Blog posts
     for post in posts:
@@ -667,8 +697,6 @@ def build_sitemap():
 
 def copy_static_files():
     """Copy static files (robots.txt, 404.html, favicon.svg) to output directory."""
-    import shutil
-    
     static_dir = Path(__file__).parent / "static"
     if not static_dir.exists():
         logger.warning(f"Static directory '{static_dir}' not found - skipping static files")
@@ -708,18 +736,18 @@ def build():
         logger.error(f"Content directory '{CONTENT_DIR}' not found")
         return False
     
-    # Build site
     try:
         logger.info("🔨 Building site...")
-        build_home()
+        posts = get_posts()
+        build_home(posts)
         logger.info("✓ Homepage built")
-        build_blog()
+        build_blog(posts)
         logger.info("✓ Blog pages built")
-        build_posts()
+        build_posts(posts)
         logger.info("✓ Individual posts built")
         build_pages()
         logger.info("✓ Static pages built")
-        build_sitemap()
+        build_sitemap(posts)
         logger.info("✓ Sitemap generated")
         copy_static_files()
         logger.info("✓ Static files copied")
@@ -731,4 +759,4 @@ def build():
 
 
 if __name__ == "__main__":
-    build()
+    sys.exit(0 if build() else 1)

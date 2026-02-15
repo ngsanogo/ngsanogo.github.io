@@ -354,7 +354,7 @@ Master the critical ones. Everything else is bonus.
    - Schedule your script
    - Run automatically daily
 
-7 weeks. You've gone from zero to professional data engineer.
+7 weeks. You have the basics to build and run simple pipelines and to keep learning on the job.
 
 ## Professional Toolkit Example
 

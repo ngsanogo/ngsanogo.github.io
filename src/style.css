@@ -99,6 +99,7 @@ main {
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.025em;
+    text-align: center;
 }
 
 .tagline {
@@ -239,6 +240,13 @@ blockquote {
     color: var(--secondary);
     margin: 1.5rem 0;
     font-style: italic;
+}
+
+/* Horizontal Rule */
+hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
 }
 
 /* Footer */

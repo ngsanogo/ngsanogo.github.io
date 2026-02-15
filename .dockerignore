@@ -1,0 +1,27 @@
+# Generated output (rebuilt inside container)
+public/
+
+# Git
+.git/
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Test artifacts (created at runtime)
+test_*.md
+
+# Docs optional (include if you want them in image)
+# docs/
