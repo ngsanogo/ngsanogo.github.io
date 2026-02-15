@@ -1,0 +1,44 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+<meta name="description" content="{{ .Description | default .Site.Params.description }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<meta name="robots" content="index, follow">
+<meta name="author" content="{{ .Site.Params.author }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{ .Description | default .Site.Params.description }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ .Title }}">
+<meta name="twitter:description" content="{{ .Description | default .Site.Params.description }}">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+{{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+<!-- Schema.org JSON-LD -->
+{{ if .IsHome }}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"{{ .Site.Title }}","url":"{{ .Site.BaseURL }}","description":"{{ .Site.Params.description }}"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"{{ .Site.Params.author }}","url":"{{ .Site.BaseURL }}","jobTitle":"{{ .Site.Params.jobTitle }}","description":"{{ .Site.Params.description }}","sameAs":["{{ .Site.Params.linkedin }}","{{ .Site.Params.github }}"]}
+</script>
+{{ else if eq .Section "posts" }}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","name":"{{ .Title }}","description":"{{ .Description }}","url":"{{ .Permalink }}","datePublished":"{{ .Date.Format "2006-01-02" }}","author":{"@type":"Person","name":"{{ .Site.Params.author }}"}}
+</script>
+{{ else }}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"{{ .Title }}","description":"{{ .Description | default .Site.Params.description }}","url":"{{ .Permalink }}","author":{"@type":"Person","name":"{{ .Site.Params.author }}"}}
+</script>
+{{ end }}

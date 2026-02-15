@@ -3,8 +3,8 @@ title: "dbt and Airflow: Production-Ready Data Transformation"
 slug: dbt-airflow-integration
 date: 2026-02-03
 description: "Learn how to orchestrate dbt with Apache Airflow. Build reliable transformation pipelines with proper scheduling, dependencies, and monitoring. Complete integration guide with examples."
-category: data-engineering
-tags: dbt, airflow, data-transformation, elt, orchestration
+categories: ["data-engineering"]
+tags: ["dbt", "airflow", "data-transformation", "elt", "orchestration"]
 draft: false
 ---
 

@@ -3,8 +3,8 @@ title: "Data Pipeline Architecture: From Batch to Streaming"
 slug: data-pipeline-architecture-patterns
 date: 2026-02-01
 description: "A practical guide to data pipeline architecture patterns. Compare batch, micro-batch, and streaming approaches. Learn when to use each pattern and how to design for reliability."
-category: data-engineering
-tags: architecture, data-pipelines, etl, streaming, batch
+categories: ["data-engineering"]
+tags: ["architecture", "data-pipelines", "etl", "streaming", "batch"]
 draft: false
 ---
 

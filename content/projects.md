@@ -1,9 +1,14 @@
 ---
 title: Work — Issa Sanogo
 description: "Data engineering projects: data warehouses, ETL pipelines, industrialization, data governance. Healthcare, research, and SaaS contexts."
+cta:
+  - label: "Discuss a project"
+    url: "/contact/"
+    style: primary
+  - label: "View my resume →"
+    url: "/cv/"
+    style: secondary
 ---
-
-# Work
 
 These projects illustrate how I work: understand the context, structure progressively, and deliver solutions that last.
 

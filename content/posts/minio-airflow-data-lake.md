@@ -3,8 +3,8 @@ title: "MinIO and Airflow: Building a Local Data Lake"
 slug: minio-airflow-data-lake
 date: 2026-02-03
 description: "Learn how to use MinIO as an S3-compatible object storage with Apache Airflow. Build a local data lake for development and testing. Complete setup guide with practical examples."
-category: data-engineering
-tags: minio, airflow, object-storage, data-lake, s3
+categories: ["data-engineering"]
+tags: ["minio", "airflow", "object-storage", "data-lake", "s3"]
 draft: false
 ---
 

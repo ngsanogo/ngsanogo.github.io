@@ -3,8 +3,8 @@ title: "Python Project Structure for Data Pipelines"
 slug: python-project-structure-data
 date: 2026-02-18
 description: "How to organize a Python data pipeline project. Directory structure, configuration, testing, packaging. Build maintainable codebases."
-category: python
-tags: python, project-structure, best-practices
+categories: ["python"]
+tags: ["python", "project-structure", "best-practices"]
 draft: false
 ---
 

@@ -1,45 +1,41 @@
-x-app-image: &app-image
-  image: ngsanogo.github.io:latest
-  build:
-    context: .
-    target: runtime
-
-x-builder-image: &builder-image
-  build:
-    context: .
-    target: builder
-
 services:
 
   dev:
     container_name: dev
-    <<: *app-image
-    profiles: ["dev"]
+    build:
+      context: .
+      target: hugo
+    command: hugo server --bind 0.0.0.0 --port 1313 --poll 1s
     ports:
-      - "8000:8000"
-    environment:
-      DEV_SERVER_HOST: "0.0.0.0"
-      DEV_SERVER_PORT: "8000"
+      - "1313:1313"
     volumes:
-      - .:/app
+      - .:/site
+    profiles: ["dev"]
+
+  build:
+    build:
+      context: .
+      target: hugo
+    command: hugo --minify
+    volumes:
+      - .:/site
+    profiles: ["build"]
 
   test:
     container_name: test
-    <<: *builder-image
+    build:
+      context: .
+      target: hugo
+    command: sh -c "hugo --minify && test -f public/index.html && test -f public/sitemap.xml && echo 'All checks passed'"
+    volumes:
+      - .:/site
     profiles: ["test"]
-    command: python3 -m unittest discover tests/ -v
-
-  build:
-    <<: *builder-image
-    profiles: ["build"]
-    command: python3 src/build.py
 
   prod:
     container_name: prod
-    <<: *app-image
-    profiles: ["prod"]
+    build:
+      context: .
+      target: prod
     ports:
-      - "8000:8000"
-    environment:
-      DEV_SERVER_HOST: "0.0.0.0"
-      DEV_SERVER_PORT: "8000"
+      - "8080:80"
+    profiles: ["prod"]

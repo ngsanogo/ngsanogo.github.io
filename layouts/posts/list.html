@@ -1,0 +1,38 @@
+{{ define "main" }}
+<h1 class="page-title">Writing</h1>
+{{ $pag := .Paginate .Pages }}
+<p class="page-subtitle">Articles on data engineering, tools, and best practices.{{ if gt $pag.TotalPages 1 }} (Page {{ $pag.PageNumber }} of {{ $pag.TotalPages }}){{ end }}</p>
+
+{{ range $pag.Pages }}
+<div class="post-item">
+    <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    <div class="post-meta"><span>{{ .Date.Format "January 02, 2006" }}</span></div>
+    <p class="post-description">{{ .Description }}</p>
+    <a href="{{ .RelPermalink }}" class="read-more">Read more →</a>
+</div>
+{{ end }}
+
+{{ if gt $pag.TotalPages 1 }}
+<div class="pagination">
+    {{ if $pag.HasPrev }}
+        <a href="{{ $pag.Prev.URL }}" class="read-more">← Previous</a>
+    {{ else }}
+        <span></span>
+    {{ end }}
+    <div class="page-numbers">
+        {{ range $pag.Pagers }}
+            {{ if eq . $pag }}
+                <span>{{ .PageNumber }}</span>
+            {{ else }}
+                <a href="{{ .URL }}">{{ .PageNumber }}</a>
+            {{ end }}
+        {{ end }}
+    </div>
+    {{ if $pag.HasNext }}
+        <a href="{{ $pag.Next.URL }}" class="read-more">Next →</a>
+    {{ else }}
+        <span></span>
+    {{ end }}
+</div>
+{{ end }}
+{{ end }}

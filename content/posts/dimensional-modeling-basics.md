@@ -3,8 +3,8 @@ title: "Dimensional Modeling: How to Structure a Data Warehouse"
 slug: dimensional-modeling-basics
 date: 2026-02-20
 description: "Learn dimensional modeling for data warehouses. Fact tables, dimension tables, star schema. Build warehouses analysts can query easily."
-category: data-modeling
-tags: data-modeling, data-warehouse, dimensional-modeling, star-schema
+categories: ["data-modeling"]
+tags: ["data-modeling", "data-warehouse", "dimensional-modeling", "star-schema"]
 draft: false
 ---
 

@@ -3,8 +3,8 @@ title: "Data Quality: The Foundation of Reliable Data Projects"
 slug: data-quality-fundamentals
 date: 2026-02-03
 description: "Data quality is the foundation of every successful data project. Learn the six dimensions of data quality, common pitfalls, and practical strategies to implement quality checks in your pipelines."
-category: data-quality
-tags: data-quality, data-engineering, best-practices
+categories: ["data-quality"]
+tags: ["data-quality", "data-engineering", "best-practices"]
 draft: false
 ---
 
