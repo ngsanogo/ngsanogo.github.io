@@ -3,6 +3,11 @@ public/
 resources/
 .hugo_build.lock
 
+# Python venv
+.venv/
+__pycache__/
+*.pyc
+
 # OS
 .DS_Store
 Thumbs.db

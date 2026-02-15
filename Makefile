@@ -1,13 +1,27 @@
-.PHONY: dev build test prod clean lint help
+.PHONY: dev build test prod clean lint setup help
+
+VENV := .venv
+PYTHON := $(VENV)/bin/python
+PIP := $(VENV)/bin/pip
+PRECOMMIT := $(VENV)/bin/pre-commit
 
 help:
 	@echo "Available commands:"
+	@echo "  make setup  - Create venv and install dev dependencies"
 	@echo "  make dev    - Start dev server with hot reload (port 1313)"
 	@echo "  make build  - Build the static site"
 	@echo "  make test   - Build and validate output"
 	@echo "  make prod   - Run production server (nginx, port 8080)"
 	@echo "  make clean  - Remove generated files"
 	@echo "  make lint   - Run formatters and linters via pre-commit"
+
+setup:
+	@echo "🔧 Setting up development environment..."
+	@python3 -m venv $(VENV)
+	@$(PIP) install --upgrade pip
+	@$(PIP) install -r requirements.txt
+	@$(PRECOMMIT) install
+	@echo "✅ Setup complete! Pre-commit hooks installed."
 
 dev:
 	@echo "🌐 Starting dev server..."
@@ -32,14 +46,10 @@ clean:
 
 lint:
 	@echo "🔍 Running linters..."
-	@command -v pre-commit >/dev/null 2>&1 || { \
-		echo "❌ Error: pre-commit is not installed"; \
+	@if [ ! -f "$(PRECOMMIT)" ]; then \
+		echo "❌ Error: pre-commit is not installed in venv"; \
 		echo ""; \
-		echo "Install it with:"; \
-		echo "  brew install pre-commit  # macOS"; \
-		echo "  pip install pre-commit   # or with pip"; \
-		echo ""; \
-		echo "Then run: pre-commit install"; \
+		echo "Run: make setup"; \
 		exit 1; \
-	}
-	@pre-commit run --all-files
+	fi
+	@$(PRECOMMIT) run --all-files
