@@ -75,7 +75,7 @@ ALTER TABLE customers
 ADD CONSTRAINT valid_email CHECK (email LIKE '%@%.%');
 ```
 
-Process millions of records in seconds.
+Process large volumes efficiently with proper indexing and query design.
 
 ## Real-World Usage
 

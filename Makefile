@@ -1,13 +1,16 @@
-.PHONY: build test dev clean all help install
+.PHONY: build test dev clean all help coverage docker-build docker-test docker-dev
 
 help:
 	@echo "Available commands:"
-	@echo "  make build    - Build the site"
-	@echo "  make test     - Run all tests"
-	@echo "  make dev      - Build and start dev server"
-	@echo "  make clean    - Clean generated files"
-	@echo "  make all      - Clean, test, and build"
-	@echo "  make deploy   - Build, test, and push to GitHub"
+	@echo "  make build         - Build the site"
+	@echo "  make test          - Run all tests"
+	@echo "  make coverage      - Run tests with coverage report"
+	@echo "  make dev           - Build and start dev server"
+	@echo "  make clean         - Clean generated files and cache"
+	@echo "  make all           - Clean, test, and build"
+	@echo "  make docker-build  - Build Docker image"
+	@echo "  make docker-test   - Run tests in Docker"
+	@echo "  make docker-dev    - Run dev server in Docker"
 
 build:
 	@echo "🔨 Building site..."
@@ -17,24 +20,36 @@ test:
 	@echo "🧪 Running tests..."
 	@python3 -m unittest discover tests/ -v
 
+coverage:
+	@echo "📊 Running tests with coverage..."
+	@command -v coverage >/dev/null 2>&1 || { echo "⚠️  coverage not installed. Install with: pip3 install coverage"; exit 1; }
+	@python3 -m coverage run -m unittest discover tests/
+	@python3 -m coverage report
+	@python3 -m coverage html
+	@echo "✅ Coverage report generated in htmlcov/"
+
 dev: build
 	@echo "🌐 Starting dev server..."
 	@python3 src/dev.py
 
 clean:
-	@echo "🧹 Cleaning generated files..."
-	@rm -rf public/ __pycache__/ src/__pycache__/ tests/__pycache__/
+	@echo "🧹 Cleaning generated files and cache..."
+	@rm -rf public/ __pycache__/ src/__pycache__/ tests/__pycache__/ .venv/__pycache__/
+	@rm -rf htmlcov/ .coverage
 	@rm -f test_*.md
 	@echo "✅ Clean complete"
 
 all: clean test build
 	@echo "✅ All tasks complete"
 
-deploy: all
-	@echo "📦 Deploying to GitHub..."
-	@git add -A
-	@git status
-	@read -p "Commit message: " msg; \
-	git commit -m "$$msg"
-	@git push
-	@echo "✅ Deployed successfully"
+docker-build:
+	@echo "🐳 Building Docker image..."
+	@docker build -t ngsanogo-blog:latest .
+
+docker-test:
+	@echo "🧪 Running tests in Docker..."
+	@docker compose run --rm test
+
+docker-dev:
+	@echo "🌐 Starting dev server in Docker..."
+	@docker compose up dev

@@ -1,18 +1,38 @@
-# Generated output
+# Build output
 public/
 
-# Python cache
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+.Python
+*.so
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
 
-# OS files
+# Environment (optional overrides)
+.env
+.env.local
+
+# OS
 .DS_Store
+Thumbs.db
 
-# Editor files
+# Editor / IDE
 *.swp
 *.swo
 *~
 .vscode/
+.idea/
+.cursor/
 
-# Test artifacts
+# Test artifacts (created by tests at runtime)
 test_*.md
+
+# Large or sensitive assets (uncomment if needed)
+# *.pdf

@@ -34,7 +34,7 @@ What happens when `amount` is already a float? What if it's None? What if it's a
 ### Good: Explicit Type Handling
 
 ```python
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from typing import Union
 
 def amount_to_cents(amount: Union[str, int, float, Decimal]) -> int:
