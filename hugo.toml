@@ -18,7 +18,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
     codeFences = true
     guessSyntax = false
     lineNos = false
-    noClasses = true
+    noClasses = false
     style = "github"
   [markup.goldmark]
     [markup.goldmark.renderer]
