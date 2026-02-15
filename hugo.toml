@@ -1,7 +1,7 @@
 baseURL = "https://ngsanogo.github.io/"
 languageCode = "en"
 title = "Issa Sanogo"
-buildFuture = true
+buildFuture = false
 
 # No taxonomy pages needed
 disableKinds = ["taxonomy", "term", "RSS"]
@@ -29,6 +29,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
   author = "Issa Sanogo"
   jobTitle = "Senior Data Engineer"
   email = "ngsanogo@proton.me"
+  phone = "+33651985279"
   linkedin = "https://www.linkedin.com/in/ngsanogo/"
   github = "https://github.com/ngsanogo"
 
