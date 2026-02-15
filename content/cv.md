@@ -1,5 +1,5 @@
 ---
-title: CV
+title: Senior Data Engineer
 description: "Issa Sanogo's resume - Senior Data Engineer. 8+ years of experience in data platform architecture, data quality, and project leadership."
 cta:
   - label: "Get in touch"
@@ -10,9 +10,7 @@ cta:
     style: secondary
 ---
 
-**Senior Data Engineer**
-
-Paris area, France · [ngsanogo@proton.me](mailto:ngsanogo@proton.me) · [LinkedIn](https://www.linkedin.com/in/ngsanogo) · [GitHub](https://github.com/ngsanogo)
+<p class="cv-contact">Paris area, France · <a href="tel:+33651985279">Phone</a> · <a href="mailto:ngsanogo@proton.me">Mail</a> · <a href="https://www.linkedin.com/in/ngsanogo">LinkedIn</a> · <a href="https://github.com/ngsanogo">GitHub</a></p>
 
 ---
 
@@ -26,10 +24,9 @@ Accustomed to demanding contexts (healthcare, medical research), I scope busines
 
 ## Experience
 
-### Data Engineer — Padoa
+**Data Engineer — Padoa** (Freelance)
 Paris · August 2025 – Present
-
-Occupational health SaaS company.
+Occupational health SaaS company
 
 - Client data migration from various sources
 - Pipeline redesign and industrialization (high volumes)
@@ -37,10 +34,9 @@ Occupational health SaaS company.
 - Collaboration with business stakeholders and clients
 - Product database maintenance and evolution
 
-### Data Engineer — Peasy
+**Data Engineer — Peasy** (Freelance)
 Annecy · March 2025 – July 2025
-
-EdTech startup.
+EdTech startup
 
 - Database construction and optimization
 - Integration pipeline implementation (cleaning, standardization, structuring)
@@ -48,10 +44,9 @@ EdTech startup.
 - CRM governance and process improvement
 - Automated dashboard creation and team enablement
 
-### Data Engineer — Institut Jérôme Lejeune
+**Data Engineer — Institut Jérôme Lejeune** (Permanent contract)
 Paris · October 2021 – January 2025 (3 years)
-
-Specialized medical research institute.
+Specialized medical research institute
 
 - Data repository diagnostic (patients, samples, research)
 - Data warehouse implementation and ETL workflow development
@@ -60,10 +55,9 @@ Specialized medical research institute.
 - Data tool governance and evolution leadership
 - Medical and scientific team support
 
-### Data Manager — AP-HP
+**Data Manager — AP-HP** (Fixed-term contract)
 Boulogne-Billancourt · September 2017 – September 2021 (4 years)
-
-Paris public hospital system (largest in France).
+Paris public hospital system (largest in France)
 
 - Clinical trial data management
 - Database administration
@@ -73,10 +67,9 @@ Paris public hospital system (largest in France).
 
 ## Education
 
-### Master's Degree — Applied Mathematics for Life Sciences
+**Master's Degree — Applied Mathematics for Life Sciences**
 Université de Paris · 2016 – 2017
-
-Applied mathematics, biostatistics, programming, databases.
+*Applied mathematics, biostatistics, programming, databases*
 
 ---
 
