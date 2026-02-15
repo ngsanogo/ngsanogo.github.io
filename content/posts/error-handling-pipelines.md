@@ -49,24 +49,24 @@ class DataExtractionError(Exception):
 
 def extract_data(api_url: str) -> dict:
     """Extract data from API."""
-    
+
     try:
         response = requests.get(api_url, timeout=30)
         response.raise_for_status()  # Raise error for 4xx/5xx
         return response.json()
-        
+
     except requests.Timeout:
         logger.error(f"API timeout: {api_url}")
         raise DataExtractionError(f"API timeout after 30s: {api_url}")
-        
+
     except requests.HTTPError as e:
         logger.error(f"API HTTP error: {e.response.status_code}")
         raise DataExtractionError(f"API returned {e.response.status_code}: {api_url}")
-        
+
     except requests.RequestException as e:
         logger.error(f"API request failed: {e}")
         raise DataExtractionError(f"Failed to connect to API: {api_url}")
-        
+
     except ValueError:  # JSON decode error
         logger.error(f"Invalid JSON response from {api_url}")
         raise DataExtractionError(f"API returned invalid JSON: {api_url}")
@@ -90,7 +90,7 @@ from functools import wraps
 def retry(max_attempts=3, delay=5, backoff=2, exceptions=(Exception,)):
     """
     Retry decorator with exponential backoff.
-    
+
     Args:
         max_attempts: Maximum retry attempts
         delay: Initial delay in seconds
@@ -101,24 +101,24 @@ def retry(max_attempts=3, delay=5, backoff=2, exceptions=(Exception,)):
         @wraps(func)
         def wrapper(*args, **kwargs):
             current_delay = delay
-            
+
             for attempt in range(1, max_attempts + 1):
                 try:
                     return func(*args, **kwargs)
-                    
+
                 except exceptions as e:
                     if attempt == max_attempts:
                         logger.error(f"{func.__name__} failed after {max_attempts} attempts")
                         raise
-                    
+
                     logger.warning(
                         f"{func.__name__} failed (attempt {attempt}/{max_attempts}): {e}. "
                         f"Retrying in {current_delay}s..."
                     )
-                    
+
                     time.sleep(current_delay)
                     current_delay *= backoff
-            
+
         return wrapper
     return decorator
 
@@ -170,10 +170,10 @@ class PartialFailure(Exception):
 
 def process_records(records):
     """Process records, handle partial failures."""
-    
+
     successful = []
     failed = []
-    
+
     for record in records:
         try:
             processed = transform_record(record)
@@ -181,10 +181,10 @@ def process_records(records):
         except ValueError as e:
             logger.warning(f"Failed to process record {record.get('id')}: {e}")
             failed.append(record)
-    
+
     if failed:
         logger.warning(f"Processed {len(successful)}/{len(records)} records successfully")
-        
+
         # If more than 10% fail, something is wrong
         failure_rate = len(failed) / len(records)
         if failure_rate > 0.1:
@@ -193,7 +193,7 @@ def process_records(records):
                 len(successful),
                 len(failed)
             )
-    
+
     return successful
 ```
 
@@ -204,12 +204,12 @@ When optional enrichments fail, continue with core data:
 ```python
 def enrich_customer_data(customers_df):
     """Enrich customer data with external sources."""
-    
+
     df = customers_df.copy()
-    
+
     # Core data: must succeed
     df = calculate_ltv(df)
-    
+
     # Optional enrichment: can fail
     try:
         credit_scores = fetch_credit_scores(df['customer_id'])
@@ -218,7 +218,7 @@ def enrich_customer_data(customers_df):
     except Exception as e:
         logger.warning(f"Credit score enrichment failed: {e}. Continuing without it.")
         # Pipeline continues, just without credit scores
-    
+
     return df
 ```
 
@@ -233,23 +233,23 @@ from email.message import EmailMessage
 
 def send_alert(subject: str, body: str, to: list[str]):
     """Send alert email."""
-    
+
     msg = EmailMessage()
     msg['Subject'] = subject
     msg['From'] = 'pipeline-alerts@company.com'
     msg['To'] = ', '.join(to)
     msg.set_content(body)
-    
+
     with smtplib.SMTP('smtp.company.com') as smtp:
         smtp.send_message(msg)
 
 
 def run_pipeline_with_alerts(process_date):
     """Run pipeline with alerting."""
-    
+
     try:
         run_pipeline(process_date)
-        
+
     except DataExtractionError as e:
         send_alert(
             subject=f"Pipeline FAILED: Data extraction error",
@@ -257,7 +257,7 @@ def run_pipeline_with_alerts(process_date):
             to=['data-team@company.com']
         )
         raise
-        
+
     except Exception as e:
         send_alert(
             subject=f"Pipeline FAILED: Unexpected error",
@@ -281,19 +281,19 @@ logger = logging.getLogger(__name__)
 
 class APIClient:
     """Robust API client with error handling."""
-    
+
     def __init__(self, base_url: str, api_key: str, max_retries: int = 3):
         self.base_url = base_url
         self.api_key = api_key
         self.max_retries = max_retries
-    
+
     def get(self, endpoint: str, params: Optional[dict] = None) -> dict:
         """
         GET request with retry logic and error handling.
         """
         url = f"{self.base_url}/{endpoint}"
         headers = {'Authorization': f'Bearer {self.api_key}'}
-        
+
         for attempt in range(1, self.max_retries + 1):
             try:
                 response = requests.get(
@@ -302,47 +302,47 @@ class APIClient:
                     params=params,
                     timeout=30
                 )
-                
+
                 # Handle rate limiting
                 if response.status_code == 429:
                     retry_after = int(response.headers.get('Retry-After', 60))
                     logger.warning(f"Rate limited. Retrying after {retry_after}s")
                     time.sleep(retry_after)
                     continue
-                
+
                 # Check for errors
                 response.raise_for_status()
-                
+
                 return response.json()
-                
+
             except requests.Timeout:
                 if attempt == self.max_retries:
                     logger.error(f"API timeout after {self.max_retries} attempts")
                     raise TransientError(f"API timeout: {url}")
-                
+
                 logger.warning(f"Timeout (attempt {attempt}/{self.max_retries}), retrying...")
                 time.sleep(5 * attempt)
-                
+
             except requests.HTTPError as e:
                 # Don't retry 4xx errors (client errors)
                 if 400 <= e.response.status_code < 500:
                     logger.error(f"Client error: {e.response.status_code}")
                     raise PermanentError(f"API error {e.response.status_code}: {url}")
-                
+
                 # Retry 5xx errors (server errors)
                 if attempt == self.max_retries:
                     raise TransientError(f"API error after retries: {url}")
-                
+
                 logger.warning(f"Server error (attempt {attempt}/{self.max_retries}), retrying...")
                 time.sleep(5 * attempt)
-                
+
             except requests.RequestException as e:
                 if attempt == self.max_retries:
                     raise TransientError(f"Network error: {url}")
-                
+
                 logger.warning(f"Network error (attempt {attempt}/{self.max_retries}), retrying...")
                 time.sleep(5 * attempt)
-        
+
         raise TransientError(f"Failed after {self.max_retries} attempts: {url}")
 ```
 
@@ -355,7 +355,7 @@ from unittest.mock import patch, Mock
 
 def test_retry_on_timeout():
     """Test that transient errors are retried."""
-    
+
     with patch('requests.get') as mock_get:
         # Fail twice, succeed third time
         mock_get.side_effect = [
@@ -363,28 +363,28 @@ def test_retry_on_timeout():
             requests.Timeout(),
             Mock(status_code=200, json=lambda: {'data': 'success'})
         ]
-        
+
         client = APIClient('https://api.example.com', 'key')
         result = client.get('endpoint')
-        
+
         assert result == {'data': 'success'}
         assert mock_get.call_count == 3
 
 
 def test_no_retry_on_404():
     """Test that permanent errors are not retried."""
-    
+
     with patch('requests.get') as mock_get:
         response = Mock()
         response.status_code = 404
         response.raise_for_status.side_effect = requests.HTTPError(response=response)
         mock_get.return_value = response
-        
+
         client = APIClient('https://api.example.com', 'key')
-        
+
         with pytest.raises(PermanentError):
             client.get('endpoint')
-        
+
         assert mock_get.call_count == 1  # No retry
 ```
 
