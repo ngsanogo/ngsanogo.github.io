@@ -74,12 +74,12 @@ ngsanogo.github.io/
    ```
 2. Run tests and build:
    ```bash
-   docker compose run --rm test
-   docker compose run --rm build
+   docker compose --profile test run --rm test
+   docker compose --profile build run --rm build
    ```
 3. Serve locally:
    ```bash
-   docker compose up dev
+   docker compose --profile dev up --build
    ```
    Open **http://localhost:8000**. Stop with `Ctrl+C`.
 
@@ -104,9 +104,9 @@ ngsanogo.github.io/
 
 | Task | Docker | Local |
 |------|--------|--------|
-| Run tests | `docker compose run --rm test` | `python3 -m unittest discover tests/ -v` or `make test` |
-| Build site | `docker compose run --rm build` | `python3 src/build.py` or `make build` |
-| Preview (build + serve) | `docker compose up dev` | `make dev` (or build then `python3 src/dev.py`) |
+| Run tests | `docker compose --profile test run --rm test` | `python3 -m unittest discover tests/ -v` or `make test` |
+| Build site | `docker compose --profile build run --rm build` | `python3 src/build.py` or `make build` |
+| Preview (build + serve) | `docker compose --profile dev up --build` | `make dev` (or build then `python3 src/dev.py`) |
 | Clean + test + build | — | `make all` |
 
 - **Add a post:** Copy `content/posts/_template.md` to `content/posts/my-slug.md`, set `title`, `slug`, `date`, `description`, `draft: false`, then build.
@@ -120,15 +120,6 @@ ngsanogo.github.io/
 1. **Local:** `make all` (or run tests + build as above).
 2. **Commit and push** to `main` or `dev`.
 3. GitHub Actions runs tests, builds the site, checks links (Lychee), and deploys `public/` to GitHub Pages. No manual upload.
-
----
-
-## Documentation
-
-- [Technical audit](docs/ANALYSIS_REPORT.md)
-- [Style guide](docs/STYLE_GUIDE.md)
-- [Maintenance charter](docs/MAINTENANCE.md)
-- [Patterns, anti-patterns & production](docs/PATTERNS_AND_PRODUCTION.md)
 
 ---
 
