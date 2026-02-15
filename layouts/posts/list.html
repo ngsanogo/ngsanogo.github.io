@@ -1,5 +1,5 @@
 {{ define "main" }}
-<h1 class="page-title">Writing</h1>
+<h1 class="page-title">{{ .Title }}</h1>
 {{ $pag := .Paginate .Pages }}
 <p class="page-subtitle">Articles on data engineering, tools, and best practices.{{ if gt $pag.TotalPages 1 }} (Page {{ $pag.PageNumber }} of {{ $pag.TotalPages }}){{ end }}</p>
 
