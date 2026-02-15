@@ -10,7 +10,7 @@ Personal site and blog — **Issa Sanogo**, Senior Data Engineer.
 ## Requirements
 
 - Docker + Docker Compose
-- Python 3.8+ (for local linting with pre-commit)
+- Python 3.12+ (for local linting with pre-commit)
 
 ## Quick start
 
