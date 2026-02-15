@@ -3,6 +3,8 @@ title: "PostgreSQL: The Reliable Database You Should Know"
 slug: postgresql-basics
 date: 2024-11-30
 description: "PostgreSQL basics: What it is, why it's reliable, and how to use it for data engineering work."
+categories: ["sql"]
+tags: ["postgresql", "databases", "sql", "data-engineering"]
 draft: false
 ---
 ## What is PostgreSQL?

@@ -3,6 +3,8 @@ title: "Why SQL is the Most Important Skill for Data Engineers"
 slug: why-learn-sql
 date: 2024-11-28
 description: "Why SQL is essential for data engineers. Learn what SQL does, how to use it, and why it's the foundation of data work."
+categories: ["sql"]
+tags: ["sql", "fundamentals", "data-engineering"]
 draft: false
 ---
 ## What is SQL?
