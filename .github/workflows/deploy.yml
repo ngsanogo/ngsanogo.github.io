@@ -17,30 +17,59 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python-version }}
       
       - name: Run tests
         run: python3 -m unittest discover tests/ -v
 
-  build:
-    needs: test
+  coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install coverage
+        run: pip install coverage
+      
+      - name: Run tests with coverage
+        run: |
+          python3 -m coverage run -m unittest discover tests/
+          python3 -m coverage report
+          python3 -m coverage html
+      
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: htmlcov/
+
+  build:
+    needs: [test, coverage]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       
       - name: Build site
         run: python3 src/build.py
+        # Exit code: 0 = success, 1 = build failed (missing files, etc.)
       
       - name: Validate build output
         run: |
@@ -53,10 +82,16 @@ jobs:
             exit 1
           fi
           echo "✅ Build validation passed"
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: 'public/ --no-progress'
+          fail: true
       
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

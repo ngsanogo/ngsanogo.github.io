@@ -33,7 +33,7 @@ Compare to other languages: Much more complicated.
 
 **Community**: Huge Python community. Answers to every question exist.
 
-**Industry standard**: Every data company uses Python. Period.
+**Industry standard**: Most data teams use Python for pipelines, scripting, and tooling.
 
 ## What You Do With Python in Data Engineering
 

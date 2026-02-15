@@ -123,7 +123,7 @@ Advanced SQL exists, but you don't need it immediately.
 - You depend on others to write queries
 - You miss problems in your data
 - You can't optimize performance
-- You look incompetent in meetings
+- You have less leverage in technical discussions when you can't read or write the queries yourself
 
 ## Getting Started
 

@@ -3,25 +3,25 @@
 Tests unitaires pour le générateur de site.
 """
 
-import unittest
 import sys
+import unittest
 from pathlib import Path
-from datetime import datetime
 
 # Add src directory to path to import build module
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from build import (
-    parse_markdown_file,
-    parse_date,
-    markdown_to_html,
-    _convert_headers,
-    _convert_emphasis,
-    _convert_links,
-    _convert_images,
-    _convert_code,
-    _convert_lists,
     _convert_blockquotes,
+    _convert_code,
+    _convert_emphasis,
+    _convert_headers,
+    _convert_images,
+    _convert_links,
+    _convert_lists,
+    _convert_paragraphs,
+    parse_date,
+    parse_markdown_file,
+    markdown_to_html,
     render_post_item,
     render_pagination,
     _calculate_total_pages,
@@ -70,14 +70,21 @@ class TestMarkdownParsing(unittest.TestCase):
         self.assertIn("<em>italic</em>", _convert_emphasis("_italic_"))
     
     def test_convert_links(self):
-        """Test conversion des liens."""
+        """Test conversion des liens (external links get rel='noopener noreferrer')."""
         result = _convert_links("[text](http://example.com)")
-        self.assertIn('<a href="http://example.com">text</a>', result)
+        self.assertIn('href="http://example.com"', result)
+        self.assertIn(">text</a>", result)
+        self.assertIn('rel="noopener noreferrer"', result)
+        # Internal link has no rel
+        internal = _convert_links("[page](/about)")
+        self.assertIn('<a href="/about">page</a>', internal)
     
     def test_convert_images(self):
-        """Test conversion des images."""
+        """Test conversion des images (with lazy loading)."""
         result = _convert_images("![alt text](image.jpg)")
-        self.assertIn('<img src="image.jpg" alt="alt text">', result)
+        self.assertIn('src="image.jpg"', result)
+        self.assertIn('alt="alt text"', result)
+        self.assertIn('loading="lazy"', result)
     
     def test_convert_code(self):
         """Test conversion du code."""
@@ -105,6 +112,12 @@ class TestMarkdownParsing(unittest.TestCase):
         """Test conversion des blockquotes."""
         result = _convert_blockquotes("> Quote text")
         self.assertIn("<blockquote>Quote text</blockquote>", result)
+
+    def test_convert_paragraphs(self):
+        """Test paragraph wrapping."""
+        result = _convert_paragraphs("Line one\n\nLine two")
+        self.assertIn("<p>Line one</p>", result)
+        self.assertIn("<p>Line two</p>", result)
     
     def test_markdown_to_html_complete(self):
         """Test conversion markdown complète."""
@@ -122,7 +135,8 @@ This is **bold** and *italic*.
         self.assertIn("<h1>Title</h1>", html)
         self.assertIn("<strong>bold</strong>", html)
         self.assertIn("<em>italic</em>", html)
-        self.assertIn('<a href="http://example.com">Link</a>', html)
+        self.assertIn('http://example.com', html)
+        self.assertIn('>Link</a>', html)
         self.assertIn("<li>List item", html)
 
 
@@ -204,8 +218,8 @@ class TestTemplateRendering(unittest.TestCase):
         html = render_pagination(2, 3)
         
         self.assertIn("pagination", html)
-        self.assertIn("Précédent", html)
-        self.assertIn("Suivant", html)
+        self.assertIn("Previous", html)
+        self.assertIn("Next", html)
         self.assertIn('href="/blog"', html)  # Page 1 uses /blog not /blog/page/1
         self.assertIn("/blog/page/3", html)
 
@@ -257,8 +271,8 @@ class TestBuildIntegration(unittest.TestCase):
         
         self.assertIn("<title>", html)
         self.assertIn("Issa Sanogo", html)
-        # Le site est en français, vérifier le contenu FR
-        self.assertIn("Data Engineer Senior", html)
+        # Site content includes role title
+        self.assertIn("Senior Data Engineer", html)
     
     def test_sitemap_valid_xml(self):
         """Test validité du sitemap XML."""

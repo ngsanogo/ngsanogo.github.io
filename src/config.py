@@ -25,6 +25,9 @@ DEV_SERVER_PORT = 8000
 # Date formatting
 DATE_FORMAT = "%B %d, %Y"  # "January 30, 2024"
 
+# Static page names (content/*.md); order matches NAV_LINKS where relevant
+STATIC_PAGES = ["about", "cv", "contact", "projects"]
+
 # Sitemap priorities
 SITEMAP_PRIORITIES = {
     "home": 1.0,

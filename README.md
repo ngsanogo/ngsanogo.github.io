@@ -1,98 +1,137 @@
-# Issa Sanogo
+# ngsanogo.github.io
 
-This is my personal website where I share articles about data engineering, programming, and tech topics.
+![Build and Deploy](https://github.com/ngsanogo/ngsanogo.github.io/workflows/Build%20and%20Deploy/badge.svg)
+![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-## About This Site
+Personal site and blog: **Issa Sanogo** — Senior Data Engineer. Data platforms, data quality, technical writing.
 
-I write about:
-- **Data Engineering** - ETL, orchestration, databases
-- **Programming** - Python, R, Git, Linux fundamentals
-- **Tools & Infrastructure** - Docker, Multipass, PostgreSQL, Apache Airflow
+- **Live site:** [https://ngsanogo.github.io](https://ngsanogo.github.io)
+- **Stack:** Python 3.11 (stdlib only), Markdown → HTML, GitHub Actions → GitHub Pages
 
-The site is built from plain markdown files and automatically published whenever I push changes.
-
-## How It Works
-
-```
-src/
-├── build.py         # Generates the website
-├── config.py        # Site configuration
-├── template.html    # HTML structure
-├── style.css        # Styling
-└── dev.py          # Local preview server
-
-content/
-├── posts/           # My articles
-├── about.md        # About me
-├── cv.md           # My resume
-└── contact.md      # How to reach me
-
-tests/
-└── test_build.py   # Unit tests
-```
-
-## Adding an Article
-
-**Use the template:**
-
-```bash
-cp content/posts/_template.md content/posts/my-article.md
-# Edit the file, change draft to false
-python3 src/build.py
-```
-
-**Or create manually** - `content/posts/my-article.md`:
-
-```markdown
----
-title: My Article Title
-slug: my-article
-date: 2024-01-30
-description: Brief summary for the listing
-draft: false
 ---
 
-# Article content here
+## Description
 
-Write in markdown with **bold**, *italic*, [links](url), etc.
-```
+Static site generated from Markdown: homepage, blog with pagination, static pages (About, Resume, Contact, Projects), sitemap, and SEO (meta, Open Graph, Schema.org). No JavaScript framework, no database. Content lives in `content/`; build writes to `public/`.
 
-Optional: Add `updated: 2024-02-01` to mark an article as recently updated.
-
-## Editing Pages
-
-Edit `about.md`, `cv.md`, or `contact.md` directly. Just need a title at the top:
-
-```markdown
----
-title: About Me
 ---
 
-Your content...
+## Architecture
+
+```
+ngsanogo.github.io/
+├── src/                    # Generator and server
+│   ├── build.py            # Builds site (markdown → HTML, sitemap, copy static)
+│   ├── config.py           # Site title, URL, nav, posts per page
+│   ├── template.html       # HTML shell (placeholders: {{title}}, {{content}}, etc.)
+│   ├── style.css           # Inlined into pages at build time
+│   ├── dev.py              # Local HTTP server (serves public/)
+│   └── static/             # Copied as-is to public/
+│       ├── robots.txt
+│       ├── 404.html
+│       └── favicon.svg
+├── content/                # Source content
+│   ├── posts/              # Blog posts (*.md with YAML frontmatter)
+│   │   └── _template.md    # Template for new posts
+│   ├── about.md
+│   ├── cv.md
+│   ├── contact.md
+│   └── projects.md
+├── tests/
+│   └── test_build.py       # Unit and integration tests
+├── public/                 # Generated output (gitignored)
+├── .github/workflows/
+│   └── deploy.yml          # CI: test → build → Lychee (links) → deploy to Pages
+├── Dockerfile              # Python 3.11-slim, non-root user
+├── docker-compose.yml      # test, build, dev services
+├── Makefile                # build, test, dev, clean, all
+└── .env.example            # Optional dev server overrides
 ```
 
-## Building & Deploying
+**Responsibilities:**
 
-**Local build:**
-```bash
-python3 src/build.py
-```
+- **build.py** — Single entry for building the site: parse content, render HTML, write `public/`, sitemap, copy static files.
+- **config.py** — Central config (no env required; optional overrides via env in dev).
+- **dev.py** — Serve `public/` on a configurable host/port for local preview.
 
-**Local preview:**
-```bash
-python3 src/dev.py
-# Visit http://localhost:8000
-```
+---
 
-**Run tests:**
-```bash
-python3 -m unittest discover tests/ -v
-```
+## Requirements
 
-The site automatically builds and deploys to GitHub Pages when you push to main.
+- **Python 3.11+** (local) **or** **Docker + Docker Compose** (no local Python).
 
-```bash
-python3 build.py
-```
+---
 
-Push to GitHub → automatically deployed via GitHub Actions.
+## Installation (from scratch)
+
+### Option A — Docker (recommended if you don’t want to install Python)
+
+1. Clone the repo and enter it:
+   ```bash
+   git clone https://github.com/ngsanogo/ngsanogo.github.io.git
+   cd ngsanogo.github.io
+   ```
+2. Run tests and build:
+   ```bash
+   docker compose run --rm test
+   docker compose run --rm build
+   ```
+3. Serve locally:
+   ```bash
+   docker compose up dev
+   ```
+   Open **http://localhost:8000**. Stop with `Ctrl+C`.
+
+### Option B — Local Python
+
+1. Clone and enter the repo (same as above).
+2. Ensure Python 3.11+ is installed:
+   ```bash
+   python3 --version
+   ```
+3. From the project root:
+   ```bash
+   python3 -m unittest discover tests/ -v
+   python3 src/build.py
+   python3 src/dev.py
+   ```
+   Open **http://localhost:8000**.
+
+---
+
+## Usage
+
+| Task | Docker | Local |
+|------|--------|--------|
+| Run tests | `docker compose run --rm test` | `python3 -m unittest discover tests/ -v` or `make test` |
+| Build site | `docker compose run --rm build` | `python3 src/build.py` or `make build` |
+| Preview (build + serve) | `docker compose up dev` | `make dev` (or build then `python3 src/dev.py`) |
+| Clean + test + build | — | `make all` |
+
+- **Add a post:** Copy `content/posts/_template.md` to `content/posts/my-slug.md`, set `title`, `slug`, `date`, `description`, `draft: false`, then build.
+- **Edit pages:** Edit `content/about.md`, `cv.md`, `contact.md`, `projects.md` (YAML frontmatter with `title`, optional `description`).
+- **Optional env:** Set `DEV_SERVER_HOST` or `DEV_SERVER_PORT` in your environment (e.g. copy `.env.example` to `.env` and `source .env`, or export in your shell) to override the dev server.
+
+---
+
+## Deploy (GitHub Pages)
+
+1. **Local:** `make all` (or run tests + build as above).
+2. **Commit and push** to `main` or `dev`.
+3. GitHub Actions runs tests, builds the site, checks links (Lychee), and deploys `public/` to GitHub Pages. No manual upload.
+
+---
+
+## Documentation
+
+- [Technical audit](docs/ANALYSIS_REPORT.md)
+- [Style guide](docs/STYLE_GUIDE.md)
+- [Maintenance charter](docs/MAINTENANCE.md)
+- [Patterns, anti-patterns & production](docs/PATTERNS_AND_PRODUCTION.md)
+
+---
+
+## License and contact
+
+Content and code © Issa Sanogo. For contact, see the [site](https://ngsanogo.github.io) or [contact page](https://ngsanogo.github.io/contact).

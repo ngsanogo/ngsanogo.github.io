@@ -1,5 +1,5 @@
 ---
-title: "Data Quality: Why 80% of Data Projects Fail Before They Start"
+title: "Data Quality: The Foundation of Reliable Data Projects"
 slug: data-quality-fundamentals
 date: 2026-02-03
 description: "Data quality is the foundation of every successful data project. Learn the six dimensions of data quality, common pitfalls, and practical strategies to implement quality checks in your pipelines."
@@ -8,9 +8,9 @@ tags: data-quality, data-engineering, best-practices
 draft: false
 ---
 
-## The Hidden Crisis in Data Engineering
+## Why Data Quality Gets Overlooked
 
-Here's something that doesn't get discussed enough in data engineering circles: according to Gartner, poor data quality costs organizations an average of $12.9 million annually. But the real cost isn't just financial—it's the erosion of trust in your data platform.
+Poor data quality has real cost—financial and operational. Industry reports often cite significant impact; beyond that, the main damage is erosion of trust in your data platform.
 
 I've seen it happen repeatedly. A company invests months building a sophisticated data warehouse, implements complex transformations, deploys beautiful dashboards. Then someone notices the numbers don't match. Finance says revenue is X, the dashboard says Y. Trust evaporates instantly.
 

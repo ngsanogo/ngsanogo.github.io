@@ -31,11 +31,11 @@ def serve(port=None, host=None):
     """Run local development server.
     
     Args:
-        port: Port number (default from config)
-        host: Host address (default from config)
+        port: Port number (default from config or DEV_SERVER_PORT env)
+        host: Host address (default from config or DEV_SERVER_HOST env)
     """
-    port = port or DEV_SERVER_PORT
-    host = host or DEV_SERVER_HOST
+    port = port or int(os.environ.get("DEV_SERVER_PORT", str(DEV_SERVER_PORT)))
+    host = host or os.environ.get("DEV_SERVER_HOST", DEV_SERVER_HOST)
     
     public_dir = Path(__file__).parent.parent / "public"
     
