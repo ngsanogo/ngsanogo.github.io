@@ -351,6 +351,13 @@ nav[role="navigation"] a:hover {
     margin-inline: auto;
 }
 
+/* --- CV Contact Line --- */
+.cv-contact {
+    text-align: center;
+    max-inline-size: var(--measure);
+    margin-inline: auto;
+}
+
 /* --- Post Items --- */
 .post-item {
     margin-block-end: var(--space-7);
@@ -368,6 +375,9 @@ nav[role="navigation"] a:hover {
     margin-block-end: var(--space-2);
     line-height: 1.4;
     font-weight: 600;
+    text-align: justify;
+    text-justify: inter-word;
+    max-inline-size: var(--measure);
 }
 
 .post-title a {
