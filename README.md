@@ -13,8 +13,6 @@ Docker + Docker Compose
 
 ## Usage
 
-## Usage
-
 | Task | Command |
 |------|---------|
 | Dev server (hot reload) | `make dev` |
