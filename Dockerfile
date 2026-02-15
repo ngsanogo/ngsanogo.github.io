@@ -35,19 +35,21 @@ LABEL org.opencontainers.image.source="https://github.com/ngsanogo/ngsanogo.gith
       org.opencontainers.image.licenses="MIT"
 
 # Copy custom nginx config with security headers
-RUN echo 'server { \
-    listen 80; \
-    server_name _; \
-    root /usr/share/nginx/html; \
-    index index.html; \
-    add_header X-Frame-Options "SAMEORIGIN" always; \
-    add_header X-Content-Type-Options "nosniff" always; \
-    add_header X-XSS-Protection "1; mode=block" always; \
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always; \
-    location / { \
-        try_files $uri $uri/ /404.html; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
+RUN cat <<'EOF' > /etc/nginx/conf.d/default.conf
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    location / {
+        try_files $uri $uri/ /404.html;
+    }
+}
+EOF
 
 COPY --from=build /site/public /usr/share/nginx/html
 
