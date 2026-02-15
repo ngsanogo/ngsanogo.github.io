@@ -3,8 +3,8 @@ title: "Modern Data Stack Architecture: A Practical Guide"
 slug: modern-data-stack-architecture
 date: 2026-01-30
 description: "Understand the modern data stack from ingestion to visualization. Learn how ELT, cloud warehouses, and transformation tools work together. Build a stack that scales."
-category: architecture
-tags: architecture, modern-data-stack, elt, cloud, data-warehouse
+categories: ["architecture"]
+tags: ["architecture", "modern-data-stack", "elt", "cloud", "data-warehouse"]
 draft: false
 ---
 

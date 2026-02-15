@@ -1,23 +1,7 @@
 # Build output
 public/
-
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-.Python
-*.so
-.venv/
-venv/
-env/
-.pytest_cache/
-.mypy_cache/
-.coverage
-htmlcov/
-
-# Environment (optional overrides)
-.env
-.env.local
+resources/
+.hugo_build.lock
 
 # OS
 .DS_Store
@@ -30,9 +14,6 @@ Thumbs.db
 .vscode/
 .idea/
 .cursor/
-
-# Test artifacts (created by tests at runtime)
-test_*.md
 
 # Large or sensitive assets (uncomment if needed)
 # *.pdf

@@ -3,8 +3,8 @@ title: "Monitoring Data Pipelines in Production"
 slug: monitoring-data-pipelines
 date: 2026-02-21
 description: "How to monitor data pipelines. Track success rates, latency, data quality. Build observable pipelines you can trust."
-category: observability
-tags: monitoring, observability, data-engineering, production
+categories: ["observability"]
+tags: ["monitoring", "observability", "data-engineering", "production"]
 draft: false
 ---
 

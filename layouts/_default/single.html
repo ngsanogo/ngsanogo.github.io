@@ -1,0 +1,13 @@
+{{ define "main" }}
+<article>
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{ .Content }}
+    {{ with .Params.cta }}
+    <footer class="article-footer">
+        {{ range . }}
+        <a href="{{ .url }}" class="button-{{ .style }}">{{ .label }}</a>
+        {{ end }}
+    </footer>
+    {{ end }}
+</article>
+{{ end }}

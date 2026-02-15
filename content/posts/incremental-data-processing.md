@@ -3,8 +3,8 @@ title: "Incremental Data Processing: Process Only What Changed"
 slug: incremental-data-processing
 date: 2026-02-22
 description: "How to process only new or changed data. Learn incremental patterns for efficient pipelines. Stop reprocessing everything."
-category: data-engineering
-tags: incremental-processing, performance, pipelines, best-practices
+categories: ["data-engineering"]
+tags: ["incremental-processing", "performance", "pipelines", "best-practices"]
 draft: false
 ---
 

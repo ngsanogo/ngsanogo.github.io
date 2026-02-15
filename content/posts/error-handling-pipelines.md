@@ -3,8 +3,8 @@ title: "Error Handling in Data Pipelines"
 slug: error-handling-pipelines
 date: 2026-02-19
 description: "How to handle errors in data pipelines. Retry logic, failure modes, alerts, graceful degradation. Build resilient pipelines."
-category: data-engineering
-tags: reliability, error-handling, pipelines, best-practices
+categories: ["data-engineering"]
+tags: ["reliability", "error-handling", "pipelines", "best-practices"]
 draft: false
 ---
 

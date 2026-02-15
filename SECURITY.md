@@ -34,18 +34,17 @@ Please include:
 ## Security Considerations
 
 This project:
-- Uses Python 3.11+ standard library only (zero external dependencies)
-- Generates static HTML (no server-side execution)
+- Uses Hugo to generate static HTML (no server-side execution)
 - Deploys to GitHub Pages (read-only static hosting)
-- Runs tests in CI/CD before deployment
-- Uses Docker with non-root user for local development
+- Builds and tests run in Docker (multi-stage, minimal Alpine images)
+- CI/CD validates output before deployment
+- Production image runs nginx as non-root user
 
 ## Best Practices
 
 When contributing or forking:
 - Never commit secrets, API keys, or credentials
-- Use `.env` files for local configuration (already in `.gitignore`)
 - Review Docker security best practices
-- Keep Python version up to date
+- Keep Hugo and base images up to date (Dependabot is configured)
 
 Thank you for helping keep this project secure.

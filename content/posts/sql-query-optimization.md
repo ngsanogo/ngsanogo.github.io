@@ -3,8 +3,8 @@ title: "SQL Query Optimization: Make Queries Fast"
 slug: sql-query-optimization
 date: 2026-02-17
 description: "How to optimize slow SQL queries. Understand indexes, execution plans, and common performance patterns. Make your queries 10x faster."
-category: sql
-tags: sql, performance, optimization, postgresql
+categories: ["sql"]
+tags: ["sql", "performance", "optimization", "postgresql"]
 draft: false
 ---
 

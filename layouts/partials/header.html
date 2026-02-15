@@ -1,0 +1,9 @@
+<header role="banner">
+    <a href="/" class="site-title">{{ .Site.Title }}</a>
+    <p class="site-desc">{{ .Site.Params.description }}</p>
+    <nav role="navigation" aria-label="Main navigation">
+        {{ range .Site.Menus.main }}
+        <a href="{{ .URL }}">{{ .Name }}</a>
+        {{ end }}
+    </nav>
+</header>

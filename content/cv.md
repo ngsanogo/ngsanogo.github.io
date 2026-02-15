@@ -1,9 +1,14 @@
 ---
 title: Resume — Issa Sanogo
 description: "Issa Sanogo's resume - Senior Data Engineer. 8+ years of experience in data platform architecture, data quality, and project leadership."
+cta:
+  - label: "Get in touch"
+    url: "/contact/"
+    style: primary
+  - label: "View my work →"
+    url: "/projects/"
+    style: secondary
 ---
-
-# Issa Sanogo
 
 **Senior Data Engineer**
 
