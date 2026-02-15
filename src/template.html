@@ -26,6 +26,9 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- Syntax highlighting (Prism.js) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css">
     
     <!-- Schema.org JSON-LD -->
     {{schema_json}}
@@ -53,5 +56,38 @@
             <p>&copy; {{year}} {{site_title}}</p>
         </footer>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("pre.code-block").forEach(function (block) {
+                var code = block.querySelector("code");
+                if (!code) {
+                    return;
+                }
+
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "copy-button";
+                button.textContent = "Copy";
+
+                button.addEventListener("click", function () {
+                    var text = code.innerText;
+                    if (!navigator.clipboard) {
+                        return;
+                    }
+                    navigator.clipboard.writeText(text).then(function () {
+                        button.textContent = "Copied";
+                        setTimeout(function () {
+                            button.textContent = "Copy";
+                        }, 1500);
+                    });
+                });
+
+                block.appendChild(button);
+            });
+        });
+    </script>
 </body>
 </html>
