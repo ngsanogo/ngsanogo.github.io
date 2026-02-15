@@ -1,0 +1,17 @@
+{{ define "main" }}
+<h1 class="page-title">{{ .Title }}</h1>
+{{ .Content }}
+{{ $terms := .Data.Terms.Alphabetical }}
+{{ if $terms }}
+<ul class="taxonomy-terms" role="list">
+    {{ range $terms }}
+    <li class="taxonomy-term">
+        <a class="taxonomy-pill" href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a>
+        <span class="taxonomy-count">{{ .Count }}</span>
+    </li>
+    {{ end }}
+</ul>
+{{ else }}
+<p class="page-subtitle">No terms yet.</p>
+{{ end }}
+{{ end }}
