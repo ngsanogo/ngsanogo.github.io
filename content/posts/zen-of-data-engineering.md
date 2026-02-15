@@ -40,18 +40,18 @@ from typing import Union
 def amount_to_cents(amount: Union[str, int, float, Decimal]) -> int:
     """
     Convert a monetary amount to cents.
-    
+
     Args:
         amount: Monetary amount in dollars. Can be string, int, float, or Decimal.
                 Strings may include comma separators (e.g., "1,234.56").
-    
+
     Returns:
         Integer amount in cents.
-    
+
     Raises:
         ValueError: If amount cannot be parsed as a valid monetary value.
         TypeError: If amount is None or an unsupported type.
-    
+
     Examples:
         >>> amount_to_cents("1,234.56")
         123456
@@ -60,11 +60,11 @@ def amount_to_cents(amount: Union[str, int, float, Decimal]) -> int:
     """
     if amount is None:
         raise TypeError("amount cannot be None")
-    
+
     if isinstance(amount, str):
         # Remove comma separators
         amount = amount.replace(",", "")
-    
+
     try:
         # Use Decimal for precise monetary calculations
         decimal_amount = Decimal(str(amount))
@@ -110,33 +110,33 @@ result = (
 def transform_transactions(transactions_df, exchange_rates_df):
     """
     Transform raw transactions into regional category summaries.
-    
+
     Pipeline steps:
     1. Enrich with exchange rates
     2. Filter to active, recent transactions
     3. Calculate USD amounts and assign categories
     4. Aggregate by category and region
     """
-    
+
     # Step 1: Enrich with exchange rates
     enriched = transactions_df.merge(
-        exchange_rates_df[['currency', 'exchange_rate']], 
+        exchange_rates_df[['currency', 'exchange_rate']],
         on='currency',
         how='left'
     )
-    
+
     # Step 2: Filter to relevant transactions
     active_recent = enriched[
-        (enriched['status'] == 'active') & 
+        (enriched['status'] == 'active') &
         (enriched['created_at'] > '2024-01-01')
     ]
-    
+
     # Step 3: Calculate derived fields
     with_calculations = active_recent.assign(
         amount_usd=lambda x: x['amount'] * x['exchange_rate'],
         category=lambda x: x['product_type'].map(CATEGORY_MAP).fillna('Other')
     )
-    
+
     # Step 4: Aggregate
     summary = (
         with_calculations
@@ -147,7 +147,7 @@ def transform_transactions(transactions_df, exchange_rates_df):
         )
         .reset_index()
     )
-    
+
     return summary
 ```
 
@@ -185,24 +185,24 @@ class ConfigurationError(Exception):
 def load_config(path: str) -> dict:
     """
     Load pipeline configuration from JSON file.
-    
+
     Args:
         path: Path to configuration file.
-        
+
     Returns:
         Configuration dictionary.
-        
+
     Raises:
         ConfigurationError: If file is missing, unreadable, or invalid JSON.
     """
     config_path = Path(path)
-    
+
     if not config_path.exists():
         raise ConfigurationError(
             f"Configuration file not found: {path}. "
             f"Expected location: {config_path.absolute()}"
         )
-    
+
     try:
         with open(config_path) as f:
             config = json.load(f)
@@ -214,7 +214,7 @@ def load_config(path: str) -> dict:
         raise ConfigurationError(
             f"Permission denied reading configuration file: {path}"
         )
-    
+
     # Validate required keys
     required_keys = ['source_connection', 'target_connection', 'tables']
     missing_keys = [k for k in required_keys if k not in config]
@@ -222,7 +222,7 @@ def load_config(path: str) -> dict:
         raise ConfigurationError(
             f"Missing required configuration keys: {missing_keys}"
         )
-    
+
     return config
 ```
 
@@ -253,24 +253,24 @@ VALID_STATUSES = {'active', 'inactive', 'suspended'}
 def normalize_status(status: str) -> str:
     """
     Normalize customer status to lowercase standard form.
-    
+
     Args:
         status: Raw status value from source system.
-        
+
     Returns:
         Normalized status string.
-        
+
     Raises:
         ValueError: If status cannot be mapped to a known value.
     """
     if status is None:
         raise ValueError("Status cannot be None")
-    
+
     normalized = status.lower().strip()
-    
+
     if normalized in VALID_STATUSES:
         return normalized
-    
+
     # Don't guess - fail with context for investigation
     raise ValueError(
         f"Unknown status '{status}' (normalized: '{normalized}'). "
@@ -298,7 +298,7 @@ from sqlalchemy import create_engine
 def get_db_connection(connection_string: str):
     """
     Context manager for database connections.
-    
+
     Usage:
         with get_db_connection(CONN_STRING) as conn:
             df = pd.read_sql(query, conn)
@@ -365,23 +365,23 @@ def process_records(records):
 def process_records(records):
     """Process order records into line item totals."""
     results = []
-    
+
     for record in records:
         if not is_valid_order(record):
             continue
-            
+
         for item in record.get('items', []):
             if not is_valid_item(item):
                 continue
-                
+
             results.append(create_line_item(record, item))
-    
+
     return results
 
 def is_valid_order(record):
     """Check if record is a valid order."""
     return (
-        record is not None 
+        record is not None
         and record.get('type') == 'order'
         and 'items' in record
     )
@@ -389,7 +389,7 @@ def is_valid_order(record):
 def is_valid_item(item):
     """Check if item has valid quantity and price."""
     return (
-        item.get('quantity', 0) > 0 
+        item.get('quantity', 0) > 0
         and item.get('price', 0) > 0
     )
 
@@ -529,7 +529,7 @@ class PipelineConfig:
     output_path: Path
     min_expected_rows: int = 100
     max_expected_rows: int = 1_000_000
-    
+
     def __post_init__(self):
         self.source_path = Path(self.source_path)
         self.output_path = Path(self.output_path)
@@ -545,31 +545,31 @@ class ValidationError(Exception):
 def validate_customer_record(record: dict) -> list[str]:
     """
     Validate a single customer record.
-    
+
     Returns list of validation errors (empty if valid).
     """
     errors = []
-    
+
     # Required fields
     if not record.get('customer_id'):
         errors.append("Missing customer_id")
-    
+
     if not record.get('email'):
         errors.append("Missing email")
     elif '@' not in record['email']:
         errors.append(f"Invalid email format: {record['email']}")
-    
+
     # Business rules
     if record.get('account_balance', 0) < 0:
         errors.append(f"Negative account balance: {record['account_balance']}")
-    
+
     return errors
 
 
 def validate_dataframe(df: pd.DataFrame, config: PipelineConfig) -> None:
     """
     Validate dataframe meets quality requirements.
-    
+
     Raises ValidationError with details if validation fails.
     """
     # Row count bounds
@@ -582,12 +582,12 @@ def validate_dataframe(df: pd.DataFrame, config: PipelineConfig) -> None:
         raise ValidationError(
             f"Too many rows: {row_count} > {config.max_expected_rows}"
         )
-    
+
     # Check for duplicates
     duplicates = df.duplicated(subset=['customer_id']).sum()
     if duplicates > 0:
         raise ValidationError(f"Found {duplicates} duplicate customer_ids")
-    
+
     logger.info(f"Validation passed: {row_count} rows, 0 duplicates")
 
 
@@ -596,58 +596,58 @@ def validate_dataframe(df: pd.DataFrame, config: PipelineConfig) -> None:
 def clean_customer_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Clean and standardize customer data.
-    
+
     Steps:
     1. Standardize email to lowercase
     2. Clean phone numbers
     3. Fill missing values appropriately
     """
     logger.info(f"Cleaning {len(df)} customer records")
-    
+
     # Work on a copy to avoid mutation surprises
     cleaned = df.copy()
-    
+
     # Standardize email
     cleaned['email'] = cleaned['email'].str.lower().str.strip()
-    
+
     # Clean phone (remove non-numeric)
     cleaned['phone'] = (
         cleaned['phone']
         .fillna('')
         .str.replace(r'[^0-9]', '', regex=True)
     )
-    
+
     # Fill missing values
     cleaned['account_balance'] = cleaned['account_balance'].fillna(0)
     cleaned['status'] = cleaned['status'].fillna('unknown')
-    
+
     return cleaned
 
 
 def enrich_customer_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Add derived fields to customer data.
-    
+
     Derived fields:
     - customer_tier: Based on account balance
     - days_since_signup: From created_at to today
     """
     logger.info("Enriching customer data with derived fields")
-    
+
     enriched = df.copy()
-    
+
     # Customer tier based on balance
     enriched['customer_tier'] = pd.cut(
         enriched['account_balance'],
         bins=[-float('inf'), 0, 1000, 10000, float('inf')],
         labels=['inactive', 'bronze', 'silver', 'gold']
     )
-    
+
     # Days since signup
     today = datetime.now()
     enriched['created_at'] = pd.to_datetime(enriched['created_at'])
     enriched['days_since_signup'] = (today - enriched['created_at']).dt.days
-    
+
     return enriched
 
 
@@ -656,7 +656,7 @@ def enrich_customer_data(df: pd.DataFrame) -> pd.DataFrame:
 def run_pipeline(config: PipelineConfig) -> None:
     """
     Run the customer data pipeline.
-    
+
     Steps:
     1. Extract from source
     2. Validate raw data
@@ -665,30 +665,30 @@ def run_pipeline(config: PipelineConfig) -> None:
     5. Load to destination
     """
     logger.info(f"Starting pipeline: {config.source_path} -> {config.output_path}")
-    
+
     # Extract
     logger.info(f"Extracting from {config.source_path}")
     if not config.source_path.exists():
         raise FileNotFoundError(f"Source file not found: {config.source_path}")
-    
+
     df = pd.read_csv(config.source_path)
     logger.info(f"Extracted {len(df)} records")
-    
+
     # Validate input
     validate_dataframe(df, config)
-    
+
     # Transform
     df = clean_customer_data(df)
     df = enrich_customer_data(df)
-    
+
     # Validate output
     validate_dataframe(df, config)
-    
+
     # Load
     logger.info(f"Loading {len(df)} records to {config.output_path}")
     config.output_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(config.output_path, index=False)
-    
+
     logger.info("Pipeline completed successfully")
 
 

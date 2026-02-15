@@ -73,9 +73,9 @@ def test_ltv_calculation():
         'order_id': [101, 102, 103, 104, 105],
         'amount': [100.0, 50.0, 200.0, 150.0, 50.0]
     })
-    
+
     result = calculate_customer_ltv(orders)
-    
+
     assert len(result) == 2
     assert result[result['customer_id'] == 1]['total_spent'].iloc[0] == 150.0
     assert result[result['customer_id'] == 1]['order_count'].iloc[0] == 2
@@ -87,7 +87,7 @@ def test_ltv_handles_empty_data():
     """Test LTV with no orders."""
     orders = pd.DataFrame(columns=['customer_id', 'order_id', 'amount'])
     result = calculate_customer_ltv(orders)
-    
+
     assert len(result) == 0
     assert list(result.columns) == ['customer_id', 'total_spent', 'order_count']
 
@@ -99,9 +99,9 @@ def test_ltv_handles_single_customer():
         'order_id': [101],
         'amount': [100.0]
     })
-    
+
     result = calculate_customer_ltv(orders)
-    
+
     assert len(result) == 1
     assert result['total_spent'].iloc[0] == 100.0
 ```
@@ -126,7 +126,7 @@ from pipeline import extract, transform, load
 def test_db():
     """Create a test database."""
     engine = create_engine('postgresql://test:test@localhost/test_db')
-    
+
     # Setup
     with engine.begin() as conn:
         conn.execute(text('''
@@ -137,16 +137,16 @@ def test_db():
                 order_date DATE
             )
         '''))
-        
+
         conn.execute(text('''
             INSERT INTO orders VALUES
             (1, 1, 100.0, '2025-01-01'),
             (2, 1, 50.0, '2025-01-02'),
             (3, 2, 200.0, '2025-01-03')
         '''))
-    
+
     yield engine
-    
+
     # Teardown
     with engine.begin() as conn:
         conn.execute(text('DROP TABLE IF EXISTS orders CASCADE'))
@@ -155,16 +155,16 @@ def test_db():
 
 def test_full_pipeline(test_db):
     """Test extract→transform→load pipeline."""
-    
+
     # Run pipeline
     df = extract(test_db)
     transformed = transform(df)
     load(transformed, test_db, 'customer_summary')
-    
+
     # Verify results
     with test_db.connect() as conn:
         result = pd.read_sql('SELECT * FROM customer_summary ORDER BY customer_id', conn)
-    
+
     assert len(result) == 2
     assert result.loc[0, 'customer_id'] == 1
     assert result.loc[0, 'total_spent'] == 150.0
@@ -190,10 +190,10 @@ def test_revenue_within_expected_range(warehouse_engine):
     FROM orders
     WHERE order_date = CURRENT_DATE
     """
-    
+
     result = pd.read_sql(query, warehouse_engine)
     daily_revenue = result['total_revenue'].iloc[0]
-    
+
     # Historical average is $50k/day, should be within 3x
     assert 10_000 < daily_revenue < 150_000, f"Revenue ${daily_revenue} is suspicious"
 
@@ -205,7 +205,7 @@ def test_no_future_dates(warehouse_engine):
     FROM orders
     WHERE order_date > CURRENT_DATE
     """
-    
+
     result = pd.read_sql(query, warehouse_engine)
     assert result['future_count'].iloc[0] == 0, "Found orders with future dates"
 
@@ -217,7 +217,7 @@ def test_no_negative_amounts(warehouse_engine):
     FROM orders
     WHERE amount < 0
     """
-    
+
     result = pd.read_sql(query, warehouse_engine)
     assert result['negative_count'].iloc[0] == 0, "Found negative order amounts"
 
@@ -230,7 +230,7 @@ def test_referential_integrity(warehouse_engine):
     LEFT JOIN customers c ON o.customer_id = c.id
     WHERE c.id IS NULL
     """
-    
+
     result = pd.read_sql(query, warehouse_engine)
     assert result['orphan_count'].iloc[0] == 0, "Found orders with invalid customer_id"
 ```
@@ -287,7 +287,7 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:15
@@ -296,18 +296,18 @@ jobs:
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
-    
+
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      
+
       - name: Install dependencies
         run: pip install -r requirements.txt
-      
+
       - name: Run tests
         run: pytest tests/
 ```
