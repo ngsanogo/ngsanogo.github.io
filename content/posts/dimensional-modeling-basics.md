@@ -137,7 +137,7 @@ fact_sales (
     product_key,
     date_key,
     store_key,
-    
+
     -- Metrics
     quantity,
     unit_price,
@@ -249,7 +249,7 @@ from sqlalchemy import create_engine
 
 def load_customer_dimension(source_engine, warehouse_engine):
     """Load customer dimension from source system."""
-    
+
     # Extract from source
     query = """
     SELECT
@@ -265,12 +265,12 @@ def load_customer_dimension(source_engine, warehouse_engine):
         END as customer_segment
     FROM customers
     """
-    
+
     df = pd.read_sql(query, source_engine)
-    
+
     # Assign surrogate keys
     df['customer_key'] = range(1, len(df) + 1)
-    
+
     # Load to warehouse
     df.to_sql('dim_customers', warehouse_engine, if_exists='replace', index=False)
 ```
@@ -280,7 +280,7 @@ def load_customer_dimension(source_engine, warehouse_engine):
 ```python
 def load_orders_fact(source_engine, warehouse_engine, process_date):
     """Load orders fact table."""
-    
+
     query = """
     SELECT
         o.order_id,
@@ -294,23 +294,23 @@ def load_orders_fact(source_engine, warehouse_engine, process_date):
     FROM orders o
     WHERE DATE(o.order_date) = :process_date
     """
-    
+
     orders = pd.read_sql(query, source_engine, params={'process_date': process_date})
-    
+
     # Lookup dimension keys
     customers = pd.read_sql('SELECT customer_key, customer_id FROM dim_customers', warehouse_engine)
     products = pd.read_sql('SELECT product_key, product_id FROM dim_products', warehouse_engine)
-    
+
     # Join to get surrogate keys
     orders_enriched = (
         orders
         .merge(customers, on='customer_id', how='left')
         .merge(products, on='product_id', how='left')
     )
-    
+
     # Add date key
     orders_enriched['date_key'] = pd.to_datetime(orders_enriched['order_date']).dt.strftime('%Y%m%d').astype(int)
-    
+
     # Select final columns
     fact_orders = orders_enriched[[
         'order_id',
@@ -322,7 +322,7 @@ def load_orders_fact(source_engine, warehouse_engine, process_date):
         'discount',
         'tax'
     ]]
-    
+
     # Load to warehouse
     fact_orders.to_sql('fact_orders', warehouse_engine, if_exists='append', index=False)
 ```

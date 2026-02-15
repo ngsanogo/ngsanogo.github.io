@@ -86,7 +86,7 @@ class UpdateFrequency(Enum):
 @dataclass
 class DataSource:
     """Document a data source for your stack."""
-    
+
     name: str
     source_type: SourceType
     description: str
@@ -149,7 +149,7 @@ ETL (Traditional):
 [Source] ──► [Extract] ──► [Transform] ──► [Load] ──► [Warehouse]
                               │
                               └── Complex ETL server needed
-                              
+
 ELT (Modern):
 [Source] ──► [Extract] ──► [Load] ──► [Warehouse] ──► [Transform]
                                            │
@@ -193,16 +193,16 @@ import json
 class APIIngestor:
     """
     Generic API ingestion pattern.
-    
+
     Handles pagination, rate limiting, incremental extraction.
     """
-    
+
     def __init__(self, base_url: str, api_key: str):
         self.base_url = base_url
         self.headers = {"Authorization": f"Bearer {api_key}"}
         self.session = requests.Session()
         self.session.headers.update(self.headers)
-    
+
     def extract_incremental(
         self,
         endpoint: str,
@@ -211,70 +211,70 @@ class APIIngestor:
     ) -> Generator[Dict[Any, Any], None, None]:
         """
         Extract records modified since given timestamp.
-        
+
         Yields records one page at a time for memory efficiency.
         """
-        
+
         page = 1
         has_more = True
-        
+
         while has_more:
             params = {
                 "updated_since": since.isoformat(),
                 "page": page,
                 "per_page": page_size
             }
-            
+
             response = self.session.get(
                 f"{self.base_url}/{endpoint}",
                 params=params
             )
             response.raise_for_status()
-            
+
             data = response.json()
             records = data.get("results", [])
-            
+
             if records:
                 yield records
                 page += 1
-            
+
             has_more = len(records) == page_size
-    
+
     def load_to_warehouse(self, records: list, table_name: str):
         """Load records to warehouse. Implementation depends on warehouse."""
-        
+
         # Example: Load to BigQuery
         from google.cloud import bigquery
-        
+
         client = bigquery.Client()
         table_ref = client.dataset("raw").table(table_name)
-        
+
         errors = client.insert_rows_json(table_ref, records)
-        
+
         if errors:
             raise Exception(f"Load errors: {errors}")
 
 
 def run_incremental_ingestion():
     """Run incremental ingestion job."""
-    
+
     # Get last successful run time (from state store)
     last_run = get_last_run_time("custom_api_orders")
-    
+
     ingestor = APIIngestor(
         base_url="https://api.example.com/v1",
         api_key=os.environ["API_KEY"]
     )
-    
+
     total_records = 0
-    
+
     for page in ingestor.extract_incremental("orders", since=last_run):
         ingestor.load_to_warehouse(page, "raw_orders")
         total_records += len(page)
-    
+
     # Update state
     update_last_run_time("custom_api_orders", datetime.now())
-    
+
     print(f"Ingested {total_records} records")
 ```
 
@@ -410,21 +410,21 @@ cleaned AS (
     SELECT
         -- Primary key
         id AS order_id,
-        
+
         -- Foreign keys
         user_id AS customer_id,
-        
+
         -- Attributes
         LOWER(status) AS order_status,
-        
+
         -- Amounts (convert cents to dollars)
         total_cents / 100.0 AS order_total,
         discount_cents / 100.0 AS discount_amount,
-        
+
         -- Dates
         created_at::timestamp AS ordered_at,
         updated_at::timestamp AS updated_at
-        
+
     FROM source
     WHERE id IS NOT NULL  -- Defensive filter
 )
@@ -458,31 +458,31 @@ final AS (
         -- Order grain
         orders.order_id,
         orders.ordered_at,
-        
+
         -- Customer attributes
         orders.customer_id,
         customers.customer_segment,
         customers.acquisition_channel,
         customers.first_order_date,
-        
+
         -- Order attributes
         orders.order_status,
         orders.order_total,
         orders.discount_amount,
-        
+
         -- Calculated fields
         orders.order_total - orders.discount_amount AS net_revenue,
-        CASE 
-            WHEN orders.ordered_at = customers.first_order_date 
-            THEN TRUE ELSE FALSE 
+        CASE
+            WHEN orders.ordered_at = customers.first_order_date
+            THEN TRUE ELSE FALSE
         END AS is_first_order,
-        
+
         -- Metadata
         orders.updated_at,
         CURRENT_TIMESTAMP AS dbt_loaded_at
-        
+
     FROM orders
-    LEFT JOIN customers 
+    LEFT JOIN customers
         ON orders.customer_id = customers.customer_id
 )
 
@@ -498,14 +498,14 @@ version: 2
 models:
   - name: fct_orders
     description: "Order fact table at order grain. Includes customer dimensions."
-    
+
     columns:
       - name: order_id
         description: "Primary key"
         tests:
           - unique
           - not_null
-      
+
       - name: customer_id
         description: "Foreign key to dim_customers"
         tests:
@@ -513,7 +513,7 @@ models:
           - relationships:
               to: ref('dim_customers')
               field: customer_id
-      
+
       - name: order_total
         description: "Order total in dollars"
         tests:
@@ -521,7 +521,7 @@ models:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: 100000
-      
+
       - name: order_status
         description: "Current order status"
         tests:
@@ -553,42 +553,42 @@ A semantic layer defines metrics once, uses everywhere. Critical for data consis
 cubes:
   - name: Orders
     sql_table: analytics.fct_orders
-    
+
     dimensions:
       - name: order_id
         sql: order_id
         type: string
         primary_key: true
-      
+
       - name: ordered_at
         sql: ordered_at
         type: time
-      
+
       - name: customer_segment
         sql: customer_segment
         type: string
-      
+
       - name: acquisition_channel
         sql: acquisition_channel
         type: string
-    
+
     measures:
       - name: order_count
         type: count
-      
+
       - name: total_revenue
         type: sum
         sql: net_revenue
-      
+
       - name: average_order_value
         type: number
         sql: "{total_revenue} / NULLIF({order_count}, 0)"
-      
+
       - name: first_order_count
         type: count
         filters:
           - sql: "{CUBE}.is_first_order = TRUE"
-    
+
     pre_aggregations:
       - name: daily_by_channel
         dimensions:
@@ -672,34 +672,34 @@ Basic observability checks (production would use Monte Carlo, etc.)
 
 def freshness_check(table: str, column: str, max_age_hours: int) -> bool:
     """Check if data is fresh."""
-    
+
     query = f"""
-    SELECT 
+    SELECT
         MAX({column}) as latest,
         CURRENT_TIMESTAMP as now,
         TIMESTAMPDIFF(HOUR, MAX({column}), CURRENT_TIMESTAMP) as age_hours
     FROM {table}
     """
-    
+
     result = execute_query(query)
-    
+
     if result['age_hours'] > max_age_hours:
         alert(f"Table {table} is {result['age_hours']} hours old (max: {max_age_hours})")
         return False
-    
+
     return True
 
 
 def volume_check(table: str, min_rows: int, max_rows: int) -> bool:
     """Check if row count is in expected range."""
-    
+
     query = f"SELECT COUNT(*) as row_count FROM {table}"
     result = execute_query(query)
-    
+
     if not (min_rows <= result['row_count'] <= max_rows):
         alert(f"Table {table} has {result['row_count']} rows (expected {min_rows}-{max_rows})")
         return False
-    
+
     return True
 ```
 

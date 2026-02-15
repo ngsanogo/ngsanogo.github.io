@@ -61,14 +61,14 @@ from sqlalchemy import text
 
 def load_orders_delete_first(df, engine, process_date):
     """Load orders - delete date partition first."""
-    
+
     with engine.begin() as conn:
         # Delete existing data for this date
         conn.execute(
             text("DELETE FROM orders WHERE DATE(order_date) = :date"),
             {'date': process_date}
         )
-    
+
     # Insert new data
     df.to_sql('orders', engine, if_exists='append', index=False)
 ```
@@ -85,9 +85,9 @@ from sqlalchemy.dialects.postgresql import insert
 
 def upsert_orders(df, engine):
     """Load orders - upsert based on primary key."""
-    
+
     records = df.to_dict('records')
-    
+
     with engine.begin() as conn:
         stmt = insert(orders_table).values(records)
         stmt = stmt.on_conflict_do_update(
@@ -112,22 +112,22 @@ def upsert_orders(df, engine):
 ```python
 def load_orders_staging(df, engine, target_table, process_date):
     """Load orders via staging table."""
-    
+
     staging_table = f"{target_table}_staging"
-    
+
     # Load to staging
     df.to_sql(staging_table, engine, if_exists='replace', index=False)
-    
+
     # Atomic swap
     with engine.begin() as conn:
         conn.execute(text(f"BEGIN"))
-        
+
         # Delete from target
         conn.execute(
             text(f"DELETE FROM {target_table} WHERE DATE(order_date) = :date"),
             {'date': process_date}
         )
-        
+
         # Insert from staging
         conn.execute(
             text(f"""
@@ -135,9 +135,9 @@ def load_orders_staging(df, engine, target_table, process_date):
             SELECT * FROM {staging_table}
             """)
         )
-        
+
         conn.execute(text(f"COMMIT"))
-        
+
     # Clean up staging
     with engine.begin() as conn:
         conn.execute(text(f"DROP TABLE {staging_table}"))
@@ -155,7 +155,7 @@ Non-idempotent (broken):
 ```python
 def daily_summary_broken(engine, date):
     """Calculate daily summary - WRONG."""
-    
+
     query = f"""
     INSERT INTO daily_sales
     SELECT
@@ -166,7 +166,7 @@ def daily_summary_broken(engine, date):
     WHERE DATE(order_date) = '{date}'
     GROUP BY DATE(order_date)
     """
-    
+
     with engine.begin() as conn:
         conn.execute(text(query))
 ```
@@ -178,14 +178,14 @@ Idempotent (correct):
 ```python
 def daily_summary_idempotent(engine, date):
     """Calculate daily summary - idempotent."""
-    
+
     with engine.begin() as conn:
         # Delete existing summary for this date
         conn.execute(
             text("DELETE FROM daily_sales WHERE date = :date"),
             {'date': date}
         )
-        
+
         # Insert new summary
         conn.execute(
             text("""
@@ -213,16 +213,16 @@ from datetime import datetime
 
 def process_date_partition(**context):
     """Process a specific date partition idempotently."""
-    
+
     # Execution date from Airflow
     execution_date = context['ds']  # YYYY-MM-DD string
-    
+
     # Extract
     df = extract_orders(engine, execution_date)
-    
+
     # Transform
     transformed = transform(df)
-    
+
     # Load idempotently (delete + insert)
     load_idempotent(transformed, engine, execution_date)
 
@@ -233,7 +233,7 @@ with DAG(
     schedule='@daily',
     catchup=True  # Can safely backfill - pipeline is idempotent
 ) as dag:
-    
+
     process = PythonOperator(
         task_id='process_orders',
         python_callable=process_date_partition,
@@ -248,21 +248,21 @@ with DAG(
 ```python
 def test_pipeline_idempotency(test_engine):
     """Test that running pipeline twice produces same result."""
-    
+
     test_data = pd.DataFrame({
         'order_id': [1, 2, 3],
         'amount': [100, 200, 150],
         'order_date': ['2025-01-01', '2025-01-01', '2025-01-01']
     })
-    
+
     # Run pipeline first time
     load_orders_idempotent(test_data, test_engine, '2025-01-01')
     result1 = pd.read_sql('SELECT * FROM orders ORDER BY order_id', test_engine)
-    
+
     # Run pipeline second time (same data)
     load_orders_idempotent(test_data, test_engine, '2025-01-01')
     result2 = pd.read_sql('SELECT * FROM orders ORDER BY order_id', test_engine)
-    
+
     # Results should be identical
     assert len(result1) == len(result2) == 3
     assert result1.equals(result2)

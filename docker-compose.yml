@@ -11,8 +11,11 @@ services:
     volumes:
       - .:/site
     profiles: ["dev"]
+    labels:
+      - "com.ngsanogo.service=dev"
 
   build:
+    container_name: build
     build:
       context: .
       target: hugo
@@ -20,6 +23,8 @@ services:
     volumes:
       - .:/site
     profiles: ["build"]
+    labels:
+      - "com.ngsanogo.service=build"
 
   test:
     container_name: test
@@ -30,6 +35,8 @@ services:
     volumes:
       - .:/site
     profiles: ["test"]
+    labels:
+      - "com.ngsanogo.service=test"
 
   prod:
     container_name: prod
@@ -39,3 +46,12 @@ services:
     ports:
       - "8080:80"
     profiles: ["prod"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    labels:
+      - "com.ngsanogo.service=prod"

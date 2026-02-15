@@ -48,7 +48,7 @@ from datetime import datetime
 
 class JSONFormatter(logging.Formatter):
     """Format logs as JSON for easy parsing."""
-    
+
     def format(self, record):
         log_data = {
             'timestamp': datetime.utcnow().isoformat(),
@@ -57,7 +57,7 @@ class JSONFormatter(logging.Formatter):
             'module': record.module,
             'function': record.funcName
         }
-        
+
         # Add extra fields
         if hasattr(record, 'pipeline'):
             log_data['pipeline'] = record.pipeline
@@ -65,7 +65,7 @@ class JSONFormatter(logging.Formatter):
             log_data['execution_date'] = record.execution_date
         if hasattr(record, 'rows_processed'):
             log_data['rows_processed'] = record.rows_processed
-        
+
         return json.dumps(log_data)
 
 
@@ -88,9 +88,9 @@ def extract_orders(date):
             'step': 'extract'
         }
     )
-    
+
     df = fetch_orders(date)
-    
+
     logger.info(
         "Extraction complete",
         extra={
@@ -100,7 +100,7 @@ def extract_orders(date):
             'rows_processed': len(df)
         }
     )
-    
+
     return df
 ```
 
@@ -119,39 +119,39 @@ import json
 @dataclass
 class PipelineMetrics:
     """Metrics for a pipeline run."""
-    
+
     pipeline_name: str
     execution_date: str
     start_time: datetime
     end_time: datetime
     status: str  # success, failed, partial
-    
+
     # Data metrics
     rows_extracted: int
     rows_transformed: int
     rows_loaded: int
     rows_failed: int
-    
+
     # Performance metrics
     extract_duration_sec: float
     transform_duration_sec: float
     load_duration_sec: float
-    
+
     # Quality metrics
     null_count: int
     duplicate_count: int
-    
+
     @property
     def total_duration_sec(self) -> float:
         return (self.end_time - self.start_time).total_seconds()
-    
+
     @property
     def success_rate(self) -> float:
         total = self.rows_extracted
         if total == 0:
             return 0.0
         return (self.rows_loaded / total) * 100
-    
+
     def to_json(self) -> str:
         """Serialize metrics to JSON."""
         return json.dumps({
@@ -172,7 +172,7 @@ class PipelineMetrics:
             'null_count': self.null_count,
             'duplicate_count': self.duplicate_count
         })
-    
+
     def save(self, engine):
         """Save metrics to database."""
         query = """
@@ -188,7 +188,7 @@ class PipelineMetrics:
             :null_count, :duplicate_count
         )
         """
-        
+
         with engine.begin() as conn:
             conn.execute(text(query), {
                 'pipeline_name': self.pipeline_name,
@@ -216,7 +216,7 @@ from datetime import datetime
 
 def run_pipeline_with_monitoring(process_date, engine):
     """Run pipeline with full monitoring."""
-    
+
     metrics = PipelineMetrics(
         pipeline_name='daily_orders',
         execution_date=str(process_date),
@@ -233,45 +233,45 @@ def run_pipeline_with_monitoring(process_date, engine):
         null_count=0,
         duplicate_count=0
     )
-    
+
     try:
         # Extract
         extract_start = time.time()
         df = extract_orders(process_date)
         metrics.extract_duration_sec = time.time() - extract_start
         metrics.rows_extracted = len(df)
-        
+
         # Transform
         transform_start = time.time()
         df_transformed = transform_orders(df)
         metrics.transform_duration_sec = time.time() - transform_start
         metrics.rows_transformed = len(df_transformed)
-        
+
         # Quality checks
         metrics.null_count = df_transformed.isnull().sum().sum()
         metrics.duplicate_count = df_transformed.duplicated().sum()
-        
+
         # Load
         load_start = time.time()
         load_orders(df_transformed, engine, process_date)
         metrics.load_duration_sec = time.time() - load_start
         metrics.rows_loaded = len(df_transformed)
-        
+
         # Success
         metrics.status = 'success'
         metrics.end_time = datetime.now()
-        
+
     except Exception as e:
         metrics.status = 'failed'
         metrics.end_time = datetime.now()
         logger.error(f"Pipeline failed: {e}")
         raise
-        
+
     finally:
         # Always save metrics
         metrics.save(engine)
         logger.info(metrics.to_json())
-    
+
     return metrics
 ```
 
@@ -282,7 +282,7 @@ Detect when metrics are unusual:
 ```python
 def check_for_anomalies(metrics: PipelineMetrics, engine):
     """Check if current metrics are anomalous."""
-    
+
     # Get historical metrics (last 30 days)
     query = """
     SELECT
@@ -295,18 +295,18 @@ def check_for_anomalies(metrics: PipelineMetrics, engine):
       AND status = 'success'
       AND start_time > NOW() - INTERVAL '30 days'
     """
-    
+
     with engine.connect() as conn:
         result = conn.execute(
             text(query),
             {'pipeline_name': metrics.pipeline_name}
         ).fetchone()
-    
+
     if not result:
         return  # Not enough history
-    
+
     avg_rows, stddev_rows, avg_duration, stddev_duration = result
-    
+
     # Check row count
     if stddev_rows > 0:
         row_z_score = abs((metrics.rows_loaded - avg_rows) / stddev_rows)
@@ -319,7 +319,7 @@ def check_for_anomalies(metrics: PipelineMetrics, engine):
                 f"Pipeline {metrics.pipeline_name}: Unusual row count",
                 f"Loaded {metrics.rows_loaded} rows (expected ~{avg_rows:.0f})"
             )
-    
+
     # Check duration
     if stddev_duration > 0:
         duration_z_score = abs((metrics.total_duration_sec - avg_duration) / stddev_duration)
@@ -412,7 +412,7 @@ with DAG(
     default_args=default_args,
     schedule='@daily'
 ) as dag:
-    
+
     task = PythonOperator(
         task_id='run_pipeline',
         python_callable=run_pipeline_with_monitoring

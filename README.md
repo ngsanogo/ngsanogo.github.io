@@ -1,56 +1,15 @@
 # ngsanogo.github.io
 
 ![Build and Deploy](https://github.com/ngsanogo/ngsanogo.github.io/workflows/Build%20and%20Deploy/badge.svg)
-![Hugo](https://img.shields.io/badge/Hugo-0.143-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Personal site and blog: **Issa Sanogo** — Senior Data Engineer. Data platforms, data quality, technical writing.
+Personal site and blog — **Issa Sanogo**, Senior Data Engineer.
 
-- **Live site:** [https://ngsanogo.github.io](https://ngsanogo.github.io)
-- **Stack:** Hugo (static site generator), Docker, GitHub Actions → GitHub Pages
-
----
-
-## Architecture
-
-```
-ngsanogo.github.io/
-├── content/                # Source content (Markdown + YAML frontmatter)
-│   ├── _index.md           # Homepage metadata
-│   ├── about.md
-│   ├── cv.md
-│   ├── contact.md
-│   ├── projects.md
-│   └── posts/              # Blog posts
-│       └── _index.md       # Blog listing metadata
-├── layouts/                # Hugo templates
-│   ├── _default/           # Base templates (baseof, single, list)
-│   ├── posts/              # Post-specific templates
-│   ├── partials/           # Reusable components (head, header, footer)
-│   ├── index.html          # Homepage template
-│   └── 404.html            # Error page
-├── assets/                 # Processed by Hugo Pipes
-│   ├── css/main.css        # Site styles
-│   └── js/copy-code.js     # Copy button for code blocks
-├── static/                 # Copied as-is to public/
-│   ├── favicon.svg
-│   └── robots.txt
-├── hugo.toml               # Site configuration
-├── Dockerfile              # Multi-stage: Hugo build + nginx production
-├── docker-compose.yml      # dev, build, test, prod services
-├── Makefile                # Shortcuts for Docker commands
-└── .github/workflows/
-    └── deploy.yml          # CI: Docker build → validate → deploy to Pages
-```
-
----
+**Live:** [ngsanogo.github.io](https://ngsanogo.github.io)
+**Stack:** Hugo + Docker + GitHub Actions
 
 ## Requirements
 
-- **Docker + Docker Compose** — required for build/dev/test/prod.
-- **Optional (linting):** Python 3.12+ and `pre-commit`.
-
----
+Docker + Docker Compose
 
 ## Usage
 
@@ -63,7 +22,7 @@ ngsanogo.github.io/
 | Clean output | `make clean` |
 | Lint and format | `make lint` |
 
-### Quick start
+## Quick start
 
 ```bash
 git clone https://github.com/ngsanogo/ngsanogo.github.io.git
@@ -71,48 +30,46 @@ cd ngsanogo.github.io
 make dev
 ```
 
-Open **http://localhost:1313**. Stop with `Ctrl+C`.
+Open http://localhost:1313
 
-### Add a new post
+## Contributing
 
-Create `content/posts/my-post.md` with YAML frontmatter:
+### Adding a new blog post
 
-```yaml
+Create a new markdown file in `content/posts/` with YAML frontmatter:
+
+```markdown
 ---
-title: "My Post Title"
-slug: my-post
-date: 2026-01-01
-description: "Short description for listing page."
+title: "Your Post Title"
+slug: your-post-slug
+date: 2026-02-15
+description: "Brief description of your post"
+categories: ["category"]
+tags: ["tag1", "tag2"]
 draft: false
 ---
 
-## First Section
-
-Content here...
+Your content here...
 ```
 
-Then rebuild: `make build`.
+### Running linting locally
 
----
-
-## Quality (optional)
-
-Install pre-commit and run all hooks:
+Run all linters and formatters:
 
 ```bash
-python3 -m pip install pre-commit
-pre-commit install
+make lint
+```
+
+Or run pre-commit on all files:
+
+```bash
 pre-commit run --all-files
 ```
 
----
+## Deploy
 
-## Deploy (GitHub Pages)
+Push to `main` → GitHub Actions builds and deploys to GitHub Pages.
 
-Push to `main`. GitHub Actions builds the site in Docker, validates output, checks links (Lychee), and deploys `public/` to GitHub Pages automatically.
+## License
 
----
-
-## License and contact
-
-Content and code © Issa Sanogo. See the [site](https://ngsanogo.github.io) or [contact page](https://ngsanogo.github.io/contact).
+© Issa Sanogo — [ngsanogo.github.io](https://ngsanogo.github.io)
