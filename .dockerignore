@@ -3,9 +3,14 @@ public/
 resources/
 .hugo_build.lock
 
+# Local environments
+.venv/
+node_modules/
+
 # Git
 .git/
 .gitignore
+.github/
 
 # OS / editor
 .DS_Store
