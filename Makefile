@@ -1,27 +1,28 @@
-.PHONY: dev build test prod clean lint setup help
-
-VENV := .venv
-PYTHON := $(VENV)/bin/python
-PIP := $(VENV)/bin/pip
-PRECOMMIT := $(VENV)/bin/pre-commit
+.PHONY: setup hooks dev build test prod clean lint stop help
 
 help:
 	@echo "Available commands:"
-	@echo "  make setup  - Create venv and install dev dependencies"
+	@echo "  make setup  - Build Docker images (first-time setup)"
+	@echo "  make hooks  - Configure repository git hooks"
 	@echo "  make dev    - Start dev server with hot reload (port 1313)"
 	@echo "  make build  - Build the static site"
 	@echo "  make test   - Build and validate output"
 	@echo "  make prod   - Run production server (nginx, port 8080)"
+	@echo "  make stop   - Stop all running containers"
 	@echo "  make clean  - Remove generated files"
-	@echo "  make lint   - Run formatters and linters via pre-commit"
+	@echo "  make lint   - Run formatters and linters (Docker pre-commit)"
 
 setup:
-	@echo "🔧 Setting up development environment..."
-	@python3 -m venv $(VENV)
-	@$(PIP) install --upgrade pip
-	@$(PIP) install -r requirements.txt
-	@$(PRECOMMIT) install
-	@echo "✅ Setup complete! Pre-commit hooks installed."
+	@echo "🔧 Building Docker images..."
+	@docker compose --profile dev --profile build --profile test --profile lint build
+	@$(MAKE) hooks
+	@echo "✅ Docker images are ready"
+
+hooks:
+	@echo "🪝 Configuring git hooks..."
+	@chmod +x .githooks/pre-commit
+	@git config --local core.hooksPath .githooks
+	@echo "✅ Git hooks configured"
 
 dev:
 	@echo "🌐 Starting dev server..."
@@ -45,11 +46,9 @@ clean:
 	@echo "✅ Clean complete"
 
 lint:
-	@echo "🔍 Running linters..."
-	@if [ ! -f "$(PRECOMMIT)" ]; then \
-		echo "❌ Error: pre-commit is not installed in venv"; \
-		echo ""; \
-		echo "Run: make setup"; \
-		exit 1; \
-	fi
-	@$(PRECOMMIT) run --all-files
+	@echo "🔍 Running linters in Docker..."
+	@docker compose --profile lint run --rm lint
+
+stop:
+	@echo "🛑 Stopping containers..."
+	@docker compose down

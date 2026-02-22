@@ -3,10 +3,6 @@ public/
 resources/
 .hugo_build.lock
 
-# Local environments
-.venv/
-node_modules/
-
 # Git
 .git/
 .gitignore
@@ -20,3 +16,6 @@ node_modules/
 .vscode/
 .idea/
 .cursor/
+
+# Dev container
+.devcontainer/
