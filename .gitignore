@@ -2,9 +2,16 @@
 public/
 resources/
 .hugo_build.lock
+dist/
+build/
 
 # OS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+Icon?
+ehthumbs.db
 Thumbs.db
 
 # Editor / IDE
@@ -14,3 +21,25 @@ Thumbs.db
 .vscode/
 .idea/
 .cursor/
+
+# Python
+__pycache__/
+*.py[cod]
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+
+# Node / frontend tooling
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment / local secrets
+.env
+.env.*
+!.env.example

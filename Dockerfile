@@ -4,7 +4,7 @@
 # ----------------------------
 FROM alpine:3.21 AS hugo
 
-ARG HUGO_VERSION=0.143.1
+ARG HUGO_VERSION=0.156.0
 
 RUN --mount=type=cache,target=/var/cache/apk \
     apk add --no-cache curl ca-certificates \
@@ -21,9 +21,12 @@ WORKDIR /site
 # ----------------------------
 FROM python:3.12-alpine AS lint
 
+ARG PRETTIER_VERSION=3.8.1
+
 RUN --mount=type=cache,target=/var/cache/apk \
     apk add --no-cache git nodejs npm \
-    && pip install --no-cache-dir pre-commit
+    && pip install --no-cache-dir pre-commit \
+    && npm install --global --no-progress "prettier@${PRETTIER_VERSION}"
 
 WORKDIR /site
 
