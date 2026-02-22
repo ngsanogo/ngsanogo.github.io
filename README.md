@@ -9,52 +9,74 @@ Personal site and blog — **Issa Sanogo**, Senior Data Engineer.
 
 ## Requirements
 
-- Docker + Docker Compose
-- Python 3.12+ (for local linting with pre-commit)
+- Docker Desktop (includes Docker Compose)
+- VS Code with Dev Containers extension (for devcontainer workflow)
+
+**No local Python, Node.js, Hugo, or other tools required on macOS.**
 
 ## Quick start
+
+👉 **New to this project?** Read [ONBOARDING.md](ONBOARDING.md) for detailed setup instructions.
 
 ```bash
 git clone https://github.com/ngsanogo/ngsanogo.github.io.git
 cd ngsanogo.github.io
+make setup  # builds Docker images & configures git hooks
+make dev    # starts dev server at http://localhost:1313
+```
 
-# Setup dev environment (venv + pre-commit hooks)
+## Dev container workflow
+
+Development is designed to run inside the devcontainer.
+
+1. Open this repository in VS Code
+2. Run **Dev Containers: Reopen in Container**
+3. In the container terminal, run:
+
+```bash
 make setup
-
-# Start dev server
 make dev
 ```
 
-Open http://localhost:1313
+You can commit from:
+- macOS terminal (host)
+- devcontainer terminal
+
+In both cases, the same repository hook runs `pre-commit` automatically.
 
 ## Usage
 
 | Task | Command |
 |------|---------|
-| Setup dev environment | `make setup` |
+| Build Docker images | `make setup` |
+| Configure git hooks only | `make hooks` |
 | Dev server (hot reload) | `make dev` |
 | Build site | `make build` |
 | Run tests | `make test` |
 | Production server | `make prod` |
+| Stop containers | `make stop` |
 | Clean output | `make clean` |
 | Lint and format | `make lint` |
 
 ## Contributing
 
-### First-time setup
+### Zero-install workflow (Docker only)
 
-Run `make setup` to create a Python virtual environment and install pre-commit hooks:
+All development commands run in Docker or in the devcontainer. No Python/Node tools are required on macOS.
 
 ```bash
-make setup
+make setup   # build images
+make dev     # run Hugo dev server
+make build   # build static site
+make test    # validate output
+make lint    # run pre-commit checks in Docker
 ```
 
-This will:
-- Create a `.venv` directory with isolated Python dependencies
-- Install pre-commit and other dev tools
-- Setup git hooks to automatically check code quality before commits
+### Commit and pre-commit behavior
 
-**Note:** All tools run in the venv - nothing is installed globally on your system.
+- On macOS: `git commit` triggers `.githooks/pre-commit`, which runs checks in Docker
+- In devcontainer: `git commit` triggers the same hook, which runs local `pre-commit` in the container
+- To configure the hook path: `make hooks` (already included in `make setup`)
 
 ### Adding a new blog post
 
@@ -80,12 +102,6 @@ Run all linters and formatters:
 
 ```bash
 make lint
-```
-
-Or run pre-commit directly (from venv):
-
-```bash
-.venv/bin/pre-commit run --all-files
 ```
 
 ## Deploy

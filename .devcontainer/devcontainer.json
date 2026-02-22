@@ -1,0 +1,20 @@
+{
+  "name": "ngsanogo.github.io",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "postCreateCommand": "git config --local core.hooksPath .githooks && chmod +x .githooks/pre-commit",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "EditorConfig.EditorConfig"
+      ]
+    }
+  }
+}

@@ -38,6 +38,19 @@ services:
     labels:
       - "com.ngsanogo.service=test"
 
+  lint:
+    container_name: lint
+    build:
+      context: .
+      target: lint
+    command: pre-commit run --all-files
+    volumes:
+      - .:/site
+      - precommit-cache:/root/.cache/pre-commit
+    profiles: ["lint"]
+    labels:
+      - "com.ngsanogo.service=lint"
+
   prod:
     container_name: prod
     build:
@@ -55,3 +68,6 @@ services:
       start_period: 5s
     labels:
       - "com.ngsanogo.service=prod"
+
+volumes:
+  precommit-cache:

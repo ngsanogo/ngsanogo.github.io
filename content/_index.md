@@ -1,4 +1,11 @@
 ---
 title: "Issa Sanogo"
-description: "Issa Sanogo - Senior Data Engineer. Data platforms, data quality, cross-functional project leadership."
+description: "Blog personnel data engineering: tutoriels ETL, SQL, Airflow, architecture data et bonnes pratiques de fiabilité."
+keywords:
+  - data engineering blog
+  - tutoriels ETL
+  - SQL pour data engineer
+  - airflow orchestration
+  - data quality
+  - architecture data
 ---

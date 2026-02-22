@@ -17,6 +17,18 @@ WORKDIR /site
 
 
 # ----------------------------
+# Stage 1b — Lint tooling
+# ----------------------------
+FROM python:3.12-alpine AS lint
+
+RUN --mount=type=cache,target=/var/cache/apk \
+    apk add --no-cache git nodejs npm \
+    && pip install --no-cache-dir pre-commit
+
+WORKDIR /site
+
+
+# ----------------------------
 # Stage 2 — Build static site
 # ----------------------------
 FROM hugo AS build
