@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint in Docker
+        run: docker compose --profile lint run --rm lint
+
+      - name: Build in Docker
+        run: docker compose --profile build run --rm build
+
+      - name: Validate output
+        run: |
+          test -f public/index.html || { echo "index.html missing"; exit 1; }
+          test -f public/sitemap.xml || { echo "sitemap.xml missing"; exit 1; }
+          echo "Build validation passed"

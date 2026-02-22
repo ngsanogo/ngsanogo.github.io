@@ -7,6 +7,24 @@ Personal site and blog — **Issa Sanogo**, Senior Data Engineer.
 **Live:** [ngsanogo.github.io](https://ngsanogo.github.io)
 **Stack:** Hugo + Docker + GitHub Actions
 
+## Vision
+
+This repository provides a production-ready technical blog platform with a strict Docker-first workflow.
+
+Goals:
+
+- keep local setup near zero,
+- enforce reproducible builds,
+- apply lightweight Open Source governance suitable for external contributors.
+
+## Architecture
+
+- **Site engine:** Hugo
+- **Runtime:** Nginx (containerized)
+- **Automation:** Makefile + Docker Compose profiles (`dev`, `build`, `test`, `lint`, `prod`)
+- **Quality gate:** pre-commit (Ruff, YAML/Markdown/JSON checks, Prettier)
+- **CI/CD:** GitHub Actions (`CI`, `Secrets Scan`, `Build and Deploy`)
+
 ## Requirements
 
 - Docker Desktop (includes Docker Compose)
@@ -14,7 +32,7 @@ Personal site and blog — **Issa Sanogo**, Senior Data Engineer.
 
 **No local Python, Node.js, Hugo, or other tools required on macOS.**
 
-## Quick start
+## Quick start (Docker)
 
 👉 **New to this project?** Read [ONBOARDING.md](ONBOARDING.md) for detailed setup instructions.
 
@@ -39,6 +57,7 @@ make dev
 ```
 
 You can commit from:
+
 - macOS terminal (host)
 - devcontainer terminal
 
@@ -46,19 +65,30 @@ In both cases, the same repository hook runs `pre-commit` automatically.
 
 ## Usage
 
-| Task | Command |
-|------|---------|
-| Build Docker images | `make setup` |
-| Configure git hooks only | `make hooks` |
-| Dev server (hot reload) | `make dev` |
-| Build site | `make build` |
-| Run tests | `make test` |
-| Production server | `make prod` |
-| Stop containers | `make stop` |
-| Clean output | `make clean` |
-| Lint and format | `make lint` |
+| Task                     | Command              |
+| ------------------------ | -------------------- |
+| Build Docker images      | `make setup`         |
+| Configure git hooks only | `make hooks`         |
+| Dev server (hot reload)  | `make dev`           |
+| Build site               | `make build`         |
+| Run tests                | `make test`          |
+| Verify pinned versions   | `make test-versions` |
+| Run CI checks locally    | `make ci`            |
+| Production server        | `make prod`          |
+| Stop containers          | `make stop`          |
+| Clean output             | `make clean`         |
+| Lint and format          | `make lint`          |
+
+## Repository map
+
+- `content/`: source content (posts/pages)
+- `layouts/`, `assets/`, `static/`: Hugo presentation layers
+- `.github/workflows/`: CI/CD and security automation
+- `scripts/`: operational scripts (version checks)
 
 ## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for branch and PR workflow.
 
 ### Zero-install workflow (Docker only)
 
@@ -69,6 +99,8 @@ make setup   # build images
 make dev     # run Hugo dev server
 make build   # build static site
 make test    # validate output
+make test-versions # validate pinned tool versions
+make ci      # run main CI checks locally
 make lint    # run pre-commit checks in Docker
 ```
 

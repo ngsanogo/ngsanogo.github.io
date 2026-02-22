@@ -1,4 +1,4 @@
-.PHONY: setup hooks dev build test prod clean lint stop help
+.PHONY: setup hooks dev build test test-versions ci prod clean lint stop help
 
 help:
 	@echo "Available commands:"
@@ -7,6 +7,8 @@ help:
 	@echo "  make dev    - Start dev server with hot reload (port 1313)"
 	@echo "  make build  - Build the static site"
 	@echo "  make test   - Build and validate output"
+	@echo "  make test-versions - Verify pinned versions are up to date"
+	@echo "  make ci     - Run local CI checks"
 	@echo "  make prod   - Run production server (nginx, port 8080)"
 	@echo "  make stop   - Stop all running containers"
 	@echo "  make clean  - Remove generated files"
@@ -35,6 +37,16 @@ build:
 test:
 	@echo "🧪 Running tests..."
 	@docker compose --profile test run --rm test
+
+test-versions:
+	@echo "🔎 Checking pinned versions..."
+	@./scripts/check-versions.sh
+
+ci:
+	@echo "🧰 Running CI checks locally..."
+	@$(MAKE) lint
+	@$(MAKE) test
+	@$(MAKE) test-versions
 
 prod:
 	@echo "🚀 Starting production server..."

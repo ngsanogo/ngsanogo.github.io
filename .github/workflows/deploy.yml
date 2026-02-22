@@ -3,9 +3,6 @@ name: Build and Deploy
 on:
   push:
     branches: [main]
-  pull_request:
-  schedule:
-    - cron: "0 2 * * *"
   workflow_dispatch:
 
 permissions:
@@ -14,20 +11,11 @@ permissions:
   id-token: write
 
 concurrency:
-  group: ${{ github.ref == 'refs/heads/main' && 'pages' || format('{0}-{1}', github.workflow, github.ref) }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Run lint in Docker
-        run: docker compose --profile lint run --rm lint
-
   build:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -44,7 +32,7 @@ jobs:
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: 'public/ --no-progress --accept 200,301,302,307,308'
+          args: "public/ --no-progress --accept 200,301,302,307,308"
         continue-on-error: true
 
       - name: Setup Pages
@@ -58,16 +46,10 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
         id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: Deployment status
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "✓ Deployment check passed (skipped for PR)"
-          else
-            echo "✓ Deployment completed"
-          fi
