@@ -9,6 +9,13 @@ repos:
       - id: check-yaml
       - id: check-json
 
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 3.0.3
+    hooks:
+      - id: editorconfig-checker
+        alias: ec
+        exclude: '^assets/css/'
+
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.35.1
     hooks:

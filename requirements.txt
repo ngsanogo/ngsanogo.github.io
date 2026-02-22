@@ -1,2 +1,0 @@
-# Development dependencies for linting and formatting
-pre-commit>=4.5.0

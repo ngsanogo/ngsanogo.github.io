@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+set -eu
+
+if command -v pre-commit >/dev/null 2>&1; then
+  exec pre-commit run --hook-stage pre-commit "$@"
+fi
+
+if command -v docker >/dev/null 2>&1; then
+  exec docker compose --profile lint run --rm -T lint pre-commit run --hook-stage pre-commit "$@"
+fi
+
+echo "pre-commit hook error: neither pre-commit nor docker is available." >&2
+echo "Install Docker Desktop or run inside the devcontainer." >&2
+exit 1
