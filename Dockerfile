@@ -2,7 +2,7 @@
 # ----------------------------
 # Stage 1 — Hugo base
 # ----------------------------
-FROM alpine:3.21 AS hugo
+FROM alpine:3.23 AS hugo
 
 ARG HUGO_VERSION=0.156.0
 
