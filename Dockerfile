@@ -44,7 +44,7 @@ RUN hugo --minify
 # ----------------------------
 # Stage 3 — Production (nginx)
 # ----------------------------
-FROM nginx:1.27-alpine AS prod
+FROM nginx:1.29-alpine AS prod
 
 LABEL org.opencontainers.image.source="https://github.com/ngsanogo/ngsanogo.github.io" \
       org.opencontainers.image.description="Personal blog - Issa Sanogo" \
