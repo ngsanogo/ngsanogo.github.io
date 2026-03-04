@@ -4,7 +4,6 @@ resources/
 .hugo_build.lock
 
 # Git
-.git/
 .gitignore
 .github/
 
