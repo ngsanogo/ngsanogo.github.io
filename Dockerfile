@@ -29,6 +29,7 @@ RUN --mount=type=cache,target=/var/cache/apk \
     && npm install --global --no-progress "prettier@${PRETTIER_VERSION}"
 
 WORKDIR /site
+COPY . .
 
 
 # ----------------------------

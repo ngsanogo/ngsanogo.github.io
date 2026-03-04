@@ -43,9 +43,8 @@ services:
       context: .
       target: lint
     command: pre-commit run --all-files
-    volumes:
-      - .:/site
-      - precommit-cache:/root/.cache/pre-commit
+    # volumes supprimés : le code doit être copié dans l'image, pas monté
+    # - precommit-cache:/root/.cache/pre-commit
     profiles: ["lint"]
     labels:
       - "com.ngsanogo.service=lint"
