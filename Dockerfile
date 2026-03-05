@@ -4,7 +4,7 @@
 # ----------------------------
 FROM alpine:3.23 AS hugo
 
-ARG HUGO_VERSION=0.156.0
+ARG HUGO_VERSION=0.157.0
 
 RUN --mount=type=cache,target=/var/cache/apk \
     apk add --no-cache curl ca-certificates \
@@ -24,7 +24,7 @@ FROM python:3.14-alpine AS lint
 ARG PRETTIER_VERSION=3.8.1
 
 RUN --mount=type=cache,target=/var/cache/apk \
-    apk add --no-cache git nodejs npm \
+    apk add --no-cache bash curl git nodejs npm \
     && pip install --no-cache-dir pre-commit \
     && npm install --global --no-progress "prettier@${PRETTIER_VERSION}"
 

@@ -40,7 +40,7 @@ test:
 
 test-versions:
 	@echo "🔎 Checking pinned versions..."
-	@./scripts/check-versions.sh
+	@docker compose --profile lint run --rm lint ./scripts/check-versions.sh
 
 ci:
 	@echo "🧰 Running CI checks locally..."

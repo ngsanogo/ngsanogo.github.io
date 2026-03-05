@@ -88,7 +88,9 @@ make clean
 | `make dev` | Dev server with hot reload |
 | `make build` | Build static site |
 | `make test` | Validate build output |
+| `make test-versions` | Verify pinned versions |
 | `make lint` | Run linters and formatters |
+| `make ci` | Run local CI checks |
 | `make prod` | Start production nginx server |
 | `make stop` | Stop all containers |
 | `make clean` | Remove build artifacts |
@@ -99,7 +101,7 @@ make clean
 docker images | grep ngsanogo
 
 ngsanogogithubio-build  # Hugo (Alpine)
-ngsanogogithubio-lint   # Python 3.12 + pre-commit
+ngsanogogithubio-lint   # Python 3.14 + pre-commit
 ngsanogogithubio-test   # Hugo (Alpine)
 ngsanogogithubio-prod   # nginx (Alpine)
 ```

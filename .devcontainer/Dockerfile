@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
-ARG HUGO_VERSION=0.156.0
+ARG HUGO_VERSION=0.157.0
 ARG NODE_MAJOR=20
 ARG PRETTIER_VERSION=3.8.1
 

@@ -21,6 +21,7 @@ Thumbs.db
 .vscode/
 .idea/
 .cursor/
+.history/
 
 # Python
 __pycache__/
@@ -43,3 +44,5 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+.envrc
+.direnv/

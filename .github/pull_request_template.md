@@ -2,6 +2,11 @@
 
 Describe the change and its purpose.
 
+## Scope
+
+- Main files changed:
+- Out of scope (explicitly not changed):
+
 ## Type of change
 
 - [ ] Fix
@@ -15,6 +20,12 @@ Describe the change and its purpose.
 - [ ] `make lint`
 - [ ] `make test`
 - [ ] `make test-versions`
+
+## Operational impact
+
+- [ ] Build/deploy behavior changed
+- [ ] Security posture changed
+- [ ] No operational impact
 
 ## Risk and rollback
 

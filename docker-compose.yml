@@ -1,6 +1,5 @@
 services:
   dev:
-    container_name: dev
     build:
       context: .
       target: hugo
@@ -14,7 +13,6 @@ services:
       - "com.ngsanogo.service=dev"
 
   build:
-    container_name: build
     build:
       context: .
       target: hugo
@@ -26,7 +24,6 @@ services:
       - "com.ngsanogo.service=build"
 
   test:
-    container_name: test
     build:
       context: .
       target: hugo
@@ -38,19 +35,18 @@ services:
       - "com.ngsanogo.service=test"
 
   lint:
-    container_name: lint
     build:
       context: .
       target: lint
     command: pre-commit run --all-files
-    # volumes supprimés : le code doit être copié dans l'image, pas monté
-    # - precommit-cache:/root/.cache/pre-commit
+    volumes:
+      - .:/site
+      - precommit-cache:/root/.cache/pre-commit
     profiles: ["lint"]
     labels:
       - "com.ngsanogo.service=lint"
 
   prod:
-    container_name: prod
     build:
       context: .
       target: prod

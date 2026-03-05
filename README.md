@@ -15,7 +15,7 @@ Goals:
 
 - keep local setup near zero,
 - enforce reproducible builds,
-- apply lightweight Open Source governance suitable for external contributors.
+- keep contribution and maintenance standards clear and lightweight.
 
 ## Architecture
 
@@ -43,6 +43,22 @@ make setup  # builds Docker images & configures git hooks
 make dev    # starts dev server at http://localhost:1313
 ```
 
+## Daily commands
+
+| Task                     | Command              |
+| ------------------------ | -------------------- |
+| Build Docker images      | `make setup`         |
+| Configure git hooks only | `make hooks`         |
+| Dev server (hot reload)  | `make dev`           |
+| Build site               | `make build`         |
+| Run tests                | `make test`          |
+| Verify pinned versions   | `make test-versions` |
+| Run CI checks locally    | `make ci`            |
+| Production server        | `make prod`          |
+| Stop containers          | `make stop`          |
+| Clean output             | `make clean`         |
+| Lint and format          | `make lint`          |
+
 ## Dev container workflow
 
 Development is designed to run inside the devcontainer.
@@ -63,22 +79,6 @@ You can commit from:
 
 In both cases, the same repository hook runs `pre-commit` automatically.
 
-## Usage
-
-| Task                     | Command              |
-| ------------------------ | -------------------- |
-| Build Docker images      | `make setup`         |
-| Configure git hooks only | `make hooks`         |
-| Dev server (hot reload)  | `make dev`           |
-| Build site               | `make build`         |
-| Run tests                | `make test`          |
-| Verify pinned versions   | `make test-versions` |
-| Run CI checks locally    | `make ci`            |
-| Production server        | `make prod`          |
-| Stop containers          | `make stop`          |
-| Clean output             | `make clean`         |
-| Lint and format          | `make lint`          |
-
 ## Repository map
 
 - `content/`: source content (posts/pages)
@@ -90,56 +90,10 @@ In both cases, the same repository hook runs `pre-commit` automatically.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for branch and PR workflow.
 
-### Zero-install workflow (Docker only)
-
-All development commands run in Docker or in the devcontainer. No Python/Node tools are required on macOS.
-
-```bash
-make setup   # build images
-make dev     # run Hugo dev server
-make build   # build static site
-make test    # validate output
-make test-versions # validate pinned tool versions
-make ci      # run main CI checks locally
-make lint    # run pre-commit checks in Docker
-```
-
-### Commit and pre-commit behavior
-
-- On macOS: `git commit` triggers `.githooks/pre-commit`, which runs checks in Docker
-- In devcontainer: `git commit` triggers the same hook, which runs local `pre-commit` in the container
-- To configure the hook path: `make hooks` (already included in `make setup`)
-
-### Adding a new blog post
-
-Create a new markdown file in `content/posts/` with YAML frontmatter:
-
-```markdown
----
-title: "Your Post Title"
-slug: your-post-slug
-date: 2026-02-15
-description: "Brief description of your post"
-categories: ["category"]
-tags: ["tag1", "tag2"]
-draft: false
----
-
-Your content here...
-```
-
-### Running linting locally
-
-Run all linters and formatters:
-
-```bash
-make lint
-```
-
 ## Deploy
 
 Push to `main` → GitHub Actions builds and deploys to GitHub Pages.
 
 ## License
 
-© Issa Sanogo — [ngsanogo.github.io](https://ngsanogo.github.io)
+MIT License. See `LICENSE`.
