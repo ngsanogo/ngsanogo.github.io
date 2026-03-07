@@ -1,32 +1,32 @@
 {{ define "main" }}
 <div class="hero">
-    <h1 class="page-title">Data Engineering for Reliability and Trust</h1>
-    <p class="tagline">Building data platforms where quality is non-negotiable</p>
+    <h1 class="page-title">Data Engineering — Articles et retours d'expérience</h1>
+    <p class="tagline">Je partage ce que j'apprends sur le terrain en construisant des architectures data fiables.</p>
 </div>
 
 <div class="highlight-box">
-    <p>8 years of experience in healthcare, medical research, and SaaS. I scope business needs, build solutions that last, and enable teams.</p>
+    <p>8 ans d'expérience en data engineering. Santé, edtech, SaaS.</p>
 </div>
 
 <div class="hero-cta">
-    <a href="/blog/" class="button-primary">Explore the blog</a>
-    <a href="https://isdataconsulting.com/" class="button-secondary" target="_blank" rel="noopener noreferrer">Consulting services →</a>
+    <a href="/blog/" class="button-primary">Lire les articles</a>
+    <a href="https://isdataconsulting.com/" class="button-secondary" target="_blank" rel="noopener noreferrer">Mes services freelance →</a>
 </div>
 
 {{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
-{{ $latest := first 1 $posts }}
+{{ $latest := first 3 $posts }}
 {{ if $latest }}
 <section aria-labelledby="blog-heading" class="home-section">
-    <h2 id="blog-heading" class="section-title">Latest Post</h2>
+    <h2 id="blog-heading" class="section-title">Derniers articles</h2>
     {{ range $latest }}
     <div class="post-item">
         <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-        <div class="post-meta"><span>{{ .Date.Format "January 02, 2006" }}</span></div>
+        <div class="post-meta"><span>{{ .Date.Format "02 January 2006" }}</span></div>
         <p class="post-description">{{ .Description }}</p>
-        <a href="{{ .RelPermalink }}" class="read-more">Read more →</a>
+        <a href="{{ .RelPermalink }}" class="read-more">Lire la suite →</a>
     </div>
     {{ end }}
-    <p class="view-all"><a href="/blog/" class="read-more">View all posts →</a></p>
+    <p class="view-all"><a href="/blog/" class="read-more">Voir tous les articles →</a></p>
 </section>
 {{ end }}
 {{ end }}

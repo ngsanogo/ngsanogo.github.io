@@ -1054,3 +1054,7 @@ Start with the basic setup in this article, then expand as your data lake grows.
 ---
 
 *Related articles: [Data Pipeline Architecture Patterns](/posts/data-pipeline-architecture-patterns) and [Apache Airflow Orchestration](/posts/apache-airflow-orchestration).*
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

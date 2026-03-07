@@ -246,3 +246,7 @@ But it's used in millions of production systems handling billions of dollars of 
 Understanding PostgreSQL = understanding how real companies handle data.
 
 That knowledge is valuable forever.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

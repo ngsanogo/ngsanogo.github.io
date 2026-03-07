@@ -370,3 +370,7 @@ Incremental processing patterns:
 4. **Lookback**: Reprocess recent days for late data
 
 Incremental = faster pipelines = lower costs = happier team.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

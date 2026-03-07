@@ -202,3 +202,7 @@ Airflow orchestrates data pipelines. You define workflows as code. Airflow sched
 It's complex to set up. But for production data pipelines, it's essential.
 
 Start simple. One DAG. Few tasks. Expand as needed.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

@@ -325,3 +325,7 @@ Test data pipelines. But test smart:
 Don't test everything. Test what breaks in production.
 
 Tests slow you down initially. They save you later.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

@@ -282,3 +282,7 @@ That's what separates data platforms that deliver value from data platforms that
 ---
 
 *This is part of a series on building reliable data platforms. Next: [Data Pipeline Architecture Patterns](/posts/data-pipeline-architecture-patterns).*
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

@@ -351,3 +351,7 @@ Dimensional modeling organizes warehouses:
 - **Date dimension**: Pre-computed date attributes
 
 Structured warehouses = fast queries = happy analysts.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

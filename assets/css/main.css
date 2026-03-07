@@ -322,6 +322,17 @@ nav[role="navigation"] a:hover {
     text-decoration: none;
 }
 
+nav[role="navigation"] a.nav-cta {
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    font-weight: 600;
+}
+
+nav[role="navigation"] a.nav-cta:hover {
+    background-color: var(--btn-primary-hover);
+    color: var(--btn-primary-text);
+}
+
 /* --- Hero --- */
 .hero {
     text-align: center;

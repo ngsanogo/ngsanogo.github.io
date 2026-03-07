@@ -303,3 +303,7 @@ Slow queries have predictable fixes:
 5. Update statistics (`ANALYZE`)
 
 Most queries can be 10-100x faster with correct indexes.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**
