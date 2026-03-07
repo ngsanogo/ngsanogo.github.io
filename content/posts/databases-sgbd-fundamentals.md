@@ -428,3 +428,7 @@ You must understand:
 - ACID guarantees
 
 Master SQL and relational databases. Everything else builds on that foundation.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

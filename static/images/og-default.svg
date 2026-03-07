@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Issa Sanogo - Data Engineering</title>
+  <desc id="desc">Data Engineering for Reliability and Trust</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d2b45" />
+      <stop offset="100%" stop-color="#1e5f74" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <g fill="#f5f7fa" font-family="Georgia, Times, serif">
+    <text x="80" y="210" font-size="44" font-weight="700">Issa Sanogo</text>
+    <text x="80" y="280" font-size="58" font-weight="700">Data Engineering</text>
+    <text x="80" y="340" font-size="58" font-weight="700">for Reliability and Trust</text>
+    <text x="80" y="420" font-size="30" opacity="0.9">ngsanogo.github.io</text>
+  </g>
+</svg>

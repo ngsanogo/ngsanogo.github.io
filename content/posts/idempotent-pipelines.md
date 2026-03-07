@@ -311,3 +311,7 @@ Build idempotent pipelines:
 - Staging table (production-grade)
 
 Idempotency is not optional. It's how production pipelines work.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

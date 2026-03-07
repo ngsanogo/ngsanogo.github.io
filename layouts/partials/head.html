@@ -8,19 +8,31 @@
 <link rel="canonical" href="{{ .Permalink }}">
 <meta name="robots" content="index, follow">
 <meta name="author" content="{{ .Site.Params.author }}">
+{{ $ogType := "website" }}
+{{ if eq .Section "posts" }}{{ $ogType = "article" }}{{ end }}
+{{ $ogImage := "/images/og-default.svg" | absURL }}
+{{ with .Params.image }}{{ $ogImage = . | absURL }}{{ end }}
 
 <!-- Open Graph -->
-<meta property="og:type" content="website">
+<meta property="og:type" content="{{ $ogType }}">
 <meta property="og:title" content="{{ .Title }}">
 <meta property="og:description" content="{{ .Description | default .Site.Params.description }}">
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:site_name" content="{{ .Site.Title }}">
-<meta property="og:locale" content="en_US">
+<meta property="og:image" content="{{ $ogImage }}">
+<meta property="og:image:alt" content="{{ .Title }}">
+<meta property="og:locale" content="fr_FR">
 
 <!-- Twitter Card -->
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ .Title }}">
 <meta name="twitter:description" content="{{ .Description | default .Site.Params.description }}">
+<meta name="twitter:image" content="{{ $ogImage }}">
+
+<!-- Feeds -->
+{{ with .OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" href="{{ .RelPermalink }}">
+{{ end }}
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">

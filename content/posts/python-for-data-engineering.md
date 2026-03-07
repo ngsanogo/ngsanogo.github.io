@@ -435,3 +435,7 @@ Python is the language data engineers use every day.
 Master Python basics. Learn libraries (pandas, SQLAlchemy, requests). Write clean code.
 
 You'll be valuable to any data team.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

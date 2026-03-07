@@ -419,3 +419,7 @@ With Docker: It works everywhere.
 Every data engineer should know Docker. Not optional. Essential.
 
 Learn it now. Use it daily. Your pipelines will be more reliable, reproducible, and shareable.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

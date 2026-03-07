@@ -430,3 +430,7 @@ Monitor pipelines:
 Collect metrics. Store them. Alert on anomalies.
 
 Monitored pipelines = reliable pipelines.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

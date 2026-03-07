@@ -180,3 +180,7 @@ GROUP BY customer_id;
 SQL is not optional. It's the foundation of data engineering.
 
 Spend 2-4 weeks learning it properly. Write SQL every day. It's the best investment you can make in your career.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

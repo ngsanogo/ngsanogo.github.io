@@ -502,3 +502,7 @@ Structure your Python pipelines:
 - scripts/ for entry points
 
 Organized code = maintainable code = productive team.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

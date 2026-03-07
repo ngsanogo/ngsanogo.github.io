@@ -399,3 +399,7 @@ Handle errors properly:
 5. **Alert immediately**: Teams respond fast
 
 Resilient pipelines = production-ready pipelines.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

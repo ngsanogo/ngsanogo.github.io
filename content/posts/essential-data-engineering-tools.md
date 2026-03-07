@@ -407,3 +407,7 @@ Those practices matter more than any specific tool.
 Start with basics. Add tools as you hit real limitations.
 
 Most data engineers use the same core toolkit their whole career.
+
+---
+
+**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**
