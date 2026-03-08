@@ -5,6 +5,9 @@ date: 2026-02-16
 description: "Comment construire des pipelines data idempotents. Les lancer plusieurs fois sans risque, éviter les doublons et garantir un retraitement fiable."
 categories: ["data-engineering"]
 tags: ["pipelines", "bonnes-pratiques", "fiabilité"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

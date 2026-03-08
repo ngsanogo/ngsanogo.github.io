@@ -1,7 +1,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{ $metaTitle := .Title | default .Site.Title }}
+{{ $metaDescription := .Description | default .Summary | default .Site.Params.description }}
 <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
-<meta name="description" content="{{ .Description | default .Site.Params.description }}">
+<meta name="description" content="{{ $metaDescription }}">
 {{ with .Params.keywords }}
 <meta name="keywords" content="{{ delimit . ", " }}">
 {{ end }}
@@ -15,18 +17,18 @@
 
 <!-- Open Graph -->
 <meta property="og:type" content="{{ $ogType }}">
-<meta property="og:title" content="{{ .Title }}">
-<meta property="og:description" content="{{ .Description | default .Site.Params.description }}">
+<meta property="og:title" content="{{ $metaTitle }}">
+<meta property="og:description" content="{{ $metaDescription }}">
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:site_name" content="{{ .Site.Title }}">
 <meta property="og:image" content="{{ $ogImage }}">
-<meta property="og:image:alt" content="{{ .Title }}">
+<meta property="og:image:alt" content="{{ $metaTitle }}">
 <meta property="og:locale" content="fr_FR">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ .Title }}">
-<meta name="twitter:description" content="{{ .Description | default .Site.Params.description }}">
+<meta name="twitter:title" content="{{ $metaTitle }}">
+<meta name="twitter:description" content="{{ $metaDescription }}">
 <meta name="twitter:image" content="{{ $ogImage }}">
 
 <!-- Feeds -->
@@ -50,10 +52,10 @@
 </script>
 {{ else if eq .Section "posts" }}
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","name":"{{ .Title }}","description":"{{ .Description }}","url":"{{ .Permalink }}","datePublished":"{{ .Date.Format "2006-01-02" }}","author":{"@type":"Person","name":"{{ .Site.Params.author }}"}}
+{"@context":"https://schema.org","@type":"Article","headline":"{{ $metaTitle }}","name":"{{ $metaTitle }}","description":"{{ $metaDescription }}","url":"{{ .Permalink }}","datePublished":"{{ .Date.Format "2006-01-02" }}","dateModified":"{{ .Lastmod.Format "2006-01-02" }}","mainEntityOfPage":{"@type":"WebPage","@id":"{{ .Permalink }}"},"author":{"@type":"Person","name":"{{ .Site.Params.author }}"},"publisher":{"@type":"Person","name":"{{ .Site.Params.author }}"}}
 </script>
 {{ else }}
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"{{ .Title }}","description":"{{ .Description | default .Site.Params.description }}","url":"{{ .Permalink }}","author":{"@type":"Person","name":"{{ .Site.Params.author }}"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"{{ $metaTitle }}","description":"{{ $metaDescription }}","url":"{{ .Permalink }}","author":{"@type":"Person","name":"{{ .Site.Params.author }}"}}
 </script>
 {{ end }}

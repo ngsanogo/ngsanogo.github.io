@@ -19,12 +19,7 @@
 <section aria-labelledby="blog-heading" class="home-section">
     <h2 id="blog-heading" class="section-title">Derniers articles</h2>
     {{ range $latest }}
-    <div class="post-item">
-        <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-        <div class="post-meta"><span>{{ partial "date-fr.html" .Date }}</span></div>
-        <p class="post-description">{{ .Description }}</p>
-        <a href="{{ .RelPermalink }}" class="read-more">Lire la suite →</a>
-    </div>
+    {{ partial "post-card.html" (dict "page" .) }}
     {{ end }}
     <p class="view-all"><a href="/blog/" class="read-more">Voir tous les articles →</a></p>
 </section>

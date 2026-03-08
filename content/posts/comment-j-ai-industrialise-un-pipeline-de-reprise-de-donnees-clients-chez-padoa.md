@@ -5,6 +5,9 @@ date: 2025-12-15
 description: "Retour d'expérience sur l'industrialisation d'un pipeline de reprise de données clients : standardisation, qualité, observabilité et réduction du lead time."
 categories: ["product-data"]
 tags: ["pipeline", "industrialisation", "data-migration", "airflow", "qualité"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

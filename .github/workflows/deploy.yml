@@ -23,6 +23,9 @@ jobs:
       - name: Build site in Docker
         run: docker compose --profile build run --rm build
 
+      - name: Validate post front matter
+        run: ./scripts/validate-frontmatter.sh
+
       - name: Validate build
         run: |
           test -f public/index.html || { echo "index.html missing"; exit 1; }
@@ -32,8 +35,7 @@ jobs:
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: "public/ --no-progress --accept 200,301,302,307,308"
-        continue-on-error: true
+          args: "public/ --no-progress --accept 200,301,302,307,308 --exclude-mail --max-retries 2 --retry-wait-time 2"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

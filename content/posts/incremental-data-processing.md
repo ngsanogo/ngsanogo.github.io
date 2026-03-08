@@ -5,6 +5,9 @@ date: 2026-02-22
 description: "Comment ne traiter que les données nouvelles ou modifiées. Les patterns incrémentaux pour des pipelines efficaces qui arrêtent de tout retraiter."
 categories: ["data-engineering"]
 tags: ["traitement-incrémental", "performance", "pipelines", "bonnes-pratiques"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

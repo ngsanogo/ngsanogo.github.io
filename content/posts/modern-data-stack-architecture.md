@@ -5,6 +5,9 @@ date: 2026-01-30
 description: "Les composants essentiels d'une plateforme data moderne. Ce qu'il faut choisir, dans quel ordre, et ce qui peut attendre."
 categories: ["architecture"]
 tags: ["architecture", "modern-data-stack", "elt", "cloud", "data-warehouse"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

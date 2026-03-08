@@ -1,0 +1,15 @@
+{{- $p := .page -}}
+{{- $showTaxonomies := false -}}
+{{- if isset . "showTaxonomies" -}}
+    {{- $showTaxonomies = .showTaxonomies -}}
+{{- end -}}
+{{- $readMoreLabel := "Lire la suite →" -}}
+{{- if isset . "readMoreLabel" -}}
+    {{- $readMoreLabel = .readMoreLabel -}}
+{{- end -}}
+<div class="post-item">
+    <h2 class="post-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
+    {{ partial "post-meta.html" (dict "page" $p "showTaxonomies" $showTaxonomies) }}
+    <p class="post-description">{{ $p.Description | default $p.Summary }}</p>
+    <a href="{{ $p.RelPermalink }}" class="read-more">{{ $readMoreLabel }}</a>
+</div>

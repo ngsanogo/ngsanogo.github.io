@@ -5,6 +5,9 @@ date: 2026-02-08
 description: "Les techniques d'optimisation SQL essentielles. EXPLAIN, index, réécriture de requêtes et bonnes pratiques pour des performances en production."
 categories: ["data-engineering", "sql"]
 tags: ["sql", "optimisation", "performance", "index", "explain"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

@@ -5,6 +5,9 @@ date: 2026-03-01
 description: "Comment tester des pipelines data efficacement. Tests unitaires, d'intégration et de données — les approches pragmatiques qui protègent la production."
 categories: ["data-engineering", "testing"]
 tags: ["tests", "qualité", "pipelines", "pytest", "bonnes-pratiques"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

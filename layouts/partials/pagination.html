@@ -1,0 +1,24 @@
+{{- $pag := .pag -}}
+{{ if gt $pag.TotalPages 1 }}
+<div class="pagination">
+    {{ if $pag.HasPrev }}
+        <a href="{{ $pag.Prev.URL }}" class="read-more">← Précédent</a>
+    {{ else }}
+        <span></span>
+    {{ end }}
+    <div class="page-numbers">
+        {{ range $pag.Pagers }}
+            {{ if eq . $pag }}
+                <span>{{ .PageNumber }}</span>
+            {{ else }}
+                <a href="{{ .URL }}">{{ .PageNumber }}</a>
+            {{ end }}
+        {{ end }}
+    </div>
+    {{ if $pag.HasNext }}
+        <a href="{{ $pag.Next.URL }}" class="read-more">Suivant →</a>
+    {{ else }}
+        <span></span>
+    {{ end }}
+</div>
+{{ end }}

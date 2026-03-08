@@ -5,6 +5,9 @@ date: 2026-02-20
 description: "Tables de faits, tables de dimensions, schéma en étoile. Comment structurer un warehouse que les analystes peuvent interroger facilement."
 categories: ["data-modeling"]
 tags: ["modélisation", "data-warehouse", "schéma-étoile", "star-schema"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

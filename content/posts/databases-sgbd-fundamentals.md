@@ -5,6 +5,9 @@ date: 2024-11-26
 description: "Comprendre les bases de données (SGBD) : ce qu'elles sont, comment elles fonctionnent, et pourquoi chaque data engineer doit les maîtriser."
 categories: ["fundamentals"]
 tags: ["bases-de-données", "fondamentaux", "data-engineering"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

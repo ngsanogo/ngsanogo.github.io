@@ -5,6 +5,9 @@ date: 2026-02-01
 description: "Les 3 patterns d'architecture de pipeline data comparés. Critères de choix concrets selon la fraîcheur, le volume et la complexité de votre contexte."
 categories: ["data-engineering"]
 tags: ["architecture", "data-pipelines", "etl", "streaming", "batch"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

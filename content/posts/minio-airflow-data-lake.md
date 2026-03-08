@@ -5,6 +5,9 @@ date: 2026-03-08
 description: "Comment combiner MinIO et Apache Airflow pour monter un data lake S3-compatible en local. Architecture, configuration et pipelines concrets."
 categories: ["data-engineering", "tools"]
 tags: ["minio", "airflow", "data-lake", "s3", "architecture"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

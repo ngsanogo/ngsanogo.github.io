@@ -5,6 +5,9 @@ date: 2026-02-02
 description: "Les principes qui séparent un pipeline fragile d'un pipeline fiable. Inspiré du Zen of Python : lisibilité, explicité, simplicité, pragmatisme."
 categories: ["fundamentals"]
 tags: ["bonnes-pratiques", "data-engineering", "principes", "qualité-code", "zen-of-python"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

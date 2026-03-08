@@ -4,35 +4,8 @@
 <p class="page-subtitle">Articles sur le data engineering, les outils et les bonnes pratiques.{{ if gt $pag.TotalPages 1 }} (Page {{ $pag.PageNumber }} sur {{ $pag.TotalPages }}){{ end }}</p>
 
 {{ range $pag.Pages }}
-<div class="post-item">
-    <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-    <div class="post-meta"><span>{{ partial "date-fr.html" .Date }}</span></div>
-    <p class="post-description">{{ .Description }}</p>
-    <a href="{{ .RelPermalink }}" class="read-more">Lire la suite →</a>
-</div>
+{{ partial "post-card.html" (dict "page" .) }}
 {{ end }}
 
-{{ if gt $pag.TotalPages 1 }}
-<div class="pagination">
-    {{ if $pag.HasPrev }}
-        <a href="{{ $pag.Prev.URL }}" class="read-more">← Précédent</a>
-    {{ else }}
-        <span></span>
-    {{ end }}
-    <div class="page-numbers">
-        {{ range $pag.Pagers }}
-            {{ if eq . $pag }}
-                <span>{{ .PageNumber }}</span>
-            {{ else }}
-                <a href="{{ .URL }}">{{ .PageNumber }}</a>
-            {{ end }}
-        {{ end }}
-    </div>
-    {{ if $pag.HasNext }}
-        <a href="{{ $pag.Next.URL }}" class="read-more">Suivant →</a>
-    {{ else }}
-        <span></span>
-    {{ end }}
-</div>
-{{ end }}
+{{ partial "pagination.html" (dict "pag" $pag) }}
 {{ end }}

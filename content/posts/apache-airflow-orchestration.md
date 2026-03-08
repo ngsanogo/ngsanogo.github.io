@@ -5,6 +5,9 @@ date: 2024-12-03
 description: "Comment Airflow planifie et supervise vos pipelines data. Les concepts clés, les pièges courants et les bonnes pratiques pour l'utiliser efficacement."
 categories: ["tools"]
 tags: ["airflow", "orchestration", "data-pipelines", "data-engineering"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

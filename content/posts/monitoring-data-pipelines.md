@@ -5,6 +5,9 @@ date: 2026-03-15
 description: "Comment surveiller ses pipelines data efficacement. Les métriques essentielles, les alertes utiles et les patterns de monitoring qui marchent en production."
 categories: ["data-engineering", "observability"]
 tags: ["monitoring", "observabilité", "alerting", "production", "pipelines"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

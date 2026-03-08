@@ -5,6 +5,9 @@ date: 2026-02-16
 description: "Un plan concret pour construire un data warehouse de zéro en contexte recherche médicale : cadrage, modélisation, pipelines, gouvernance et adoption."
 categories: ["architecture"]
 tags: ["data-warehouse", "santé", "modélisation", "gouvernance", "etl"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 
