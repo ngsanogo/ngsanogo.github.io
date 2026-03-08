@@ -1,26 +1,16 @@
 # ngsanogo.github.io
 
-Personal site and blog — **Issa Sanogo**, Senior Data Engineer.
+Personal site and blog — **Issa Sanogo**.
 
 **Live:** [ngsanogo.github.io](https://ngsanogo.github.io)
 **Stack:** Hugo + Docker
-
-## Vision
-
-This repository provides a production-ready technical blog platform with a strict Docker-first workflow.
-
-Goals:
-
-- keep local setup near zero,
-- enforce reproducible builds,
-- keep contribution and maintenance standards clear and lightweight.
 
 ## Architecture
 
 - **Site engine:** Hugo
 - **Automation:** Makefile + Docker Compose profiles (`dev`, `build`, `test`, `lint`)
 - **Quality gate:** pre-commit (YAML/Markdown/JSON checks, Prettier)
-- **CI:** GitHub Actions manual workflow (`CI`)
+- **Deploy:** GitHub Actions (`Deploy Pages`)
 
 ## Requirements
 
@@ -30,8 +20,6 @@ Goals:
 **No local Python, Node.js, Hugo, or other tools required on macOS.**
 
 ## Quick start (Docker)
-
-👉 **New to this project?** Read [ONBOARDING.md](ONBOARDING.md) for detailed setup instructions.
 
 ```bash
 git clone https://github.com/ngsanogo/ngsanogo.github.io.git
@@ -50,43 +38,22 @@ make dev    # starts dev server at http://localhost:1313
 | Build site               | `make build`         |
 | Run tests                | `make test`          |
 | Validate post metadata   | `make test-content`  |
-| Run CI checks locally    | `make ci`            |
+| Run local full checks    | `make ci`            |
 | Stop containers          | `make stop`          |
 | Clean output             | `make clean`         |
 | Lint and format          | `make lint`          |
 | Create a new blog post   | `make new-post TITLE="..."` |
 
-## Dev container workflow
+## Deployment
 
-Development is designed to run inside the devcontainer.
-
-1. Open this repository in VS Code
-2. Run **Dev Containers: Reopen in Container**
-3. In the container terminal, run:
-
-```bash
-make setup
-make dev
-```
-
-You can commit from:
-
-- macOS terminal (host)
-- devcontainer terminal
-
-In both cases, the same repository hook runs `pre-commit` automatically.
+Push to `main` triggers GitHub Pages deployment.
 
 ## Repository map
 
 - `content/`: source content (posts/pages)
 - `layouts/`, `assets/`, `static/`: Hugo presentation layers
-- `.github/workflows/`: CI automation
+- `.github/workflows/`: deployment workflow
 - `scripts/`: operational scripts
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for branch and PR workflow.
-See [docs/ARCHITECTURE_STRATEGY.md](docs/ARCHITECTURE_STRATEGY.md) for long-term architecture and maintenance strategy.
 
 ## License
 
