@@ -45,9 +45,9 @@ test: check-docker
 	@echo "🧪 Running tests..."
 	@docker compose --profile test run --rm test
 
-test-content:
+test-content: check-docker
 	@echo "🧾 Validating content front matter..."
-	@./scripts/validate-frontmatter.sh
+	@docker compose --profile lint run --rm -T lint ./scripts/validate-frontmatter.sh
 
 ci:
 	@echo "🧰 Running CI checks locally..."

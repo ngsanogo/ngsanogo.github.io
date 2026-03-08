@@ -10,7 +10,7 @@ Personal site and blog — **Issa Sanogo**.
 - **Site engine:** Hugo
 - **Automation:** Makefile + Docker Compose profiles (`dev`, `build`, `test`, `lint`)
 - **Quality gate:** pre-commit (YAML/Markdown/JSON checks, Prettier)
-- **Deploy:** GitHub Actions (`Deploy Pages`)
+- **CI/Deploy:** GitHub Actions (`CI`, `Deploy Pages`)
 
 ## Requirements
 
@@ -46,13 +46,14 @@ make dev    # starts dev server at http://localhost:1313
 
 ## Deployment
 
-Push to `main` triggers GitHub Pages deployment.
+Pull requests to `main` run CI checks.
+Push to `main` runs CI and then triggers GitHub Pages deployment.
 
 ## Repository map
 
 - `content/`: source content (posts/pages)
 - `layouts/`, `assets/`, `static/`: Hugo presentation layers
-- `.github/workflows/`: deployment workflow
+- `.github/workflows/`: CI and deployment workflows
 - `scripts/`: operational scripts
 
 ## License
