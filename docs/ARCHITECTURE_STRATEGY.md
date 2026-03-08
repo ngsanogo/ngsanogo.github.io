@@ -6,10 +6,10 @@ Keep a fast, reliable, low-complexity Hugo platform focused on content quality, 
 
 ## Architecture Principles
 
-- Static-first: Hugo + GitHub Pages.
+- Static-first: Hugo.
 - Single repository, no runtime database.
-- Docker-first reproducibility for build/lint/test/prod simulation.
-- Quality gates before deployment.
+- Docker-first reproducibility for build/lint/test.
+- Quality gates before publication.
 - Small reusable templates over duplicated layout logic.
 
 ## Repository Structure Rules
@@ -33,8 +33,8 @@ Keep a fast, reliable, low-complexity Hugo platform focused on content quality, 
 ## Quality Gates
 
 - Pre-commit checks style, markdown, yaml/json, and front matter completeness.
-- CI runs lint, content validation, and Docker build checks.
-- Deploy validates build output and link integrity before publish.
+- Local checks are the primary gate: `make lint`, `make test`, `make test-content`.
+- Optional remote CI can be triggered manually when needed.
 
 ## SEO Rules
 
@@ -46,12 +46,12 @@ Keep a fast, reliable, low-complexity Hugo platform focused on content quality, 
 
 ## Security Rules
 
-- Nginx security headers are enforced in production image.
-- CSP remains compatible with Hugo inline JSON-LD while restricting other directives.
-- Run secrets scan in CI for every push/PR.
+- Never commit real credentials.
+- Keep sample credentials only in clearly educational snippets.
+- Review workflow permissions and keep them minimal.
 
 ## Operational Cadence
 
 - Weekly: review failed checks and fix regressions.
-- Monthly: dependency updates (Dependabot + `make test-versions`).
+- Monthly: dependency updates when needed.
 - Quarterly: content taxonomy cleanup and template debt review.

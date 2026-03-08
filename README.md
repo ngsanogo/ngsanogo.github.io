@@ -3,7 +3,7 @@
 Personal site and blog — **Issa Sanogo**, Senior Data Engineer.
 
 **Live:** [ngsanogo.github.io](https://ngsanogo.github.io)
-**Stack:** Hugo + Docker + GitHub Actions
+**Stack:** Hugo + Docker
 
 ## Vision
 
@@ -18,10 +18,9 @@ Goals:
 ## Architecture
 
 - **Site engine:** Hugo
-- **Runtime:** Nginx (containerized)
-- **Automation:** Makefile + Docker Compose profiles (`dev`, `build`, `test`, `lint`, `prod`)
-- **Quality gate:** pre-commit (Ruff, YAML/Markdown/JSON checks, Prettier)
-- **CI:** GitHub Actions (`CI`)
+- **Automation:** Makefile + Docker Compose profiles (`dev`, `build`, `test`, `lint`)
+- **Quality gate:** pre-commit (YAML/Markdown/JSON checks, Prettier)
+- **CI:** GitHub Actions manual workflow (`CI`)
 
 ## Requirements
 
@@ -51,9 +50,7 @@ make dev    # starts dev server at http://localhost:1313
 | Build site               | `make build`         |
 | Run tests                | `make test`          |
 | Validate post metadata   | `make test-content`  |
-| Verify pinned versions   | `make test-versions` |
 | Run CI checks locally    | `make ci`            |
-| Production server        | `make prod`          |
 | Stop containers          | `make stop`          |
 | Clean output             | `make clean`         |
 | Lint and format          | `make lint`          |
@@ -84,7 +81,7 @@ In both cases, the same repository hook runs `pre-commit` automatically.
 - `content/`: source content (posts/pages)
 - `layouts/`, `assets/`, `static/`: Hugo presentation layers
 - `.github/workflows/`: CI automation
-- `scripts/`: operational scripts (version checks)
+- `scripts/`: operational scripts
 
 ## Contributing
 
