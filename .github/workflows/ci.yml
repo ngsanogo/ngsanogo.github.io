@@ -18,8 +18,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Lint in Docker
-        run: docker compose --profile lint run --rm lint
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install lint tooling
+        run: |
+          python -m pip install --upgrade pip pre-commit
+          npm install --global --no-progress prettier@3.8.1
+
+      - name: Lint with pre-commit
+        run: pre-commit run --all-files
 
       - name: Validate post front matter
         run: ./scripts/validate-frontmatter.sh
