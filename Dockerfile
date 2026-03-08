@@ -19,7 +19,7 @@ WORKDIR /site
 # ----------------------------
 # Stage 1b — Lint tooling
 # ----------------------------
-FROM python:3.14-alpine AS lint
+FROM python:3.12-alpine AS lint
 
 ARG PRETTIER_VERSION=3.8.1
 

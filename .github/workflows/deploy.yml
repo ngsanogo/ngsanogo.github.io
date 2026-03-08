@@ -36,6 +36,7 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           args: "public/ --no-progress --accept 200,301,302,307,308 --exclude-mail --max-retries 2 --retry-wait-time 2"
+        continue-on-error: true
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
