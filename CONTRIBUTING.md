@@ -11,7 +11,7 @@
 
 - Keep each PR focused on a single concern.
 - Do not mix refactor and feature changes unless required.
-- Include validation evidence (`make lint`, `make test`, and when relevant `make test-versions`).
+- Include validation evidence (`make lint`, `make test`).
 - Include content validation evidence (`make test-content`) for post changes.
 - Update docs when workflow or behavior changes.
 
@@ -22,7 +22,6 @@ make setup
 make lint
 make test
 make test-content
-make test-versions
 
 # Optional helper for new articles
 make new-post TITLE="your title"

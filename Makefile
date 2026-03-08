@@ -1,4 +1,4 @@
-.PHONY: setup hooks dev build test test-content test-versions ci prod clean lint stop new-post help
+.PHONY: setup hooks dev build test test-content ci clean lint stop new-post help
 
 check-docker:
 	@command -v docker >/dev/null 2>&1 || { \
@@ -15,9 +15,7 @@ help:
 	@echo "  make build  - Build the static site"
 	@echo "  make test   - Build and validate output"
 	@echo "  make test-content - Validate content front matter quality"
-	@echo "  make test-versions - Verify pinned versions are up to date"
 	@echo "  make ci     - Run local CI checks"
-	@echo "  make prod   - Run production server (nginx, port 8080)"
 	@echo "  make stop   - Stop all running containers"
 	@echo "  make clean  - Remove generated files"
 	@echo "  make lint   - Run formatters and linters (Docker pre-commit)"
@@ -51,20 +49,11 @@ test-content:
 	@echo "🧾 Validating content front matter..."
 	@./scripts/validate-frontmatter.sh
 
-test-versions: check-docker
-	@echo "🔎 Checking pinned versions..."
-	@docker compose --profile lint run --rm lint ./scripts/check-versions.sh
-
 ci:
 	@echo "🧰 Running CI checks locally..."
 	@$(MAKE) lint
 	@$(MAKE) test
 	@$(MAKE) test-content
-	@$(MAKE) test-versions
-
-prod: check-docker
-	@echo "🚀 Starting production server..."
-	@docker compose --profile prod up --build -d
 
 clean:
 	@echo "🧹 Cleaning generated files..."

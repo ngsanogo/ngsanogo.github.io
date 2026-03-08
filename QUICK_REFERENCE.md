@@ -37,13 +37,9 @@ make setup
 make dev
 ```
 
-## Production testing
+## Content helper
 
 ```bash
-make prod     # runs nginx on port 8080
-make stop     # stops all containers
-
-# Create a draft post with standard front matter
 make new-post TITLE="My New Post"
 ```
 
@@ -69,13 +65,13 @@ make clean
 .
 ├── .devcontainer/         # VS Code Dev Container
 ├── .githooks/             # Repository-managed git hooks
-├── .github/workflows/     # CI/CD
+├── .github/workflows/     # CI
 ├── content/posts/         # Blog posts (markdown)
 ├── layouts/               # Hugo templates
 ├── assets/css/            # Styles
 ├── static/                # Static files
 ├── Dockerfile             # Multi-stage build
-├── docker-compose.yml     # Services (dev/build/lint/prod)
+├── docker-compose.yml     # Services (dev/build/test/lint)
 ├── Makefile               # Commands
 ├── hugo.toml              # Hugo config
 ├── ONBOARDING.md          # Detailed setup guide
@@ -93,10 +89,8 @@ make clean
 | `make build` | Build static site |
 | `make test` | Validate build output |
 | `make test-content` | Validate post front matter |
-| `make test-versions` | Verify pinned versions |
 | `make lint` | Run linters and formatters |
 | `make ci` | Run local CI checks |
-| `make prod` | Start production nginx server |
 | `make stop` | Stop all containers |
 | `make clean` | Remove build artifacts |
 | `make new-post TITLE="..."` | Create a draft post file |
@@ -109,7 +103,6 @@ docker images | grep ngsanogo
 ngsanogogithubio-build  # Hugo (Alpine)
 ngsanogogithubio-lint   # Python 3.12 + pre-commit
 ngsanogogithubio-test   # Hugo (Alpine)
-ngsanogogithubio-prod   # nginx (Alpine)
 ```
 
 ## Zero install guarantee

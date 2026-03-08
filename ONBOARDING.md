@@ -92,8 +92,8 @@ If all commands succeed, the environment is 100% reproducible.
 
 ## CI
 
-GitHub Actions runs a single `CI` workflow on push to `main`.
-It validates linting, front matter, and Hugo build output.
+GitHub Actions runs a single manual `CI` workflow (`workflow_dispatch`).
+Use it when you want a remote verification run without automatic emails on every push.
 
 ## Troubleshooting
 
@@ -123,13 +123,13 @@ docker compose build --no-cache --profile dev --profile lint
 .
 ├── .devcontainer/         # VS Code Dev Container config
 ├── .githooks/             # Repository-managed git hooks
-├── .github/workflows/     # CI/CD pipelines
+├── .github/workflows/     # CI workflow
 ├── content/               # Hugo content (markdown)
 ├── layouts/               # Hugo templates
 ├── assets/                # CSS, JS
 ├── static/                # Static files (robots.txt, etc.)
 ├── Dockerfile             # Multi-stage Docker build
-├── docker-compose.yml     # Service definitions (dev, build, lint, prod)
+├── docker-compose.yml     # Service definitions (dev, build, test, lint)
 ├── Makefile               # Convenience commands
 └── hugo.toml              # Hugo configuration
 ```

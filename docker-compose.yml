@@ -46,30 +46,5 @@ services:
     labels:
       - "com.ngsanogo.service=lint"
 
-  prod:
-    build:
-      context: .
-      target: prod
-    ports:
-      - "8080:8080"
-    profiles: ["prod"]
-    restart: unless-stopped
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--no-verbose",
-          "--tries=1",
-          "--spider",
-          "http://127.0.0.1:8080/",
-        ]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 5s
-    labels:
-      - "com.ngsanogo.service=prod"
-
 volumes:
   precommit-cache:
