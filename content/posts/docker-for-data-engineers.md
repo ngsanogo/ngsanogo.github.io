@@ -5,6 +5,9 @@ date: 2024-12-02
 description: "Docker expliqué pour les data engineers : ce que c'est, pourquoi l'utiliser, et comment s'en servir pour des pipelines reproductibles."
 categories: ["tools"]
 tags: ["docker", "conteneurs", "data-engineering"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

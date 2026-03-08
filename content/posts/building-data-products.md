@@ -5,6 +5,9 @@ date: 2026-01-31
 description: "Un data engineer qui pense produit crée plus de valeur. Comment passer de la livraison technique à la résolution de vrais problèmes métier."
 categories: ["product-data"]
 tags: ["data-products", "product-thinking", "data-engineering", "stakeholder-management"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

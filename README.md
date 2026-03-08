@@ -52,12 +52,14 @@ make dev    # starts dev server at http://localhost:1313
 | Dev server (hot reload)  | `make dev`           |
 | Build site               | `make build`         |
 | Run tests                | `make test`          |
+| Validate post metadata   | `make test-content`  |
 | Verify pinned versions   | `make test-versions` |
 | Run CI checks locally    | `make ci`            |
 | Production server        | `make prod`          |
 | Stop containers          | `make stop`          |
 | Clean output             | `make clean`         |
 | Lint and format          | `make lint`          |
+| Create a new blog post   | `make new-post TITLE="..."` |
 
 ## Dev container workflow
 
@@ -89,6 +91,7 @@ In both cases, the same repository hook runs `pre-commit` automatically.
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for branch and PR workflow.
+See [docs/ARCHITECTURE_STRATEGY.md](docs/ARCHITECTURE_STRATEGY.md) for long-term architecture and maintenance strategy.
 
 ## Deploy
 

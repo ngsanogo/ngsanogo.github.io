@@ -5,6 +5,9 @@ date: 2026-01-25
 description: "Les fondamentaux de PostgreSQL pour le data engineering. Installation, commandes essentielles, types de données et bonnes pratiques pour bien démarrer."
 categories: ["data-engineering", "sql"]
 tags: ["postgresql", "sql", "base-de-données", "fondamentaux"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

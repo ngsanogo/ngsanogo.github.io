@@ -5,6 +5,9 @@ date: 2024-12-04
 description: "Les outils indispensables pour un data engineer : SQL, Python, Git, Docker, Airflow et bases de données. Construire sa boîte à outils."
 categories: ["tools"]
 tags: ["outils", "data-engineering", "bonnes-pratiques"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

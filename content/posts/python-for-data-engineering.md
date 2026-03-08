@@ -5,6 +5,9 @@ date: 2026-01-18
 description: "Les bases de Python pour le data engineering. Les librairies essentielles, les patterns courants et les bonnes pratiques pour écrire des pipelines solides."
 categories: ["data-engineering", "programming"]
 tags: ["python", "pipelines", "programmation", "bonnes-pratiques"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

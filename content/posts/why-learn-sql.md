@@ -5,6 +5,9 @@ date: 2026-01-11
 description: "SQL est le langage le plus important pour un data engineer. Pourquoi il reste incontournable et comment le maîtriser efficacement."
 categories: ["data-engineering", "sql"]
 tags: ["sql", "compétences", "carrière", "fondamentaux"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

@@ -14,6 +14,7 @@ make setup
 make dev      # http://localhost:1313 (auto-reload)
 make build    # generate static site in public/
 make test     # validate build output
+make test-content # validate post front matter
 make lint     # run all code quality checks
 ```
 
@@ -41,6 +42,9 @@ make dev
 ```bash
 make prod     # runs nginx on port 8080
 make stop     # stops all containers
+
+# Create a draft post with standard front matter
+make new-post TITLE="My New Post"
 ```
 
 ## Troubleshooting
@@ -88,12 +92,14 @@ make clean
 | `make dev` | Dev server with hot reload |
 | `make build` | Build static site |
 | `make test` | Validate build output |
+| `make test-content` | Validate post front matter |
 | `make test-versions` | Verify pinned versions |
 | `make lint` | Run linters and formatters |
 | `make ci` | Run local CI checks |
 | `make prod` | Start production nginx server |
 | `make stop` | Stop all containers |
 | `make clean` | Remove build artifacts |
+| `make new-post TITLE="..."` | Create a draft post file |
 
 ## Docker images
 

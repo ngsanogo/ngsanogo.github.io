@@ -5,6 +5,9 @@ date: 2026-03-02
 description: "La qualité des données en santé est un défi unique : systèmes fragmentés, réglementation stricte, risque clinique. Un cadre pratique pour la fiabiliser."
 categories: ["data-quality"]
 tags: ["santé", "qualité-données", "gouvernance", "pipelines"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

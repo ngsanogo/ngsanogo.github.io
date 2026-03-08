@@ -21,6 +21,9 @@ jobs:
       - name: Lint in Docker
         run: docker compose --profile lint run --rm lint
 
+      - name: Validate post front matter
+        run: ./scripts/validate-frontmatter.sh
+
       - name: Build in Docker
         run: docker compose --profile build run --rm build
 

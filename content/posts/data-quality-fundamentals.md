@@ -5,6 +5,9 @@ date: 2026-02-03
 description: "La qualité des données est le socle de tout projet data fiable. Les 6 dimensions, les erreurs courantes et les stratégies concrètes pour l'implémenter."
 categories: ["data-quality"]
 tags: ["qualité-données", "data-engineering", "bonnes-pratiques"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

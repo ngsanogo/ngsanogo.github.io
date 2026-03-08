@@ -5,6 +5,9 @@ date: 2026-01-05
 description: "Guide simple et concret pour débuter avec dbt : models, tests, documentation et déploiement progressif en production."
 categories: ["tools"]
 tags: ["dbt", "sql", "analytics-engineering", "débutants"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

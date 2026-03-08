@@ -5,6 +5,9 @@ date: 2026-02-19
 description: "Comment gérer les erreurs dans les pipelines data. Retry, modes de défaillance, alertes et dégradation gracieuse pour des pipelines résilients."
 categories: ["data-engineering"]
 tags: ["fiabilité", "gestion-erreurs", "pipelines", "bonnes-pratiques"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

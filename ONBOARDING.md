@@ -48,9 +48,24 @@ All commands run in Docker containers — no Hugo, Python, or Node.js required o
 | Start dev server | `make dev` |
 | Build static site | `make build` |
 | Run tests | `make test` |
+| Validate post metadata | `make test-content` |
 | Lint and format | `make lint` |
 | Stop containers | `make stop` |
 | Clean build artifacts | `make clean` |
+
+## Post quality contract
+
+Each post in `content/posts/` must include:
+
+- `title`
+- `slug` (lowercase + hyphens)
+- `date` (`YYYY-MM-DD`)
+- `description` (minimum 100 characters)
+- `categories`
+- `tags`
+- `keywords`
+- `series`
+- `image` (absolute path like `/images/...` or full URL)
 
 ## Commit workflow
 

@@ -5,6 +5,9 @@ date: 2026-01-26
 description: "ETL ou ELT n'est pas un choix dogmatique. Un cadre de décision basé sur la sensibilité des données, la latence, les compétences de l'équipe et la plateforme."
 categories: ["fundamentals"]
 tags: ["etl", "elt", "architecture", "data-pipelines"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 

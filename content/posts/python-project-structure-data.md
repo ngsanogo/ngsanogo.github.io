@@ -5,6 +5,9 @@ date: 2026-02-01
 description: "Comment organiser un projet Python data proprement. Arborescence, packaging, configuration et bonnes pratiques pour des projets maintenables."
 categories: ["data-engineering", "programming"]
 tags: ["python", "structure-projet", "bonnes-pratiques", "packaging"]
+keywords: []
+series: ""
+image: "/images/og-default.svg"
 draft: false
 ---
 
