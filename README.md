@@ -1,7 +1,5 @@
 # ngsanogo.github.io
 
-![Build and Deploy](https://github.com/ngsanogo/ngsanogo.github.io/workflows/Build%20and%20Deploy/badge.svg)
-
 Personal site and blog — **Issa Sanogo**, Senior Data Engineer.
 
 **Live:** [ngsanogo.github.io](https://ngsanogo.github.io)
@@ -23,7 +21,7 @@ Goals:
 - **Runtime:** Nginx (containerized)
 - **Automation:** Makefile + Docker Compose profiles (`dev`, `build`, `test`, `lint`, `prod`)
 - **Quality gate:** pre-commit (Ruff, YAML/Markdown/JSON checks, Prettier)
-- **CI/CD:** GitHub Actions (`CI`, `Secrets Scan`, `Build and Deploy`)
+- **CI:** GitHub Actions (`CI`)
 
 ## Requirements
 
@@ -85,17 +83,13 @@ In both cases, the same repository hook runs `pre-commit` automatically.
 
 - `content/`: source content (posts/pages)
 - `layouts/`, `assets/`, `static/`: Hugo presentation layers
-- `.github/workflows/`: CI/CD and security automation
+- `.github/workflows/`: CI automation
 - `scripts/`: operational scripts (version checks)
 
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for branch and PR workflow.
 See [docs/ARCHITECTURE_STRATEGY.md](docs/ARCHITECTURE_STRATEGY.md) for long-term architecture and maintenance strategy.
-
-## Deploy
-
-Push to `main` → GitHub Actions builds and deploys to GitHub Pages.
 
 ## License
 

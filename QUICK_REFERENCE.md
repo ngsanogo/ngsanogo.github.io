@@ -107,7 +107,7 @@ make clean
 docker images | grep ngsanogo
 
 ngsanogogithubio-build  # Hugo (Alpine)
-ngsanogogithubio-lint   # Python 3.14 + pre-commit
+ngsanogogithubio-lint   # Python 3.12 + pre-commit
 ngsanogogithubio-test   # Hugo (Alpine)
 ngsanogogithubio-prod   # nginx (Alpine)
 ```

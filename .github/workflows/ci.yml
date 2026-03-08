@@ -2,7 +2,8 @@ name: CI
 
 on:
   push:
-  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -39,8 +40,13 @@ jobs:
       - name: Validate post front matter
         run: ./scripts/validate-frontmatter.sh
 
-      - name: Build in Docker
-        run: docker compose --profile build run --rm build
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.157.0"
+
+      - name: Build site
+        run: hugo --minify
 
       - name: Validate output
         run: |
