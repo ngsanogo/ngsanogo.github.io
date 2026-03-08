@@ -11,7 +11,11 @@ fi
 
 required_fields=(title slug date description categories tags keywords series image)
 errors=0
-declare -A slugs=()
+slugs_tmp="$(mktemp)"
+cleanup() {
+  rm -f "$slugs_tmp"
+}
+trap cleanup EXIT
 
 for file in "$POSTS_DIR"/*.md; do
   [[ -e "$file" ]] || continue
@@ -40,11 +44,11 @@ for file in "$POSTS_DIR"/*.md; do
     echo "❌ $base: slug must use lowercase letters, digits, and hyphens only"
     errors=$((errors + 1))
   else
-    if [[ -n "${slugs[$slug]:-}" ]]; then
-      echo "❌ $base: duplicate slug '$slug' (already used in ${slugs[$slug]})"
+    if grep -q -F -x "$slug" "$slugs_tmp"; then
+      echo "❌ $base: duplicate slug '$slug'"
       errors=$((errors + 1))
     else
-      slugs[$slug]="$base"
+      printf '%s\n' "$slug" >> "$slugs_tmp"
     fi
   fi
 

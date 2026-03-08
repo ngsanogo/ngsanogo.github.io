@@ -39,3 +39,11 @@ FROM hugo AS build
 
 COPY . .
 RUN hugo --minify
+
+
+# ----------------------------
+# Stage 3 — Production runtime
+# ----------------------------
+FROM nginxinc/nginx-unprivileged:1.27-alpine AS runtime
+
+COPY --from=build /site/public /usr/share/nginx/html
