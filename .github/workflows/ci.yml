@@ -28,7 +28,7 @@ jobs:
       - name: Run lint checks
         run: |
           docker build --target lint -t ngsanogo-site-lint .
-          docker run --rm -v "$PWD:/site" -w /site ngsanogo-site-lint pre-commit run --all-files
+          docker run --rm -v "$PWD:/site" -w /site ngsanogo-site-lint sh -c "git config --global --add safe.directory /site && pre-commit run --all-files"
 
       - name: Run build checks
         run: make test
