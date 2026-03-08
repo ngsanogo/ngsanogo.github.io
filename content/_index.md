@@ -1,12 +1,12 @@
 ---
 title: "Issa Sanogo — Data Engineer Freelance"
-description: "Blog data engineering : tutoriels ETL, SQL, Airflow, architecture data et bonnes pratiques de fiabilité."
+description: "Blog data engineering : articles ETL, SQL, Airflow, architecture data et bonnes pratiques de fiabilité."
 keywords:
-  - data engineering blog
+  - data engineering
   - data engineer freelance
-  - tutoriels ETL
-  - SQL pour data engineer
-  - airflow orchestration
-  - data quality
+  - ETL
+  - SQL
+  - airflow
+  - qualité des données
   - architecture data
 ---

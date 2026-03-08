@@ -2,19 +2,19 @@
 <article>
     <header class="article-header">
         <h1 class="page-title">{{ .Title }}</h1>
-        <div class="post-meta"><span>{{ .Date.Format "January 02, 2006" }}</span></div>
+        <div class="post-meta"><span>{{ partial "date-fr.html" .Date }}</span></div>
     </header>
     {{ .Content }}
     <section class="highlight-box" aria-labelledby="consulting-cta-title">
-        <h2 id="consulting-cta-title" class="section-title">Need help implementing this in your company?</h2>
-        <p>For delivery-focused missions (Data Engineering, Architecture Data, Data Product Owner), visit ISData Consulting.</p>
+        <h2 id="consulting-cta-title" class="section-title">Besoin d'aide pour mettre ça en place ?</h2>
+        <p>Missions Data Engineering, Architecture Data, Data Product Owner — ISData Consulting.</p>
         <div class="hero-cta">
-            <a href="https://isdataconsulting.com/" class="button-primary" target="_blank" rel="noopener noreferrer">Visit isdataconsulting.com</a>
-            <a href="https://isdataconsulting.com/#contact" class="button-secondary" target="_blank" rel="noopener noreferrer">Book a discovery call →</a>
+            <a href="https://isdataconsulting.com/" class="button-primary" target="_blank" rel="noopener noreferrer">Voir isdataconsulting.com</a>
+            <a href="https://isdataconsulting.com/#contact" class="button-secondary" target="_blank" rel="noopener noreferrer">Réserver un appel →</a>
         </div>
     </section>
     <footer class="article-footer">
-        <a href="/blog/" class="button-secondary">← All posts</a>
+        <a href="/blog/" class="button-secondary">← Tous les articles</a>
     </footer>
 </article>
 {{ end }}

@@ -1,251 +1,180 @@
 ---
-title: "PostgreSQL: The Reliable Database You Should Know"
+title: "PostgreSQL : la base de données à maîtriser"
 slug: postgresql-basics
-date: 2024-11-30
-description: "PostgreSQL basics: What it is, why it's reliable, and how to use it for data engineering work."
-categories: ["sql"]
-tags: ["postgresql", "databases", "sql", "data-engineering"]
+date: 2026-01-25
+description: "Les fondamentaux de PostgreSQL pour le data engineering. Installation, commandes essentielles, types de données et bonnes pratiques pour bien démarrer."
+categories: ["data-engineering", "sql"]
+tags: ["postgresql", "sql", "base-de-données", "fondamentaux"]
 draft: false
 ---
-## What is PostgreSQL?
 
-PostgreSQL is a database. A powerful, reliable, free database.
+## Pourquoi PostgreSQL
 
-It's not the fanciest or fastest. But it's solid. People trust it.
+PostgreSQL est la base relationnelle open source la plus complète. Fiable, performante, extensible. C'est le choix par défaut pour :
+- les bases applicatives
+- les entrepôts de données de taille moyenne
+- le développement local avant de passer sur un cloud warehouse
 
-## Why It Matters
+La plupart des outils data (Airflow, dbt, Metabase) s'y connectent nativement.
 
-As a data engineer, you'll encounter PostgreSQL constantly:
+## Installation rapide
 
-- Companies use it for their main application
-- Data warehouses are built on it (or similar)
-- Your data pipelines likely read from or write to PostgreSQL
-- Your local development environment probably uses it
+```bash
+# Ubuntu / Debian
+sudo apt install postgresql postgresql-client
 
-Knowing PostgreSQL = understanding how data actually moves through companies.
+# Démarrer le service
+sudo systemctl start postgresql
 
-## PostgreSQL vs Other Databases
+# Se connecter
+sudo -u postgres psql
+```
 
-**MySQL**: Simpler, sometimes faster, less reliable in edge cases.
+Sous macOS : `brew install postgresql@16 && brew services start postgresql@16`.
 
-**SQL Server**: Powerful, proprietary, expensive.
-
-**MongoDB**: No-SQL, different philosophy, good for unstructured data.
-
-**BigQuery/Snowflake**: Cloud data warehouses, expensive, built for analytics.
-
-**PostgreSQL**: Balanced. Reliable. Free. Good for everything. That's why companies choose it.
-
-## What Can PostgreSQL Do?
-
-Store structured data:
+## Les commandes psql essentielles
 
 ```sql
+-- Lister les bases
+\l
+
+-- Se connecter à une base
+\c ma_base
+
+-- Lister les tables
+\dt
+
+-- Décrire une table
+\d ma_table
+
+-- Quitter
+\q
+```
+
+psql est l'interface en ligne de commande. Brut mais efficace.
+
+## Créer une base et des tables
+
+```sql
+CREATE DATABASE analytics;
+
+\c analytics
+
+CREATE TABLE orders (
+    order_id    SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    amount      NUMERIC(10, 2) NOT NULL,
+    order_date  DATE NOT NULL DEFAULT CURRENT_DATE,
+    created_at  TIMESTAMP DEFAULT NOW()
+);
+
 CREATE TABLE customers (
-  id INTEGER PRIMARY KEY,
-  name TEXT,
-  email TEXT,
-  signup_date DATE
+    customer_id SERIAL PRIMARY KEY,
+    name        VARCHAR(100) NOT NULL,
+    email       VARCHAR(255) UNIQUE,
+    created_at  TIMESTAMP DEFAULT NOW()
 );
 ```
 
-Query it efficiently:
+**SERIAL** : auto-incrément. **NUMERIC(10,2)** : précision décimale pour les montants. **DEFAULT** : valeurs par défaut.
+
+## Les types de données importants
+
+| Type | Usage |
+|---|---|
+| INTEGER / BIGINT | Identifiants, compteurs |
+| NUMERIC(p, s) | Montants, calculs précis |
+| VARCHAR(n) | Texte court |
+| TEXT | Texte long sans limite |
+| DATE | Dates sans heure |
+| TIMESTAMP | Dates avec heure |
+| BOOLEAN | Vrai/faux |
+| JSONB | JSON indexable |
+
+**Règle** : utiliser NUMERIC pour l'argent, jamais FLOAT. Utiliser TIMESTAMP WITH TIME ZONE en production.
+
+## Les requêtes de base
 
 ```sql
-SELECT name, email
-FROM customers
-WHERE signup_date > '2025-01-01'
-ORDER BY signup_date DESC;
+-- Insérer
+INSERT INTO orders (customer_id, amount, order_date)
+VALUES (1, 150.00, '2024-01-15');
+
+-- Lire avec filtre
+SELECT o.order_id, c.name, o.amount
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+WHERE o.order_date >= '2024-01-01'
+ORDER BY o.amount DESC;
+
+-- Mettre à jour
+UPDATE orders SET amount = 175.00 WHERE order_id = 1;
+
+-- Supprimer
+DELETE FROM orders WHERE order_date < '2023-01-01';
 ```
 
-Combine data from multiple tables:
+## Index : la performance
+
+Sans index, PostgreSQL scanne toute la table. Avec un index sur les colonnes filtrées, la requête est instantanée.
+
+```sql
+CREATE INDEX idx_orders_date ON orders (order_date);
+CREATE INDEX idx_orders_customer ON orders (customer_id);
+```
+
+**Règle** : indexer les colonnes utilisées dans WHERE, JOIN et ORDER BY. Ne pas tout indexer — chaque index ralentit les écritures.
+
+## Fonctionnalités avancées utiles
+
+### JSONB
+
+```sql
+CREATE TABLE events (
+    event_id SERIAL PRIMARY KEY,
+    payload  JSONB NOT NULL
+);
+
+SELECT payload->>'event_type' AS event_type
+FROM events
+WHERE payload @> '{"source": "web"}';
+```
+
+### Window functions
 
 ```sql
 SELECT
-  c.name,
-  COUNT(o.id) as orders,
-  SUM(o.amount) as total_spent
-FROM customers c
-LEFT JOIN orders o ON c.id = o.customer_id
-GROUP BY c.id, c.name;
+    customer_id,
+    order_date,
+    amount,
+    SUM(amount) OVER (PARTITION BY customer_id ORDER BY order_date) AS cumul
+FROM orders;
 ```
 
-Ensure data quality:
+### CTEs
 
 ```sql
-ALTER TABLE customers
-ADD CONSTRAINT valid_email CHECK (email LIKE '%@%.%');
+WITH daily_totals AS (
+    SELECT order_date, SUM(amount) AS total
+    FROM orders
+    GROUP BY order_date
+)
+SELECT order_date, total
+FROM daily_totals
+WHERE total > 1000;
 ```
 
-Process large volumes efficiently with proper indexing and query design.
+## Bonnes pratiques
 
-## Real-World Usage
+1. **Toujours définir une clé primaire** — pas de table sans PK
+2. **Utiliser des contraintes** : NOT NULL, UNIQUE, FOREIGN KEY
+3. **Nommer les index explicitement** : `idx_table_colonne`
+4. **VACUUM et ANALYZE réguliers** : PostgreSQL en a besoin pour rester performant
+5. **pg_dump pour les sauvegardes** : `pg_dump -Fc ma_base > backup.dump`
 
-**Your company's main database**: Stores customers, orders, products, everything.
+## En résumé
 
-**Your ETL pipeline**: Reads from the main database, transforms data, loads into a warehouse.
-
-**Your local development**: Clone of the production database for testing.
-
-**Reporting**: Monthly reports generated by SQL queries against PostgreSQL.
-
-## How to Work With PostgreSQL
-
-### Access it
-
-```bash
-# Connect from terminal
-psql -U username -d database_name -h localhost
-
-# You're now in PostgreSQL
-# Type SQL commands
-SELECT * FROM customers;
-```
-
-### Browse what's there
-
-```sql
--- Show all tables
-\dt
-
--- Show columns in a table
-\d customers
-
--- Show all databases
-\l
-```
-
-### Explore the data
-
-```sql
--- How many records?
-SELECT COUNT(*) FROM customers;
-
--- What date range?
-SELECT MIN(created_at), MAX(created_at) FROM orders;
-
--- Any nulls?
-SELECT COUNT(*) FROM customers WHERE email IS NULL;
-
--- Duplicates?
-SELECT email, COUNT(*)
-FROM customers
-GROUP BY email
-HAVING COUNT(*) > 1;
-```
-
-### Write and run queries
-
-```sql
--- Extract data
-SELECT customer_id, SUM(amount) as total
-FROM orders
-WHERE date >= '2025-01-01'
-GROUP BY customer_id;
-
--- Save results to a new table
-CREATE TABLE monthly_summary AS
-SELECT
-  DATE_TRUNC('month', order_date) as month,
-  COUNT(*) as order_count,
-  SUM(amount) as revenue
-FROM orders
-GROUP BY DATE_TRUNC('month', order_date);
-```
-
-## Why PostgreSQL is Reliable
-
-**ACID guarantees**: Your data is consistent. If something fails, nothing breaks.
-
-**Full-featured**: Handles complex queries, large datasets, concurrent users.
-
-**Proven**: Used by companies for 20+ years. Millions of deployments.
-
-**Community**: Free help, documentation, forums.
-
-**No vendor lock-in**: SQL knowledge transfers to other databases.
-
-## Common PostgreSQL Tasks
-
-**Check database size**
-
-```sql
-SELECT pg_size_pretty(pg_database_size('mydb'));
-```
-
-**Find slow queries**
-
-```sql
-SELECT query, calls, total_time
-FROM pg_stat_statements
-ORDER BY total_time DESC
-LIMIT 10;
-```
-
-**Backup your database**
-
-```bash
-pg_dump mydb > backup.sql
-```
-
-**Restore from backup**
-
-```bash
-psql mydb < backup.sql
-```
-
-**Monitor connections**
-
-```sql
-SELECT usename, count(*)
-FROM pg_stat_activity
-GROUP BY usename;
-```
-
-## Real Example: Data Pipeline
-
-You have a PostgreSQL database with customer orders. You need to:
-
-1. Extract orders from last 24 hours
-2. Calculate customer spending patterns
-3. Identify high-value customers
-4. Load results into a summary table
-
-```sql
--- Extract and transform in one SQL command
-INSERT INTO customer_summary (customer_id, order_count, total_spent, avg_order)
-SELECT
-  customer_id,
-  COUNT(*) as order_count,
-  SUM(amount) as total_spent,
-  AVG(amount) as avg_order
-FROM orders
-WHERE created_at > NOW() - INTERVAL '1 day'
-GROUP BY customer_id;
-```
-
-Done. The pipeline runs. Data is ready for analysis.
-
-## Getting Started Locally
-
-1. Install PostgreSQL (free, takes 5 minutes)
-2. Create a test database
-3. Load sample data
-4. Write queries
-
-Start asking your own questions about the data.
-
-As you practice, you'll become fluent in PostgreSQL. Then you understand how data actually works in the real world.
-
-## Why This Matters
-
-PostgreSQL is not exciting. No flashy features. No marketing hype.
-
-But it's used in millions of production systems handling billions of dollars of transactions daily.
-
-Understanding PostgreSQL = understanding how real companies handle data.
-
-That knowledge is valuable forever.
+PostgreSQL est la base de données fiable et polyvalente que tout data engineer doit maîtriser. Commencez par les fondamentaux, indexez intelligemment, et vous aurez un socle solide pour vos pipelines.
 
 ---
 

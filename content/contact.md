@@ -1,21 +1,19 @@
 ---
 title: Contact
-description: "Contact Issa Sanogo, Senior Data Engineer. Data engineering projects, consulting, data platform architecture. Paris area."
+description: "Contacter Issa Sanogo, Data Engineer Senior. Projets data engineering, conseil, architecture de plateformes data. Région parisienne."
 cta:
-  - label: "Send an email"
+  - label: "Envoyer un email"
     url: "mailto:ngsanogo@proton.me"
     style: primary
 ---
 
-Open to discussions about **data engineering**, **data platform architecture**, or **project collaboration**.
+Ouvert aux échanges sur le **data engineering**, l'**architecture de plateformes data** ou la **collaboration sur un projet**.
 
 ---
 
-## Get in touch
+## Me contacter
 
 **Email** — [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
-
-**Phone** — [+33 6 51 98 52 79](tel:+33651985279)
 
 **LinkedIn** — [linkedin.com/in/ngsanogo](https://www.linkedin.com/in/ngsanogo/)
 
@@ -23,18 +21,18 @@ Open to discussions about **data engineering**, **data platform architecture**, 
 
 ---
 
-## What I can help with
+## Ce sur quoi je peux vous aider
 
-- Data platform architecture
-- Integration pipelines and ETL workflows
-- Data quality and governance
-- Cross-functional data project leadership
-- Team enablement and training
+- Architecture de plateformes data
+- Pipelines d'intégration et workflows ETL
+- Qualité et gouvernance des données
+- Pilotage de projets data transverses
+- Montée en compétences et formation des équipes
 
 ---
 
-## Practical info
+## Infos pratiques
 
-**Location** — Paris area, France
+**Localisation** — Région parisienne, France
 
-**Response time** — Within 48 hours
+**Délai de réponse** — Sous 48 heures

@@ -1,60 +1,60 @@
 ---
-title: About
-description: "Senior Data Engineer with 8+ years of experience. Specialized in data platform architecture, data quality, and cross-functional project leadership."
+title: À propos
+description: "Data Engineer Senior avec 8 ans d'expérience. Spécialisé en architecture de plateformes data, qualité des données et pilotage de projets transverses."
 cta:
-  - label: "View full resume"
+  - label: "Voir le CV"
     url: "/cv/"
     style: primary
-  - label: "Get in touch →"
+  - label: "Me contacter →"
     url: "/contact/"
     style: secondary
 ---
 
-Since 2017, I've been building data systems in contexts where **reliability is non-negotiable**: healthcare, medical research, patient data.
+Depuis 2017, je construis des systèmes data dans des contextes où **la fiabilité n'est pas négociable** : santé, recherche médicale, données patients.
 
-This experience taught me one thing: the value of a data platform is not measured by its technical complexity, but by the **trust** you can place in its data.
-
----
-
-## My approach
-
-I'm not an engineer who just codes pipelines. I'm someone who **understands business needs**, proposes adapted solutions, and ensures they work in the long run.
-
-In practice, this means:
-
-- **Scope before building** — Understand the real problem, not the imagined one
-- **Favor simplicity** — A maintainable solution beats a technical feat
-- **Ensure quality** — Reliable, documented, actionable data
-- **Support teams** — Transfer knowledge, train, enable autonomy
+Cette expérience m'a appris une chose : la valeur d'une plateforme data ne se mesure pas à sa complexité technique, mais à la **confiance** qu'on peut accorder à ses données.
 
 ---
 
-## Background
+## Mon approche
 
-My career follows a common thread: transforming raw data into actionable insights, in environments where errors have consequences.
+Je ne suis pas un ingénieur qui code juste des pipelines. Je suis quelqu'un qui **comprend les besoins métier**, propose des solutions adaptées et s'assure qu'elles fonctionnent dans la durée.
 
-**2025 — Padoa** (Occupational Health SaaS)
-Client data migration, high-volume pipeline industrialization. Platform squad work, coordination with business and clients.
+En pratique :
+
+- **Cadrer avant de construire** — Comprendre le vrai problème, pas celui qu'on imagine
+- **Privilégier la simplicité** — Une solution maintenable vaut mieux qu'une prouesse technique
+- **Garantir la qualité** — Des données fiables, documentées, exploitables
+- **Accompagner les équipes** — Transférer les compétences, former, rendre autonome
+
+---
+
+## Parcours
+
+Mon parcours suit un fil conducteur : transformer des données brutes en informations exploitables, dans des environnements où l'erreur a des conséquences.
+
+**2025 — Padoa** (SaaS santé au travail)
+Migration de données clients, industrialisation de pipelines à fort volume. Travail en squad plateforme, coordination avec le métier et les clients.
 
 **2025 — Peasy** (EdTech)
-Built the complete data stack. Integration pipelines, CRM governance, automated dashboards.
+Construction de la stack data complète. Pipelines d'intégration, gouvernance CRM, dashboards automatisés.
 
-**2021-2025 — Institut Jérôme Lejeune** (Medical Research)
-3 years structuring data repositories for a research institute: patients, biological samples, research data. Data warehouse implementation, governance, support for medical and scientific teams.
+**2021-2025 — Institut Jérôme Lejeune** (Recherche médicale)
+3 ans à structurer les référentiels de données d'un institut de recherche : patients, échantillons biologiques, données de recherche. Mise en place du data warehouse, gouvernance, accompagnement des équipes médicales et scientifiques.
 
-**2017-2021 — AP-HP** (Public Hospital)
-4 years of clinical trial data management at France's largest hospital system. Database administration, report automation.
+**2017-2021 — AP-HP** (Hôpital public)
+4 ans de gestion de données d'essais cliniques au sein du plus grand système hospitalier de France. Administration de bases de données, automatisation de rapports.
 
 ---
 
-## Beliefs
+## Convictions
 
 > *Simple is better than complex. Readability counts.*
 
-These Zen of Python principles guide my work. I believe the best data systems are:
+Ces principes du Zen of Python guident mon travail. Les meilleurs systèmes data sont :
 
-- **Understandable** by those who use them
-- **Maintainable** by those who inherit them
-- **Reliable** for those who make decisions with them
+- **Compréhensibles** par ceux qui les utilisent
+- **Maintenables** par ceux qui en héritent
+- **Fiables** pour ceux qui prennent des décisions avec
 
-Tech hype doesn't interest me. What interests me is data that truly serves those who need it.
+Le buzz technologique ne m'intéresse pas. Ce qui m'intéresse, c'est la donnée qui sert vraiment ceux qui en ont besoin.

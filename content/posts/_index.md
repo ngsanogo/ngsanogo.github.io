@@ -1,5 +1,5 @@
 ---
 title: Blog
 url: /blog/
-description: "Data Engineering Blog - Articles on ETL, Python, SQL, data pipelines and best practices."
+description: "Blog data engineering — Articles sur l'ETL, Python, SQL, les pipelines data et les bonnes pratiques."
 ---

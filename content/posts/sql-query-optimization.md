@@ -1,308 +1,157 @@
 ---
-title: "SQL Query Optimization: Make Queries Fast"
+title: "Optimisation SQL : rendre ses requêtes rapides"
 slug: sql-query-optimization
-date: 2026-02-17
-description: "How to optimize slow SQL queries. Understand indexes, execution plans, and common performance patterns. Make your queries 10x faster."
-categories: ["sql"]
-tags: ["sql", "performance", "optimization", "postgresql"]
+date: 2026-02-08
+description: "Les techniques d'optimisation SQL essentielles. EXPLAIN, index, réécriture de requêtes et bonnes pratiques pour des performances en production."
+categories: ["data-engineering", "sql"]
+tags: ["sql", "optimisation", "performance", "index", "explain"]
 draft: false
 ---
 
-## Why Queries Are Slow
+## Pourquoi optimiser
 
-Your query returns correct results but takes 10 minutes. Users complain. Dashboards timeout. Pipelines miss SLAs.
+Une requête lente, c'est un pipeline qui dépasse sa fenêtre, un dashboard qui timeout, un utilisateur qui attend. L'optimisation SQL n'est pas un luxe — c'est une compétence de base du data engineer.
 
-Slow queries have predictable causes:
-- No indexes
-- Wrong indexes
-- Full table scans
-- Inefficient joins
-- Bad query structure
+## EXPLAIN : comprendre avant d'optimiser
 
-Fix these, queries get fast.
-
-## Finding Slow Queries
-
-PostgreSQL tracks query performance:
-
-```sql
--- Enable query stats (run once)
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-
--- Find slowest queries
-SELECT
-    query,
-    calls,
-    total_exec_time,
-    mean_exec_time,
-    max_exec_time
-FROM pg_stat_statements
-ORDER BY total_exec_time DESC
-LIMIT 10;
-```
-
-This shows what's actually slow in production.
-
-## Understanding EXPLAIN
-
-`EXPLAIN` shows how PostgreSQL executes your query:
+Avant de toucher à quoi que ce soit, regarder le plan d'exécution :
 
 ```sql
 EXPLAIN ANALYZE
-SELECT *
-FROM orders
-WHERE customer_id = 123;
-```
-
-Output:
-
-```
-Seq Scan on orders  (cost=0.00..1000.00 rows=50 width=100) (actual time=0.05..150.23 rows=47 loops=1)
-  Filter: (customer_id = 123)
-  Rows Removed by Filter: 999953
-Planning Time: 0.134 ms
-Execution Time: 150.421 ms
-```
-
-**Seq Scan** = full table scan = slow.
-
-**Rows Removed by Filter: 999953** = checked 1 million rows, kept 47 = very inefficient.
-
-## Fix 1: Add an Index
-
-```sql
-CREATE INDEX idx_orders_customer_id ON orders(customer_id);
-```
-
-Run `EXPLAIN ANALYZE` again:
-
-```
-Index Scan using idx_orders_customer_id on orders  (cost=0.42..8.44 rows=50 width=100) (actual time=0.03..0.15 rows=47 loops=1)
-  Index Cond: (customer_id = 123)
-Planning Time: 0.085 ms
-Execution Time: 0.189 ms
-```
-
-**Index Scan** = used index = fast.
-**Execution Time: 0.189 ms** (was 150ms) = 800x faster.
-
-## Common Slow Query Patterns
-
-### Pattern 1: Missing Index on Foreign Key
-
-```sql
--- Slow: No index on customer_id
-SELECT o.*, c.name
+SELECT o.order_id, c.name, o.amount
 FROM orders o
-JOIN customers c ON o.customer_id = c.id
-WHERE c.country = 'France';
+JOIN customers c ON o.customer_id = c.customer_id
+WHERE o.order_date >= '2024-01-01';
 ```
 
-Fix:
+Ce qu'il faut lire :
+- **Seq Scan** : scan complet de la table → souvent le problème
+- **Index Scan** : utilise un index → rapide
+- **Hash Join** vs **Nested Loop** : le moteur choisit la stratégie de jointure
+- **Actual time** : le temps réel (pas l'estimation)
+
+**Règle** : toujours `EXPLAIN ANALYZE` avant et après une optimisation. Sans mesure, pas d'optimisation.
+
+## Les index
+
+### Créer les bons index
 
 ```sql
-CREATE INDEX idx_orders_customer_id ON orders(customer_id);
-CREATE INDEX idx_customers_country ON customers(country);
+-- Index simple sur une colonne filtrée
+CREATE INDEX idx_orders_date ON orders (order_date);
+
+-- Index composite pour les requêtes avec plusieurs filtres
+CREATE INDEX idx_orders_date_customer ON orders (order_date, customer_id);
+
+-- Index partiel pour les cas fréquents
+CREATE INDEX idx_orders_recent ON orders (order_date)
+WHERE order_date >= '2024-01-01';
 ```
 
-### Pattern 2: Function on Indexed Column
+### Quand indexer
+
+- Colonnes dans les `WHERE`
+- Colonnes dans les `JOIN ... ON`
+- Colonnes dans les `ORDER BY`
+- Colonnes avec haute cardinalité (beaucoup de valeurs distinctes)
+
+### Quand ne pas indexer
+
+- Tables petites (< 10 000 lignes) : le scan séquentiel est plus rapide
+- Colonnes avec peu de valeurs distinctes (booléens, statuts)
+- Tables avec beaucoup d'écritures : chaque index ralentit les INSERT/UPDATE
+
+## Réécrire les requêtes
+
+### Éviter le SELECT *
 
 ```sql
--- Slow: Function prevents index usage
-SELECT * FROM orders WHERE DATE(created_at) = '2025-01-01';
+-- Mauvais : charge toutes les colonnes
+SELECT * FROM orders WHERE order_date = '2024-01-15';
+
+-- Bon : charge uniquement ce qui est nécessaire
+SELECT order_id, customer_id, amount FROM orders WHERE order_date = '2024-01-15';
 ```
 
-This full scans `orders` even if `created_at` is indexed.
-
-Fix:
+### Remplacer les sous-requêtes corrélées
 
 ```sql
--- Fast: Range comparison uses index
+-- Lent : sous-requête exécutée pour chaque ligne
+SELECT o.order_id, o.amount,
+    (SELECT name FROM customers c WHERE c.customer_id = o.customer_id)
+FROM orders o;
+
+-- Rapide : une seule jointure
+SELECT o.order_id, o.amount, c.name
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id;
+```
+
+### Utiliser EXISTS au lieu de IN
+
+```sql
+-- Lent sur les grandes listes
 SELECT * FROM orders
-WHERE created_at >= '2025-01-01'
-  AND created_at < '2025-01-02';
+WHERE customer_id IN (SELECT customer_id FROM vip_customers);
+
+-- Plus efficace
+SELECT * FROM orders o
+WHERE EXISTS (
+    SELECT 1 FROM vip_customers v
+    WHERE v.customer_id = o.customer_id
+);
 ```
 
-### Pattern 3: OR Conditions
+### Éviter les fonctions sur les colonnes indexées
 
 ```sql
--- Slow: OR prevents efficient index usage
-SELECT * FROM orders WHERE customer_id = 123 OR status = 'pending';
+-- L'index sur order_date n'est PAS utilisé
+SELECT * FROM orders WHERE EXTRACT(YEAR FROM order_date) = 2024;
+
+-- L'index est utilisé
+SELECT * FROM orders WHERE order_date >= '2024-01-01' AND order_date < '2025-01-01';
 ```
 
-Fix (if both WHERE clauses are selective):
+## Partitionnement
+
+Pour les très grandes tables, le partitionnement divise les données en segments physiques.
 
 ```sql
--- Fast: UNION uses indexes on both
-SELECT * FROM orders WHERE customer_id = 123
-UNION
-SELECT * FROM orders WHERE status = 'pending';
+CREATE TABLE orders (
+    order_id   BIGINT,
+    order_date DATE,
+    amount     NUMERIC(10,2)
+) PARTITION BY RANGE (order_date);
+
+CREATE TABLE orders_2024_q1 PARTITION OF orders
+    FOR VALUES FROM ('2024-01-01') TO ('2024-04-01');
 ```
 
-### Pattern 4: SELECT *
+Le moteur ne scanne que les partitions pertinentes. Sur une table de 500M de lignes, ça change tout.
+
+## Les statistiques
+
+PostgreSQL s'appuie sur les statistiques pour choisir son plan d'exécution :
 
 ```sql
--- Slow: Fetches unnecessary columns
-SELECT * FROM orders WHERE customer_id = 123;
-```
-
-Fix:
-
-```sql
--- Fast: Only fetch needed columns
-SELECT id, amount, created_at FROM orders WHERE customer_id = 123;
-```
-
-Smaller result sets = less memory = faster.
-
-### Pattern 5: Implicit Type Conversion
-
-```sql
--- Slow: customer_id is INTEGER but '123' is string
-SELECT * FROM orders WHERE customer_id = '123';
-```
-
-PostgreSQL converts customer_id to text for each row = index not used.
-
-Fix:
-
-```sql
--- Fast: Correct type
-SELECT * FROM orders WHERE customer_id = 123;
-```
-
-## Composite Indexes
-
-When you filter on multiple columns:
-
-```sql
--- Query filters on customer_id AND created_at
-SELECT * FROM orders
-WHERE customer_id = 123
-  AND created_at >= '2025-01-01';
-```
-
-Single column indexes help, but composite index is better:
-
-```sql
-CREATE INDEX idx_orders_customer_created ON orders(customer_id, created_at);
-```
-
-Order matters: `(customer_id, created_at)` works for:
-- `WHERE customer_id = X`
-- `WHERE customer_id = X AND created_at > Y`
-
-But not for:
-- `WHERE created_at > Y` (doesn't use index)
-
-## Indexes Have a Cost
-
-**Benefits:**
-- Fast SELECT queries
-- Fast JOIN operations
-
-**Costs:**
-- INSERT/UPDATE/DELETE slower (index must update)
-- Disk space
-- Maintenance overhead
-
-Don't index everything. Index what your queries actually use.
-
-## Analyzing a Slow Query: Real Example
-
-```sql
--- This query takes 30 seconds
-SELECT
-    c.name,
-    COUNT(o.id) as order_count,
-    SUM(o.amount) as total_spent
-FROM customers c
-LEFT JOIN orders o ON c.id = o.customer_id
-WHERE c.country = 'France'
-  AND o.created_at >= '2025-01-01'
-GROUP BY c.id, c.name;
-```
-
-Run `EXPLAIN ANALYZE`:
-
-```
-Hash Join  (cost=50000.00..100000.00 rows=10000 width=50) (actual time=5000.23..29542.18 rows=8437 loops=1)
-  Hash Cond: (o.customer_id = c.id)
-  -> Seq Scan on orders o  (cost=0.00..45000.00 rows=500000 width=20) (actual time=0.05..15234.12 rows=500000 loops=1)
-       Filter: (created_at >= '2025-01-01'::date)
-       Rows Removed by Filter: 1500000
-  -> Hash  (cost=35000.00..35000.00 rows=5000 width=30) (actual time=250.45..250.45 rows=4972 loops=1)
-       -> Seq Scan on customers c  (cost=0.00..35000.00 rows=5000 width=30) (actual time=0.12..245.67 rows=4972 loops=1)
-             Filter: (country = 'France'::text)
-             Rows Removed by Filter: 95028
-```
-
-**Problems:**
-1. Seq Scan on orders (checked 2M rows, kept 500k)
-2. Seq Scan on customers (checked 100k rows, kept 5k)
-
-**Fix:**
-
-```sql
-CREATE INDEX idx_customers_country ON customers(country);
-CREATE INDEX idx_orders_customer_created ON orders(customer_id, created_at);
-```
-
-Run again:
-
-```
-Hash Join  (cost=250.00..1500.00 rows=10000 width=50) (actual time=12.34..145.67 rows=8437 loops=1)
-  Hash Cond: (o.customer_id = c.id)
-  -> Index Scan using idx_orders_customer_created on orders o  (cost=0.56..1200.00 rows=500000 width=20) (actual time=0.03..98.45 rows=500000 loops=1)
-       Index Cond: (created_at >= '2025-01-01'::date)
-  -> Hash  (cost=200.00..200.00 rows=5000 width=30) (actual time=2.45..2.45 rows=4972 loops=1)
-       -> Index Scan using idx_customers_country on customers c  (cost=0.42..200.00 rows=5000 width=30) (actual time=0.02..1.89 rows=4972 loops=1)
-             Index Cond: (country = 'France'::text)
-```
-
-**Result: 29s → 0.15s** (200x faster).
-
-## When to Analyze
-
-```sql
--- After bulk inserts/updates, update statistics
 ANALYZE orders;
 ```
 
-PostgreSQL's query planner uses statistics to choose execution plans. Outdated statistics = bad plans = slow queries.
+Après un chargement massif, toujours lancer `ANALYZE`. Sinon le planificateur travaille avec des stats obsolètes et choisit de mauvais plans.
 
-## Partitioning Large Tables
+## Checklist d'optimisation
 
-For tables with time-series data:
+1. `EXPLAIN ANALYZE` sur la requête lente
+2. Identifier les Seq Scan sur les grandes tables
+3. Créer les index manquants
+4. Réécrire les sous-requêtes en jointures
+5. Vérifier que les filtres n'appliquent pas de fonction sur les colonnes indexées
+6. `ANALYZE` après les chargements massifs
+7. Partitionner si la table dépasse 100M de lignes
 
-```sql
--- Partition by month
-CREATE TABLE orders (
-    id SERIAL,
-    customer_id INTEGER,
-    amount DECIMAL,
-    created_at DATE
-) PARTITION BY RANGE (created_at);
+## En résumé
 
-CREATE TABLE orders_2025_01 PARTITION OF orders
-    FOR VALUES FROM ('2025-01-01') TO ('2025-02-01');
-
-CREATE TABLE orders_2025_02 PARTITION OF orders
-    FOR VALUES FROM ('2025-02-01') TO ('2025-03-01');
-```
-
-Queries filtering on `created_at` only scan relevant partitions.
-
-## Summary
-
-Slow queries have predictable fixes:
-1. Find slow queries (`pg_stat_statements`)
-2. Understand execution plan (`EXPLAIN ANALYZE`)
-3. Add indexes where full scans happen
-4. Rewrite queries to use indexes
-5. Update statistics (`ANALYZE`)
-
-Most queries can be 10-100x faster with correct indexes.
+L'optimisation SQL commence par EXPLAIN ANALYZE, passe par les index et la réécriture de requêtes, et finit par le partitionnement pour les très gros volumes. Mesurez, corrigez, re-mesurez.
 
 ---
 

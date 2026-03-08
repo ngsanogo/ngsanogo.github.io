@@ -1,96 +1,94 @@
 ---
-title: Projects
-description: "Data engineering projects: data warehouses, ETL pipelines, industrialization, data governance. Healthcare, research, and SaaS contexts."
+title: Projets
+description: "Projets data engineering : data warehouses, pipelines ETL, industrialisation, gouvernance des données. Contextes santé, recherche et SaaS."
 cta:
-  - label: "Discuss a project"
+  - label: "Discuter d'un projet"
     url: "/contact/"
     style: primary
-  - label: "View my resume →"
+  - label: "Voir mon CV →"
     url: "/cv/"
     style: secondary
 ---
 
-These projects illustrate how I work: understand the context, structure progressively, and deliver solutions that last.
+Ces projets illustrent ma façon de travailler : comprendre le contexte, structurer progressivement et livrer des solutions qui durent.
 
 ---
 
-## Data Integration Platform Industrialization
+## Industrialisation d'une plateforme d'intégration de données
 
-**Sector**: Occupational Health (SaaS)
+**Secteur** : Santé au travail (SaaS)
 
-A SaaS company needed to integrate data from new clients across varied sources, with high volumes and strict reliability requirements.
+Une entreprise SaaS devait intégrer les données de nouveaux clients provenant de sources variées, avec des volumes importants et des exigences de fiabilité strictes.
 
-**What I did:**
-- Client data migration from heterogeneous systems
-- Pipeline redesign to industrialize the integration process
-- Reliable ingestion implementation for high volumes
-- Technical decision-making with the platform squad
-- Coordination with business stakeholders and clients
+**Ce que j'ai fait :**
+- Migration de données clients depuis des systèmes hétérogènes
+- Refonte des pipelines pour industrialiser le processus d'intégration
+- Mise en place d'une ingestion fiable pour les forts volumes
+- Prise de décisions techniques avec la squad plateforme
+- Coordination avec les parties prenantes métier et les clients
 
-**Stack**: Python, SQL, Airflow
-
----
-
-## EdTech Startup Data Structuring
-
-**Sector**: Educational Technology
-
-A growing company with data scattered across multiple tools, lacking consolidated vision or governance.
-
-**What I did:**
-- Database construction and optimization
-- Integration pipelines: cleaning, standardization, structuring
-- Data architecture contribution: modeling, business rules
-- CRM governance and process improvement
-- Automated dashboards for operational tracking
-- Team enablement for data tool adoption
-
-**Stack**: Python, SQL, MySQL, Looker Studio
+**Stack** : Python, SQL, Airflow
 
 ---
 
-## Medical Research Data Warehouse
+## Structuration data d'une startup EdTech
 
-**Sector**: Research Institute (Healthcare)
+**Secteur** : Technologie éducative
 
-A research institute with scattered data repositories: patients, biological samples, research data. Need to centralize, ensure reliability, and make data actionable for medical and scientific teams.
+Une entreprise en croissance avec des données dispersées dans plusieurs outils, sans vision consolidée ni gouvernance.
 
-**What I did:**
-- Existing repository diagnostic and action plan definition
-- Data warehouse design and implementation
-- ETL workflow development
-- Strategic data needs identification with leadership
-- Dashboards for medical teams and management
-- Data tool and practice governance leadership
-- Medical and scientific team support
+**Ce que j'ai fait :**
+- Construction et optimisation de bases de données
+- Pipelines d'intégration : nettoyage, normalisation, structuration
+- Contribution à l'architecture data : modélisation, règles métier
+- Gouvernance CRM et amélioration des processus
+- Dashboards automatisés pour le suivi opérationnel
+- Montée en compétences des équipes sur les outils data
 
-**Duration**: 3 years
-
-**Stack**: Python, R, SQL Server, PostgreSQL, Tableau, Power BI, Docker
+**Stack** : Python, SQL, MySQL, Looker Studio
 
 ---
 
-## Clinical Trial Data Management
+## Data warehouse pour la recherche médicale
 
-**Sector**: Public Hospital (AP-HP)
+**Secteur** : Institut de recherche (Santé)
 
-Clinical trial data management at France's largest hospital system, with strict regulatory requirements.
+Un institut de recherche avec des référentiels de données dispersés : patients, échantillons biologiques, données de recherche. Besoin de centraliser, fiabiliser et rendre la donnée exploitable pour les équipes médicales et scientifiques.
 
-**What I did:**
-- Complete clinical trial data management ownership
-- Database administration
-- Report development and automation
+**Ce que j'ai fait :**
+- Diagnostic des référentiels existants et définition d'un plan d'action
+- Conception et mise en place du data warehouse
+- Développement des workflows ETL
+- Identification des besoins data stratégiques avec la direction
+- Dashboards pour les équipes médicales et la direction
+- Pilotage de la gouvernance des outils et pratiques data
+- Accompagnement des équipes médicales et scientifiques
 
-**Duration**: 4 years
+**Durée** : 3 ans
 
-**Stack**: R, MySQL
+**Stack** : Python, R, SQL Server, PostgreSQL, Tableau, Power BI, Docker
 
 ---
 
-## What these projects have in common
+## Gestion de données d'essais cliniques
 
-They share key characteristics:
+**Secteur** : Hôpital public (AP-HP)
 
-- **Demanding contexts** — Healthcare, medical research, sensitive data
-- **Long-term vision** — Multi-year engagements, not one-off interventions
-- **Beyond technical** — Business coordination, governance, team support
+Gestion de données d'essais cliniques au sein du plus grand système hospitalier de France, avec des exigences réglementaires strictes.
+
+**Ce que j'ai fait :**
+- Prise en charge complète de la gestion de données d'essais cliniques
+- Administration de bases de données
+- Développement et automatisation de rapports
+
+**Durée** : 4 ans
+
+**Stack** : R, MySQL
+
+---
+
+## Ce que ces projets ont en commun
+
+- **Des contextes exigeants** — Santé, recherche médicale, données sensibles
+- **Une vision long terme** — Des engagements pluriannuels, pas des interventions ponctuelles
+- **Au-delà de la technique** — Coordination métier, gouvernance, accompagnement d'équipes
