@@ -39,11 +39,11 @@ dev: check-docker
 
 build: check-docker
 	@echo "🔨 Building site..."
-	@docker compose --profile build run --rm build
+	@docker compose --profile build run --rm -T build
 
 test: check-docker
 	@echo "🧪 Running tests..."
-	@docker compose --profile test run --rm test
+	@docker compose --profile test run --rm -T test
 
 test-content: check-docker
 	@echo "🧾 Validating content front matter..."
@@ -62,7 +62,7 @@ clean:
 
 lint: check-docker
 	@echo "🔍 Running linters in Docker..."
-	@docker compose --profile lint run --rm lint
+	@docker compose --profile lint run --rm -T lint
 
 stop: check-docker
 	@echo "🛑 Stopping containers..."
