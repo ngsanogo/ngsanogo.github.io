@@ -90,12 +90,10 @@ make lint
 
 If all commands succeed, the environment is 100% reproducible.
 
-## CI/CD
+## CI
 
-GitHub Actions uses the same Docker workflow:
-- Lint: `docker compose --profile lint run --rm lint`
-- Build: `docker compose --profile build run --rm build`
-- Deploy: automated on push to `main`
+GitHub Actions runs a single `CI` workflow on push to `main`.
+It validates linting, front matter, and Hugo build output.
 
 ## Troubleshooting
 
