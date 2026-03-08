@@ -40,7 +40,7 @@ repos:
 
       - id: prettier
         name: prettier
-        entry: npx --yes prettier@3.8.1 --write
+        entry: prettier --write
         language: system
         types_or: [css, javascript, json, yaml]
         exclude: "^public/"
