@@ -38,31 +38,47 @@ Avant de coder, répondre à :
 - **Comment mesurer** le succès ? (adoption, impact business)
 - **Quelle fraîcheur** est nécessaire ? (temps réel, quotidien, hebdo)
 
-## Les 3 types de métriques de succès
+## Un exemple concret
 
-1. **Adoption** : combien de personnes l'utilisent ? (utilisateurs actifs par semaine)
-2. **Engagement** : à quelle fréquence ? (sessions, requêtes)
-3. **Impact** : est-ce que ça crée de la valeur ? (temps gagné, revenus, décisions améliorées)
+Contexte : une équipe commerciale demande "un dashboard des ventes".
 
-Sans ces métriques définies avant le développement, on ne peut pas savoir si le produit fonctionne.
+**Approche pipeline** : extraction des transactions, agrégation par jour, dashboard Metabase. Livré en 3 jours, jamais consulté.
 
-## Les anti-patterns courants
+**Approche product** : on s'assoit avec les commerciaux. Le vrai besoin : savoir chaque matin quels comptes sont en baisse pour prioriser les appels. Le livrable : un email automatique avec les 10 comptes à risque, trié par enjeu financier. Livré en 5 jours, utilisé tous les matins.
+
+La différence n'est pas technique. C'est la question de départ.
+
+## Les 3 métriques de succès
+
+1. **Adoption** : combien de personnes l'utilisent chaque semaine ?
+2. **Engagement** : à quelle fréquence reviennent-ils ?
+3. **Impact** : est-ce que ça change quelque chose ? (temps gagné, revenus, décisions améliorées)
+
+Sans ces métriques définies avant le développement, on ne peut pas savoir si le produit fonctionne. Et un produit sans mesure de succès est un projet sans fin.
+
+## Les anti-patterns
 
 - **Le shelfware** : construit sans utilisateur défini, jamais adopté
 - **Le dashboard de vanité** : joli mais personne ne prend de décision avec
 - **La sur-ingénierie** : architecture parfaite, mais le problème métier a changé entretemps
 - **Le data swamp** : tout centraliser sans réfléchir à qui consomme quoi
 
-## En pratique
+## Le cycle produit data
 
-Un bon data product suit ce cycle :
+En pratique, un bon data product suit ce cycle :
 1. Identifier un problème métier concret
 2. Définir l'utilisateur et ses critères de succès
-3. Livrer un MVP en 2-4 semaines
+3. Livrer un MVP en 2-4 semaines (pas 6 mois)
 4. Mesurer l'adoption
 5. Itérer ou pivoter
 
-Le data engineer qui adopte cette approche ne monte pas seulement en compétence technique. Il devient un interlocuteur stratégique pour les équipes métier.
+Le MVP n'a pas besoin d'être beau. Il a besoin de prouver que le besoin existe. Si personne ne l'utilise après 2 semaines, le problème n'est pas technique — c'est le cadrage.
+
+## Pourquoi ça change tout pour le data engineer
+
+Le data engineer qui adopte cette approche ne monte pas seulement en compétence technique. Il devient l'interlocuteur qui comprend le métier, propose des solutions pragmatiques et mesure leur impact.
+
+C'est la différence entre "j'ai livré un pipeline" et "j'ai résolu un problème business". La seconde phrase vaut plus en entretien, en mission freelance et en satisfaction personnelle.
 
 ---
 

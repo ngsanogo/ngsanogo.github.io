@@ -1,92 +1,106 @@
 ---
-title: Senior Data Engineer
-description: "Issa Sanogo's resume - Senior Data Engineer. 8+ years of experience in data platform architecture, data quality, and project leadership."
+title: Data Engineer Senior
+description: "CV d'Issa Sanogo — Data Engineer Senior. 8 ans d'expérience en architecture de plateformes data, qualité des données et pilotage de projets."
 cta:
-  - label: "Get in touch"
+  - label: "Me contacter"
     url: "/contact/"
     style: primary
-  - label: "View my work →"
+  - label: "Voir mes projets →"
     url: "/projects/"
     style: secondary
 ---
 
-<p class="cv-contact">Paris area, France · <a href="tel:+33651985279">Phone</a> · <a href="mailto:ngsanogo@proton.me">Mail</a> · <a href="https://www.linkedin.com/in/ngsanogo">LinkedIn</a> · <a href="https://github.com/ngsanogo">GitHub</a></p>
+<p class="cv-contact">Région parisienne, France · <a href="mailto:ngsanogo@proton.me">Email</a> · <a href="https://www.linkedin.com/in/ngsanogo">LinkedIn</a> · <a href="https://github.com/ngsanogo">GitHub</a></p>
 
 ---
 
-## Summary
+## Résumé
 
-Data Engineer with 8 years of experience, specialized in **data platform architecture** and **data quality**.
+Data Engineer avec 8 ans d'expérience, spécialisé en **architecture de plateformes data** et **qualité des données**.
 
-Accustomed to demanding contexts (healthcare, medical research), I scope business requirements, lead cross-functional projects, and guide teams toward reliable, actionable data solutions.
-
----
-
-## Experience
-
-**Data Engineer — Padoa** (Freelance)
-Paris · August 2025 – Present
-Occupational health SaaS company
-
-- Client data migration from various sources
-- Pipeline redesign and industrialization (high volumes)
-- Technical decision-making with the platform squad
-- Collaboration with business stakeholders and clients
-- Product database maintenance and evolution
-
-**Data Engineer — Peasy** (Freelance)
-Annecy · March 2025 – July 2025
-EdTech startup
-
-- Database construction and optimization
-- Integration pipeline implementation (cleaning, standardization, structuring)
-- Data architecture contribution: modeling, business rules, documentation
-- CRM governance and process improvement
-- Automated dashboard creation and team enablement
-
-**Data Engineer — Institut Jérôme Lejeune** (Permanent contract)
-Paris · October 2021 – January 2025 (3 years)
-Specialized medical research institute
-
-- Data repository diagnostic (patients, samples, research)
-- Data warehouse implementation and ETL workflow development
-- Strategic data needs identification
-- Dashboard design for medical teams and management
-- Data tool governance and evolution leadership
-- Medical and scientific team support
-
-**Data Manager — AP-HP** (Fixed-term contract)
-Boulogne-Billancourt · September 2017 – September 2021 (4 years)
-Paris public hospital system (largest in France)
-
-- Clinical trial data management
-- Database administration
-- Report development and automation
+Habitué aux contextes exigeants (santé, recherche médicale), je cadre les besoins métier, pilote des projets transverses et accompagne les équipes vers des solutions data fiables et exploitables.
 
 ---
 
-## Education
+## Expériences
 
-**Master's Degree — Applied Mathematics for Life Sciences**
-Université de Paris · 2016 – 2017
-*Applied mathematics, biostatistics, programming, databases*
+**Data Engineer** (Freelance) · Août 2025 – Aujourd'hui<br>
+Padoa<br>
+Paris
+
+- Migration de données clients depuis des sources variées
+- Refonte et industrialisation des pipelines
+- Prise de décisions techniques avec la squad plateforme
+- Collaboration avec les parties prenantes métier et les clients
+- Maintenance et évolution de la base de données produit
+
+**Data Engineer** (Freelance) · Mars 2025 – Juillet 2025<br>
+Peasy Anglais<br>
+Annecy<br>
+
+- Construction et optimisation de bases de données
+- Mise en place de pipelines d'intégration (nettoyage, normalisation, structuration)
+- Contribution à l'architecture data : modélisation, règles métier, documentation
+- Gouvernance CRM et amélioration des processus
+- Création de dashboards automatisés et montée en compétences des équipes
+
+**Data Engineer** (CDI) · Octobre 2021 – Janvier 2025 (3 ans)<br>
+Institut Jérôme Lejeune<br>
+Paris
+
+- Diagnostic des référentiels de données (patients, échantillons, recherche)
+- Mise en place du data warehouse et développement des workflows ETL
+- Identification des besoins data stratégiques
+- Conception de dashboards pour les équipes médicales et la direction
+- Pilotage de la gouvernance des outils et pratiques data
+- Accompagnement des équipes médicales et scientifiques
+
+**Data Manager** (CDD) · Septembre 2017 – Septembre 2021 (4 ans)<br>
+Assistance Publique - Hôpitaux de Paris (AP-HP)<br>
+Boulogne-Billancourt
+
+- Gestion de données d'essais cliniques
+- Administration de bases de données
+- Développement et automatisation de rapports
 
 ---
 
-## Skills
+## Formation
 
-**Languages** — Python, R, SQL
+**Master — Mathématiques Appliquées aux Sciences de la Vie** · 2016 – 2017<br>
+Université de Paris<br>
+*Mathématiques appliquées, biostatistique, programmation, bases de données*
 
-**Databases** — PostgreSQL, SQL Server, MySQL
+**Data Product Manager** · 2026<br>
+Liora (ex DataScientest)<br>
+*Data, IA, Product Management, Business Intelligence*
 
-**Orchestration** — Airflow, Docker, Git
-
-**Visualization** — Power BI, Tableau, Looker Studio
-
-**Project Management** — Jira, Confluence
+**Implémenter un Data Warehouse avec SQL Server** · 2022<br>
+ib Cegos<br>
+*Data Engineering, Data Warehousing, Database Management*
 
 ---
 
-## Languages
+## Compétences
 
-French (native) · English (professional)
+**Langages** — Python, R, SQL
+
+**Bases de données** — PostgreSQL, SQL Server, MySQL, MongoDB
+
+**Ops** — Airflow, Dagster, Docker, Git
+
+**Cloud** — AWS, GCP, Azure
+
+**Visualisation** — Power BI, Tableau, Looker Studio, Superset
+
+**Gestion de projet** — Jira, Confluence, Notion
+
+**Méthodologie** — Agile, Cascade, Cycle en V
+
+---
+
+## Langues
+
+Français (natif)
+
+Anglais (professionnel)

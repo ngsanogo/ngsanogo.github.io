@@ -1,102 +1,65 @@
 ---
-title: "How to Build a Data Warehouse From Scratch: Lessons From Institut Jerome Lejeune"
+title: "Construire un data warehouse de zéro : retour d'expérience à l'Institut Jérôme Lejeune"
 slug: how-to-build-a-data-warehouse-from-scratch-jerome-lejeune
 date: 2026-02-16
-description: "A practical blueprint to build a data warehouse from zero in a healthcare research context: scope, model, pipelines, governance, and adoption."
+description: "Un plan concret pour construire un data warehouse de zéro en contexte recherche médicale : cadrage, modélisation, pipelines, gouvernance et adoption."
 categories: ["architecture"]
-tags: ["data-warehouse", "healthcare", "modeling", "governance", "etl"]
+tags: ["data-warehouse", "santé", "modélisation", "gouvernance", "etl"]
 draft: false
 ---
 
-## Context
+## Le vrai défi
 
-Building a warehouse from scratch is not a tooling challenge first. It is a sequencing challenge: decide what to do now, what to postpone, and what to standardize early.
+Construire un warehouse de zéro n'est pas d'abord un problème d'outillage. C'est un problème de séquencement : décider quoi faire maintenant, quoi reporter, et quoi standardiser dès le départ.
 
-In a healthcare research context, this is even more critical because quality, lineage, and trust must be built from day one.
+En contexte recherche médicale, c'est encore plus critique : la qualité, la traçabilité et la confiance doivent être intégrées dès le premier jour.
 
-## Step 1: Start With Use Cases, Not Tables
+## Phase 1 — Cadrage (semaines 1-4)
 
-Before architecture diagrams, define 3 to 5 high-value decisions the warehouse must support.
+Avant d'écrire du code, comprendre :
+- quels systèmes sources existent (DPI, LIMS, fichiers Excel, bases Access)
+- qui a besoin de quoi (médecins, chercheurs, direction)
+- quelles décisions seront prises avec ces données
 
-Example use cases:
-- cohort follow-up indicators
-- sample lifecycle tracking
-- operational reporting for management
+Le livrable : un périmètre clair avec 3-5 cas d'usage prioritaires.
 
-Each use case should include:
-- business owner
-- decision frequency
-- acceptable data freshness
-- minimum quality threshold
+## Phase 2 — Modélisation (semaines 3-6)
 
-## Step 2: Design a First Stable Core Model
+Commencer par un schéma en étoile sur le premier cas d'usage :
+- une table de faits (consultations, échantillons, prescriptions)
+- les dimensions associées (patient, médecin, date, protocole)
 
-Avoid trying to model everything. Start with a small star schema:
-- 2-3 fact tables
-- shared dimensions (patient, time, site, study)
-- explicit surrogate key strategy
+Ne pas modéliser tout le SI. Commencer petit, livrer, itérer.
 
-Rules that reduced rework:
-- keep raw ingestion immutable
-- separate staging, core, and marts
-- centralize business definitions in one metrics layer
+## Phase 3 — Pipelines (semaines 5-10)
 
-## Step 3: Build Data Contracts at Source Boundaries
+Architecture en 3 couches :
+- **raw** : copie brute des sources, sans transformation
+- **staging** : nettoyage, renommage, typage
+- **marts** : logique métier, tables consommables
 
-Most warehouse failures start at the source interface.
+Chaque couche est idempotente. On peut tout relancer sans risque de duplication.
 
-For each source, define:
-- ownership
-- extraction cadence
-- schema expectations
-- critical fields and allowed nullability
-- incident escalation path
+## Phase 4 — Gouvernance (continu)
 
-Then enforce contracts with automated checks before merge into core models.
+Dès le premier pipeline en production :
+- documentation des tables et des colonnes (dbt docs ou simple fichier)
+- tests de qualité automatisés (unicité, non-null, cohérence)
+- lignage : savoir d'où vient chaque donnée
 
-## Step 4: Implement Incremental Pipelines Early
+En contexte médical, la traçabilité n'est pas optionnelle. C'est une exigence réglementaire.
 
-Do not wait for scale pain.
+## Phase 5 — Adoption (continu)
 
-Use:
-- watermark-based loads
-- idempotent upserts
-- replay capability for backfills
-- quarantine tables for invalid records
+Le meilleur warehouse du monde est inutile si personne ne l'utilise.
 
-This keeps daily operations predictable and avoids brittle full-refresh patterns.
+- Former les équipes métier à interroger les marts (SQL basique ou BI)
+- Livrer des dashboards concrets dès les premières semaines
+- Intégrer les retours métier dans les itérations suivantes
 
-## Step 5: Make Governance Lightweight but Real
+## Ce que cette expérience m'a appris
 
-Governance does not need heavy committees.
-
-Minimum viable governance:
-- data dictionary with owner per key metric
-- lineage for every published dashboard KPI
-- access policy by role
-- monthly review of top quality incidents
-
-## Step 6: Drive Adoption as a Product
-
-A warehouse with no adoption is just storage.
-
-What helped:
-- publish one "gold" dataset per use case
-- onboard analysts with examples, not documentation only
-- retire legacy reports gradually with migration support
-
-## Common Mistakes to Avoid
-
-- Modeling for hypothetical future needs
-- Mixing business logic across SQL, BI, and scripts
-- Ignoring semantic consistency between teams
-- Shipping dashboards before quality observability exists
-
-## Final Takeaway
-
-A successful warehouse is the result of disciplined sequencing: high-value scope, stable core model, automated quality controls, and continuous adoption work.
-
-Start narrow, publish reliable data fast, and expand only after trust is established.
+Le séquencement compte plus que la techno. Les quick wins construisent la confiance. Et en santé, la gouvernance n'est pas un luxe — c'est la condition pour que le projet survive.
 
 ---
 

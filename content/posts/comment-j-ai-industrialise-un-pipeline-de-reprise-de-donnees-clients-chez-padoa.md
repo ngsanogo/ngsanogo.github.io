@@ -1,92 +1,92 @@
 ---
-title: "Comment j'ai industrialise un pipeline de reprise de donnees clients chez Padoa"
+title: "Comment j'ai industrialisé un pipeline de reprise de données clients chez Padoa"
 slug: comment-j-ai-industrialise-un-pipeline-de-reprise-de-donnees-clients-chez-padoa
 date: 2025-12-15
-description: "Retour d'experience sur l'industrialisation d'un pipeline de reprise de donnees clients: standardisation, qualite, observabilite et reduction du lead time."
+description: "Retour d'expérience sur l'industrialisation d'un pipeline de reprise de données clients : standardisation, qualité, observabilité et réduction du lead time."
 categories: ["product-data"]
-tags: ["pipeline", "industrialization", "data-migration", "airflow", "quality"]
+tags: ["pipeline", "industrialisation", "data-migration", "airflow", "qualité"]
 draft: false
 ---
 
 ## Le contexte
 
-Le besoin etait simple a formuler, difficile a executer: integrer des donnees clients heterogenes, avec du volume, sans casser la qualite et sans ralentir les equipes.
+Le besoin était simple à formuler, difficile à exécuter : intégrer des données clients hétérogènes, avec du volume, sans casser la qualité et sans ralentir les équipes.
 
-Au debut, chaque reprise ressemblait a un projet unique. Resultat:
-- beaucoup de specifique
-- peu de reutilisation
-- des delais difficiles a predire
+Au début, chaque reprise ressemblait à un projet unique. Résultat :
+- beaucoup de spécifique
+- peu de réutilisation
+- des délais difficiles à prédire
 
 ## Objectif
 
-Passer d'une logique "projet par projet" a une logique "plateforme de reprise".
+Passer d'une logique "projet par projet" à une logique "plateforme de reprise".
 
-Concretement:
-- reduire le lead time d'integration
-- fiabiliser les controles qualite
+Concrètement :
+- réduire le lead time d'intégration
+- fiabiliser les contrôles qualité
 - rendre le process observable de bout en bout
 
-## Ce qui a ete mis en place
+## Ce qui a été mis en place
 
-### 1. Un contrat d'entree standard
+### 1. Un contrat d'entrée standard
 
-Pour chaque source client:
-- schema attendu
-- regles de mapping
-- regles de validation critiques
+Pour chaque source client :
+- schéma attendu
+- règles de mapping
+- règles de validation critiques
 - format de livraison et cadence
 
-Chaque exception devait etre explicite, jamais implicite.
+Chaque exception devait être explicite, jamais implicite.
 
-### 2. Une pipeline en couches
+### 2. Un pipeline en couches
 
-- **Ingestion**: chargement brut et tracabilite
-- **Standardisation**: renommage, types, normalisation
-- **Validation**: controles metier et techniques
-- **Publication**: jeux de donnees "ready-to-use"
+- **Ingestion** : chargement brut et traçabilité
+- **Standardisation** : renommage, types, normalisation
+- **Validation** : contrôles métier et techniques
+- **Publication** : jeux de données "ready-to-use"
 
-Cette separation a simplifie le debug et la maintenance.
+Cette séparation a simplifié le debug et la maintenance.
 
-### 3. Qualite explicite avec quarantine
+### 3. Qualité explicite avec quarantaine
 
-Au lieu de rejeter silencieusement:
-- les enregistrements invalides sont mis en quarantine
+Au lieu de rejeter silencieusement :
+- les enregistrements invalides sont mis en quarantaine
 - chaque rejet a un code raison
-- un rapport qualite est partage avec les equipes concernees
+- un rapport qualité est partagé avec les équipes concernées
 
-Effet direct: les corrections source ont accelere.
+Effet direct : les corrections source ont accéléré.
 
-### 4. Orchestration et observabilite
+### 4. Orchestration et observabilité
 
-Avec Airflow:
+Avec Airflow :
 - runs idempotents
-- retries cibles
-- relance partielle par etape
-- metriques de run (duree, volume, taux d'erreur)
+- retries ciblés
+- relance partielle par étape
+- métriques de run (durée, volume, taux d'erreur)
 
-On est passe d'une supervision reactive a une supervision proactive.
+On est passé d'une supervision réactive à une supervision proactive.
 
-## Resultats observes
+## Résultats observés
 
-- lead time moyen d'integration en baisse
-- moins d'incidents de qualite en production
-- meilleure previsibilite pour les equipes metier
-- moins de dette operationnelle cote engineering
+- lead time moyen d'intégration en baisse
+- moins d'incidents de qualité en production
+- meilleure prévisibilité pour les équipes métier
+- moins de dette opérationnelle côté engineering
 
 ## Ce que je referais pareil
 
-- commencer par les contrats de donnees
-- imposer les reason codes des le depart
-- prioriser la visibilite operationnelle avant les optimisations fines
+- commencer par les contrats de données
+- imposer les reason codes dès le départ
+- prioriser la visibilité opérationnelle avant les optimisations fines
 
-## Ce que je ferais plus tot
+## Ce que je ferais plus tôt
 
 - outiller encore plus vite le feedback vers les sources
-- formaliser plus tot une librairie de mappings reutilisables
+- formaliser plus tôt une librairie de mappings réutilisables
 
-## Final Takeaway
+## En résumé
 
-Industrialiser une reprise de donnees, ce n'est pas seulement automatiser. C'est standardiser les interfaces, rendre la qualite mesurable, et rendre le run operationnellement fiable a grande echelle.
+Industrialiser une reprise de données, ce n'est pas seulement automatiser. C'est standardiser les interfaces, rendre la qualité mesurable, et rendre le run opérationnellement fiable à grande échelle.
 
 ---
 

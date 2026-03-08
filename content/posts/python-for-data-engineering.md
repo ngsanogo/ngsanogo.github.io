@@ -1,440 +1,170 @@
 ---
-title: "Python: The Language Data Engineers Use Daily"
+title: "Python pour le data engineering"
 slug: python-for-data-engineering
-date: 2024-11-27
-description: "Python for data engineering: Why it's essential, what you use it for, and how to get started."
-categories: ["python"]
-tags: ["python", "programming", "data-engineering"]
+date: 2026-01-18
+description: "Les bases de Python pour le data engineering. Les librairies essentielles, les patterns courants et les bonnes pratiques pour écrire des pipelines solides."
+categories: ["data-engineering", "programming"]
+tags: ["python", "pipelines", "programmation", "bonnes-pratiques"]
 draft: false
 ---
-## What is Python?
 
-Python is a programming language. Easy to read. Powerful. Flexible.
+## Pourquoi Python
 
-Data engineers use it for everything: extract data, transform data, build pipelines, automate tasks, analyze data.
+Python est le langage dominant en data engineering. Pas parce qu'il est le plus rapide — mais parce que l'écosystème est imbattable :
+- Pandas, Polars, DuckDB pour la manipulation de données
+- SQLAlchemy, psycopg2 pour les bases de données
+- Airflow, Prefect, Dagster pour l'orchestration
+- boto3 pour AWS, google-cloud pour GCP
 
-## Why Python for Data Engineering?
+Et surtout : tout le monde le lit. Le code Python d'un pipeline est compréhensible par un analyste, un data scientist ou un DevOps.
 
-**Readable**: Code looks like English.
+## Les fondamentaux à maîtriser
 
-```python
-customers = get_data_from_database('customers')
-cleaned = remove_duplicates(customers)
-save_to_warehouse(cleaned)
-```
-
-Compare to other languages: Much more complicated.
-
-**Libraries**: Thousands of libraries for data work.
-
-- Pandas: Manipulate data
-- NumPy: Math and arrays
-- SQLAlchemy: Talk to databases
-- Requests: Get data from APIs
-- PySpark: Big data processing
-
-**Community**: Huge Python community. Answers to every question exist.
-
-**Industry standard**: Most data teams use Python for pipelines, scripting, and tooling.
-
-## What You Do With Python in Data Engineering
-
-**Extract data**:
+### Lire et écrire des fichiers
 
 ```python
-import requests
-response = requests.get('https://api.example.com/customers')
-data = response.json()
+import csv
+import json
+
+# CSV
+with open("orders.csv") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        print(row["order_id"], row["amount"])
+
+# JSON
+with open("config.json") as f:
+    config = json.load(f)
 ```
 
-**Transform data**:
+### Manipuler des données avec Pandas
 
 ```python
 import pandas as pd
 
-df = pd.read_csv('orders.csv')
-df['total'] = df['quantity'] * df['price']
-df['month'] = pd.to_datetime(df['date']).dt.strftime('%Y-%m')
+df = pd.read_csv("orders.csv")
+df["amount"] = df["amount"].astype(float)
+df = df[df["amount"] > 0]
+df = df.drop_duplicates(subset=["order_id"])
+
+df.to_parquet("orders_clean.parquet", index=False)
 ```
 
-**Load data**:
+**Attention** : Pandas charge tout en mémoire. Pour les gros fichiers (> 1 Go), préférer Polars ou DuckDB.
+
+### Polars : l'alternative rapide
 
 ```python
-from sqlalchemy import create_engine
+import polars as pl
 
-engine = create_engine('postgresql://user:pass@localhost/mydb')
-df.to_sql('orders_processed', engine, if_exists='append')
+df = pl.read_csv("orders.csv")
+df = df.filter(pl.col("amount") > 0).unique(subset=["order_id"])
+df.write_parquet("orders_clean.parquet")
 ```
 
-**Automate tasks**:
+Polars est plus rapide que Pandas sur les gros volumes, avec une API plus stricte.
+
+## Se connecter aux bases de données
 
 ```python
-import schedule
-import time
+import psycopg2
 
-def run_pipeline():
-    extract()
-    transform()
-    load()
+conn = psycopg2.connect(
+    host="localhost",
+    database="analytics",
+    user="etl_user",
+    password="secret"  # En prod : variable d'environnement
+)
 
-schedule.every().day.at("2:00").do(run_pipeline)
+with conn.cursor() as cur:
+    cur.execute("SELECT * FROM orders WHERE order_date = %s", ("2024-01-15",))
+    rows = cur.fetchall()
 
-while True:
-    schedule.run_pending()
-    time.sleep(60)
+conn.close()
 ```
 
-**Build pipelines**:
+**Règle absolue** : requêtes paramétrées (`%s`), jamais de f-string avec du SQL. C'est la porte ouverte aux injections.
+
+## Interagir avec le cloud
 
 ```python
-from airflow import DAG
-from airflow.operators.python import PythonOperator
+import boto3
 
-# Define workflow
-extract >> transform >> load
+s3 = boto3.client("s3")
+
+# Upload
+s3.upload_file("orders.parquet", "data-lake", "landing/orders/2024-01-15.parquet")
+
+# Download
+s3.download_file("data-lake", "staging/orders/latest.parquet", "local_orders.parquet")
 ```
 
-## Core Python Libraries for Data Engineers
+Le même pattern fonctionne avec GCS (google-cloud-storage) et Azure Blob (azure-storage-blob).
 
-**Pandas**: Manipulate data like spreadsheets.
+## Les patterns courants
 
-```python
-import pandas as pd
-
-df = pd.read_csv('data.csv')
-df['total'] = df['qty'] * df['price']
-df.groupby('category').sum()
-```
-
-**SQLAlchemy**: Talk to any database.
+### Extract-Transform-Load
 
 ```python
-from sqlalchemy import create_engine, text
-
-engine = create_engine('postgresql://user:pass@localhost/mydb')
-result = engine.execute(text('SELECT * FROM customers'))
-```
-
-**Requests**: Get data from APIs.
-
-```python
-import requests
-
-response = requests.get('https://api.github.com/users/github')
-data = response.json()
-```
-
-**PySpark**: Process large data.
-
-```python
-from pyspark.sql import SparkSession
-
-spark = SparkSession.builder.appName('myapp').getOrCreate()
-df = spark.read.csv('large_file.csv')
-df.filter(df.age > 25).show()
-```
-
-**Logging**: Track what your code does.
-
-```python
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-logger.info('Starting pipeline')
-logger.error('Pipeline failed')
-```
-
-## Real Example: Extract, Transform, Load in Python
-
-```python
-import pandas as pd
-from sqlalchemy import create_engine
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 def extract():
-    """Extract data from database"""
-    logger.info('Extracting data...')
-    engine = create_engine('postgresql://user:pass@localhost/mydb')
-    df = pd.read_sql('SELECT * FROM raw_orders', engine)
-    return df
+    return pd.read_sql("SELECT * FROM source_orders", source_conn)
 
 def transform(df):
-    """Clean and transform data"""
-    logger.info('Transforming data...')
-
-    # Remove duplicates
-    df = df.drop_duplicates()
-
-    # Remove nulls
-    df = df.dropna()
-
-    # Calculate totals
-    df['total'] = df['quantity'] * df['price']
-
-    # Add month
-    df['month'] = pd.to_datetime(df['date']).dt.strftime('%Y-%m')
-
+    df = df.drop_duplicates(subset=["order_id"])
+    df["amount_eur"] = df["amount_usd"] * 0.92
     return df
 
 def load(df):
-    """Load data to warehouse"""
-    logger.info('Loading data...')
-    engine = create_engine('postgresql://user:pass@localhost/warehouse')
-    df.to_sql('orders_processed', engine, if_exists='append', index=False)
-    logger.info(f'Loaded {len(df)} rows')
+    df.to_sql("orders", target_conn, if_exists="replace", index=False)
 
-# Run pipeline
-try:
-    df = extract()
-    df = transform(df)
-    load(df)
-    logger.info('Pipeline completed successfully')
-except Exception as e:
-    logger.error(f'Pipeline failed: {e}')
+# Pipeline
+raw = extract()
+clean = transform(raw)
+load(clean)
 ```
 
-## Python Best Practices
-
-**Use virtual environments**:
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-**Keep requirements.txt**:
-
-```
-pandas==2.1.0
-sqlalchemy==2.0.23
-requests==2.31.0
-python-dotenv==1.0.0
-```
-
-**Use logging, not print()**:
+### Gestion des erreurs
 
 ```python
-# Bad
-print("Data loaded")
-
-# Good
-logger.info("Data loaded")
-```
-
-**Handle errors**:
-
-```python
-try:
-    connect_to_database()
-except ConnectionError:
-    logger.error("Database connection failed")
-    raise
-```
-
-**Use functions**:
-
-```python
-# Bad
-data = read_csv('file.csv')
-data['total'] = data['qty'] * data['price']
-data.to_csv('output.csv')
-
-# Good
-def process_orders(input_file, output_file):
-    data = read_csv(input_file)
-    data['total'] = data['qty'] * data['price']
-    data.to_csv(output_file)
-
-process_orders('input.csv', 'output.csv')
-```
-
-**Use environment variables for secrets**:
-
-```python
-import os
-
-db_password = os.getenv('DB_PASSWORD')
-api_key = os.getenv('API_KEY')
-```
-
-## Common Python Patterns in Data Engineering
-
-**Reading from multiple sources**:
-
-```python
-df1 = pd.read_csv('file1.csv')
-df2 = pd.read_sql('SELECT * FROM table2', engine)
-df3 = requests.get('https://api.example.com/data').json()
-
-combined = pd.concat([df1, df2, df3])
-```
-
-**Batch processing**:
-
-```python
-for chunk in pd.read_csv('large_file.csv', chunksize=1000):
-    process_chunk(chunk)
-```
-
-**Error handling**:
-
-```python
-def get_data_safely(query):
-    try:
-        return pd.read_sql(query, engine)
-    except Exception as e:
-        logger.error(f'Query failed: {e}')
-        return None
-```
-
-**Parallel processing**:
-
-```python
-from concurrent.futures import ThreadPoolExecutor
-
-with ThreadPoolExecutor(max_workers=4) as executor:
-    results = executor.map(process_item, items)
-```
-
-## Python vs Other Languages for Data Engineering
-
-**Python**: Readable, lots of libraries, easy to learn. Best for most data work.
-
-**Scala**: Faster for big data. More complex. Used with Spark.
-
-**SQL**: Essential. But limited (transformation only). Always paired with Python.
-
-**R**: Good for statistics. Less used in production. More academic.
-
-**Java**: Complex. Only for specific systems. Not recommended.
-
-For data engineering: Python is the right choice.
-
-## Getting Started with Python
-
-**Install Python 3.11**:
-
-```bash
-# Download from python.org
-python --version
-```
-
-**Create project**:
-
-```bash
-mkdir my_project
-cd my_project
-python -m venv venv
-source venv/bin/activate
-```
-
-**Install libraries**:
-
-```bash
-pip install pandas sqlalchemy requests
-```
-
-**Write simple script**:
-
-```python
-import pandas as pd
-
-df = pd.read_csv('data.csv')
-print(f"Loaded {len(df)} rows")
-print(df.head())
-```
-
-**Run it**:
-
-```bash
-python script.py
-```
-
-That's it. You're doing Python data engineering.
-
-## The Python Ecosystem
-
-**Development**: Write code
-
-- VS Code, PyCharm
-
-**Testing**: Verify code works
-
-- pytest, unittest
-
-**Documentation**: Explain code
-
-- docstrings, markdown
-
-**Packaging**: Share code
-
-- pip, setuptools
-
-**CI/CD**: Automate deployment
-
-- GitHub Actions, Jenkins
-
-These tools make Python professional and reliable.
-
-## Real Example: Daily Pipeline in Python
-
-```python
-#!/usr/bin/env python3
-"""Daily ETL pipeline"""
-
 import logging
-import pandas as pd
-from datetime import datetime
-from sqlalchemy import create_engine
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
 logger = logging.getLogger(__name__)
 
-def main():
-    """Main pipeline"""
-    logger.info('Pipeline started')
-
-    # Extract
-    engine = create_engine('postgresql://user:pass@localhost/mydb')
-    df = pd.read_sql(
-        'SELECT * FROM orders WHERE created_at > NOW() - INTERVAL 1 DAY',
-        engine
-    )
-    logger.info(f'Extracted {len(df)} rows')
-
-    # Transform
-    df['total'] = df['quantity'] * df['price']
-    df['date'] = pd.to_datetime(df['created_at']).dt.date
-
-    # Load
-    warehouse = create_engine('postgresql://user:pass@localhost/warehouse')
-    df.to_sql('daily_orders', warehouse, if_exists='append', index=False)
-    logger.info(f'Loaded {len(df)} rows to warehouse')
-
-    logger.info('Pipeline completed')
-
-if __name__ == '__main__':
-    main()
+def safe_extract(source):
+    try:
+        df = pd.read_sql(f"SELECT * FROM {source}", conn)
+        logger.info(f"Extracted {len(df)} rows from {source}")
+        return df
+    except Exception as e:
+        logger.error(f"Failed to extract from {source}: {e}")
+        raise
 ```
 
-Schedule this to run daily with Airflow or cron. Done.
+Toujours logger avant de lever l'exception. En production, c'est le log qui permet de diagnostiquer.
 
-## Bottom Line
+## Les librairies essentielles
 
-Python is the language data engineers use every day.
+| Librairie | Usage |
+|---|---|
+| pandas / polars | Manipulation de données |
+| psycopg2 / sqlalchemy | Connexion PostgreSQL |
+| boto3 | AWS (S3, Glue, etc.) |
+| requests | Appels API HTTP |
+| python-dotenv | Variables d'environnement |
+| pydantic | Validation de schémas |
+| pytest | Tests unitaires |
 
-Master Python basics. Learn libraries (pandas, SQLAlchemy, requests). Write clean code.
+## Bonnes pratiques
 
-You'll be valuable to any data team.
+1. **Environnements virtuels** : toujours `python -m venv .venv` avant d'installer quoi que ce soit
+2. **Requirements épinglés** : `pip freeze > requirements.txt` avec des versions fixes
+3. **Pas de credentials dans le code** : `os.environ["DB_PASSWORD"]`, jamais en dur
+4. **Type hints** : `def extract(table: str) -> pd.DataFrame:` — ça documente le code gratuitement
+5. **Fonctions courtes** : une fonction = une responsabilité
+
+## En résumé
+
+Python pour le data engineering, c'est avant tout Pandas/Polars pour les données, psycopg2/SQLAlchemy pour les bases, et boto3 pour le cloud. Maîtrisez ces briques, écrivez du code propre et testable, et vos pipelines tiendront en production.
 
 ---
 

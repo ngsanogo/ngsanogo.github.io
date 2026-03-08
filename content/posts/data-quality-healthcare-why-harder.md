@@ -1,106 +1,75 @@
 ---
-title: "Data Quality in Healthcare: Why It Is Harder Than Anywhere Else"
+title: "Qualité des données en santé : pourquoi c'est plus difficile qu'ailleurs"
 slug: data-quality-healthcare-why-harder
 date: 2026-03-02
-description: "Healthcare data quality is uniquely difficult: multiple systems, strict regulation, and high clinical risk. A practical framework to make it reliable."
+description: "La qualité des données en santé est un défi unique : systèmes fragmentés, réglementation stricte, risque clinique. Un cadre pratique pour la fiabiliser."
 categories: ["data-quality"]
-tags: ["healthcare", "data-quality", "data-governance", "pipelines"]
+tags: ["santé", "qualité-données", "gouvernance", "pipelines"]
 draft: false
 ---
 
-## The Short Answer
+## Ce qui rend la santé différente
 
-Healthcare data quality is harder because mistakes are not only expensive, they can affect care decisions. On top of that, data is fragmented across many systems, standards are unevenly applied, and regulations constrain how data can be accessed, shared, and corrected.
+En santé, une erreur de données n'est pas juste un dashboard faux. C'est potentiellement une décision clinique affectée. Le niveau d'exigence n'est pas le même que dans le e-commerce ou le marketing.
 
-## Why Healthcare Is Different
+Trois facteurs rendent le sujet plus complexe :
 
-### 1. The Same Patient Exists in Many Systems
+### 1. Fragmentation des systèmes
 
-A single patient can appear in:
-- EHR
-- lab systems
-- radiology
-- billing
-- appointment tools
-- research databases
+Les données vivent dans des dizaines de systèmes : DPI (dossier patient informatisé), LIMS (labo), imagerie, pharmacie, RH. Chacun a son propre schéma, ses propres identifiants, ses propres conventions.
 
-Identifiers are often inconsistent. You get duplicates, near-duplicates, and missing links. A simple join becomes a patient matching problem.
+Résultat : des doublons patients, des identifiants qui ne matchent pas, des données incomplètes à chaque interface.
 
-### 2. Data Is Created by Many Actors, Under Pressure
+### 2. Réglementation stricte
 
-Doctors, nurses, admin teams, and external labs all produce data with different goals and time constraints. Variation is normal.
+RGPD, hébergement HDS, consentement patient, traçabilité des accès. Chaque manipulation de données doit être justifiable et auditable. On ne peut pas simplement "corriger" une donnée sans trace.
 
-Common issues:
-- free text instead of structured fields
-- delayed updates
-- local naming conventions
-- missing context around events
+### 3. Risque clinique
 
-### 3. Regulation Adds Real Constraints
+Un montant de facture erroné se corrige. Un résultat de labo mal rattaché à un patient peut avoir des conséquences graves. La tolérance à l'erreur est quasi nulle sur certains flux.
 
-GDPR, local health regulations, and internal compliance rules are mandatory. You cannot "just centralize everything" without controls.
+## Cadre pratique
 
-This impacts:
-- lineage and audit trails
-- right to access and correction
-- retention and deletion policies
-- role-based access at row/field level
+### Classifier les flux par criticité
 
-### 4. Clinical Meaning Is Contextual
+Tous les flux data n'ont pas le même niveau de risque. Distinguer :
+- **Critique** : données patients, résultats cliniques, prescriptions
+- **Important** : données de recherche, échantillons biologiques
+- **Standard** : données RH, finances, reporting opérationnel
 
-A value can be technically valid but clinically misleading. Example: a blood result without unit normalization or collection timestamp is dangerous for analysis.
+La rigueur des contrôles qualité doit suivre cette classification.
 
-## A Practical Quality Framework
+### Contrats de données à chaque interface
 
-Use 5 quality layers, in this order:
+Entre chaque système source et la plateforme data, un contrat explicite :
+- schéma attendu
+- règles de validation
+- format d'identifiant patient
+- fréquence de livraison
 
-1. **Identity**: patient matching quality, duplicate rate, survivorship rules
-2. **Structure**: schema validity, required fields, data types
-3. **Semantics**: coding systems and mappings (ICD, LOINC, local codes)
-4. **Temporal consistency**: event ordering, timezone normalization, late-arriving data
-5. **Clinical fitness**: does the dataset answer the intended clinical/business question safely?
+Toute déviation déclenche une alerte, pas un chargement silencieux.
 
-## Metrics That Matter
+### Quarantaine avant publication
 
-Track a small set weekly:
-- patient duplicate rate
-- missing critical fields rate
-- coding mapping coverage
-- late-arrival ratio by source
-- failed data quality checks by domain
-- time to detect and time to resolve incidents
+Les enregistrements qui échouent aux validations ne sont pas supprimés. Ils sont isolés en quarantaine avec un code raison. Les équipes métier peuvent les corriger à la source.
 
-## What Worked for Me in Practice
+### Lignage et audit
 
-In healthcare projects, quality improved when we stopped treating checks as a final QA step.
+Chaque donnée publiée doit pouvoir répondre à : d'où vient cette valeur, quand a-t-elle été chargée, par quel pipeline ?
 
-The effective pattern was:
-- define quality contracts with domain experts before pipeline build
-- codify checks in ingestion and transformation layers
-- quarantine bad records with explicit reason codes
-- publish a transparent quality scorecard to business teams
+Sans traçabilité, impossible de passer un audit ou de débugger un incident.
 
-## 30-Day Action Plan
+## Les erreurs classiques en santé
 
-Week 1:
-- choose one critical data flow
-- define 10 must-pass checks
+**Faire confiance au DPI.** Les systèmes sources hospitaliers ont souvent des problèmes de qualité. Ne jamais charger sans valider.
 
-Week 2:
-- implement automated validation + quarantine
-- add issue reason taxonomy
+**Ignorer les doublons patients.** L'identité patient est le problème numéro un. Investir dans le matching et la déduplication dès le départ.
 
-Week 3:
-- add dashboard for quality KPIs
-- agree ownership and SLA for incidents
+**Construire sans les métiers.** En santé, le data engineer seul ne peut pas définir les règles de qualité. Impliquer médecins, biologistes, pharmaciens dans la définition des contrôles.
 
-Week 4:
-- run a retrospective on top recurring issues
-- harden source contracts and mapping tables
+## En résumé
 
-## Final Takeaway
-
-Healthcare data quality is hard because the system is complex and the stakes are high. But it is manageable with explicit contracts, observable checks, and shared ownership between engineering and clinical/business teams.
+La qualité des données en santé exige plus de rigueur, plus de traçabilité et plus de collaboration avec les métiers. Le cadre technique (tests, quarantaine, lignage) est le même qu'ailleurs — mais le niveau d'exigence et les conséquences d'un échec sont d'un autre ordre.
 
 ---
 

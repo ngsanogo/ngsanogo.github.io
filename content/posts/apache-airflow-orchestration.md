@@ -1,207 +1,88 @@
 ---
-title: "Apache Airflow: Orchestrate Your Data Pipelines"
+title: "Apache Airflow : orchestrer ses pipelines data"
 slug: apache-airflow-orchestration
 date: 2024-12-03
-description: "Apache Airflow explained: How data engineers schedule and monitor data pipelines at scale."
+description: "Comment Airflow planifie et supervise vos pipelines data. Les concepts clés, les pièges courants et les bonnes pratiques pour l'utiliser efficacement."
 categories: ["tools"]
 tags: ["airflow", "orchestration", "data-pipelines", "data-engineering"]
 draft: false
 ---
-## What is Apache Airflow?
 
-Airflow schedules and monitors your data pipelines.
+## Ce que fait Airflow
 
-You tell it: "Run this pipeline daily at 2 AM. If it fails, retry 3 times. Alert me if it still fails."
+Airflow planifie et supervise vos pipelines data. Vous lui dites : "lance ce pipeline tous les jours à 2h du matin, retry 3 fois en cas d'échec, alerte-moi si ça échoue toujours." Airflow gère le reste.
 
-Airflow handles everything else.
+Ce n'est pas un outil de traitement de données. C'est un orchestrateur : il déclenche, enchaîne et surveille des tâches.
 
-## The Problem It Solves
+## Les concepts essentiels
 
-Manual execution fails. You forget to run things. You run them twice. You can't see what's happening.
+### DAG (Directed Acyclic Graph)
 
-Airflow automates and visualizes your entire workflow.
-
-## Key Concepts
-
-**DAG (Directed Acyclic Graph)**: Your workflow definition. It's code that describes what runs when.
-
-**Task**: A single step in your DAG. Could be: run SQL query, call API, move files, send email.
-
-**Operator**: The type of task. BashOperator runs bash commands. PythonOperator runs Python functions. PostgresOperator runs SQL.
-
-**Schedule**: When your DAG runs. Daily. Hourly. Every Monday at 9 AM. Whatever you need.
-
-## Simple DAG Example
+Un DAG décrit un workflow : quelles tâches exécuter, dans quel ordre, avec quelles dépendances.
 
 ```python
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
 
-def extract():
-    print("Extracting data...")
-
-def transform():
-    print("Transforming data...")
-
-def load():
-    print("Loading data...")
-
-with DAG(
-    dag_id="simple_etl",
-    start_date=datetime(2024, 1, 1),
-    schedule="@daily",
-    catchup=False
-) as dag:
-
-    extract_task = PythonOperator(
-        task_id="extract",
-        python_callable=extract
-    )
-
-    transform_task = PythonOperator(
-        task_id="transform",
-        python_callable=transform
-    )
-
-    load_task = PythonOperator(
-        task_id="load",
-        python_callable=load
-    )
-
-    extract_task >> transform_task >> load_task
+with DAG("pipeline_ventes", start_date=datetime(2024, 1, 1), schedule="@daily"):
+    extract = PythonOperator(task_id="extract", python_callable=extract_data)
+    transform = PythonOperator(task_id="transform", python_callable=transform_data)
+    load = PythonOperator(task_id="load", python_callable=load_data)
+    extract >> transform >> load
 ```
 
-This DAG runs daily. Extract first. Then transform. Then load.
+### Operators
 
-## The Airflow UI
+Les opérateurs définissent ce qu'une tâche fait concrètement :
+- `PythonOperator` : exécuter une fonction Python
+- `BashOperator` : lancer une commande shell
+- `SqlOperator` : exécuter une requête SQL
 
-Airflow provides a web interface. You can:
+### Schedule
 
-- See all your DAGs
-- Check run history
-- View logs for each task
-- Manually trigger runs
-- See task dependencies visually
+Airflow propose des presets (`@daily`, `@hourly`) ou des expressions cron pour contrôler la fréquence d'exécution.
 
-This visibility is valuable. You know exactly what ran, when, and if it succeeded.
+## Les pièges courants
 
-## When to Use Airflow
+**Trop de logique dans les DAGs.** Le DAG doit orchestrer, pas transformer. Gardez la logique métier dans des modules Python séparés.
 
-**Good for:**
-- Scheduled batch pipelines
-- Multi-step workflows
-- Complex dependencies
-- When you need monitoring and alerting
+**Des DAGs monolithiques.** Un DAG de 50 tâches est ingérable. Découpez par domaine métier.
 
-**Not ideal for:**
-- Real-time streaming (use Kafka instead)
-- Simple one-off scripts
-- Very small projects
+**Ignorer l'idempotence.** Si un task échoue et qu'on le relance, le résultat doit être identique. Utilisez des `MERGE` ou `INSERT OVERWRITE`, pas des `INSERT INTO`.
 
-## Installation
+**Pas de monitoring.** Airflow fournit des alertes email, des SLA, et une UI de suivi. Utilisez-les.
 
-```bash
-pip install apache-airflow
+## Quand utiliser Airflow
 
-# Initialize database
-airflow db init
+Airflow est le bon choix quand :
+- vous avez des workflows avec dépendances entre tâches
+- vous avez besoin de planification, retry et alertes
+- vos pipelines tournent en batch (pas en streaming)
 
-# Create admin user
-airflow users create \
-    --username admin \
-    --password admin \
-    --firstname Admin \
-    --lastname User \
-    --role Admin \
-    --email admin@example.com
+Pour du streaming temps réel, regardez Kafka ou Flink. Pour des workflows simples sans dépendances, un cron suffit.
 
-# Start webserver
-airflow webserver --port 8080
+## Structure recommandée
 
-# Start scheduler (in another terminal)
-airflow scheduler
+```text
+dags/
+  pipeline_ventes.py
+  pipeline_clients.py
+plugins/
+  extractors/
+  transformers/
+  loaders/
 ```
 
-## Common Patterns
+Séparez l'orchestration (DAGs) de la logique métier (plugins/modules).
 
-**Branching**: Run different tasks based on conditions.
+## En résumé
 
-**Sensors**: Wait for something to happen (file arrives, API responds).
+Airflow est l'outil standard d'orchestration data. Sa force : la planification, le monitoring et la gestion des dépendances. Sa faiblesse : la courbe d'apprentissage et la tentation d'y mettre trop de logique.
 
-**XCom**: Pass data between tasks.
+Gardez vos DAGs simples. Mettez la logique métier dans des modules Python séparés, testables indépendamment. Un DAG doit se lire comme une table des matières, pas comme un roman.
 
-**Pools**: Limit concurrent task execution.
-
-**Variables**: Store configuration values.
-
-## Real-World DAG
-
-```python
-from airflow import DAG
-from airflow.operators.python import PythonOperator
-from airflow.providers.postgres.operators.postgres import PostgresOperator
-from airflow.operators.email import EmailOperator
-from datetime import datetime, timedelta
-
-default_args = {
-    "owner": "data-team",
-    "retries": 3,
-    "retry_delay": timedelta(minutes=5),
-    "email_on_failure": True,
-    "email": ["alerts@company.com"]
-}
-
-with DAG(
-    dag_id="sales_report",
-    default_args=default_args,
-    start_date=datetime(2024, 1, 1),
-    schedule="0 6 * * *",  # Every day at 6 AM
-    catchup=False
-) as dag:
-
-    extract_sales = PostgresOperator(
-        task_id="extract_sales",
-        postgres_conn_id="sales_db",
-        sql="SELECT * FROM sales WHERE date = '{{ ds }}'"
-    )
-
-    calculate_metrics = PythonOperator(
-        task_id="calculate_metrics",
-        python_callable=calculate_daily_metrics
-    )
-
-    send_report = EmailOperator(
-        task_id="send_report",
-        to="manager@company.com",
-        subject="Daily Sales Report {{ ds }}",
-        html_content="See attached report."
-    )
-
-    extract_sales >> calculate_metrics >> send_report
-```
-
-This DAG extracts sales data, calculates metrics, sends email report. Daily at 6 AM. Retries on failure. Alerts on persistent failure.
-
-## Best Practices
-
-**Keep DAGs simple**: One DAG, one purpose. Don't build mega-DAGs.
-
-**Idempotent tasks**: Running twice should produce the same result.
-
-**Use connections**: Don't hardcode credentials in DAGs.
-
-**Test locally**: Validate DAG syntax before deploying.
-
-**Monitor**: Check the Airflow UI regularly. Set up alerts.
-
-## Summary
-
-Airflow orchestrates data pipelines. You define workflows as code. Airflow schedules, executes, and monitors them.
-
-It's complex to set up. But for production data pipelines, it's essential.
-
-Start simple. One DAG. Few tasks. Expand as needed.
+Si vous démarrez : un DAG, 3 tâches, un schedule quotidien. Itérez à partir de là.
 
 ---
 

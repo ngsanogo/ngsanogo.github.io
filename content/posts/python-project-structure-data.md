@@ -1,507 +1,196 @@
 ---
-title: "Python Project Structure for Data Pipelines"
+title: "Structurer un projet Python pour les pipelines data"
 slug: python-project-structure-data
-date: 2026-02-18
-description: "How to organize a Python data pipeline project. Directory structure, configuration, testing, packaging. Build maintainable codebases."
-categories: ["python"]
-tags: ["python", "project-structure", "best-practices"]
+date: 2026-02-01
+description: "Comment organiser un projet Python data proprement. Arborescence, packaging, configuration et bonnes pratiques pour des projets maintenables."
+categories: ["data-engineering", "programming"]
+tags: ["python", "structure-projet", "bonnes-pratiques", "packaging"]
 draft: false
 ---
 
-## Why Structure Matters
+## Le problème
 
-Start with one Python script. Works fine.
+La plupart des projets data démarrent avec un seul script. Puis deux. Puis dix fichiers éparpillés dans un dossier sans structure.
 
-Add more features. The script grows to 500 lines. Then 1000. Then you can't find anything. Changing one thing breaks three others. New team members don't know where to look.
+Résultat : personne ne sait où est quoi, les imports cassent, et le déploiement est un cauchemar.
 
-Poor structure = unmaintainable code = wasted time.
+Structurer son projet dès le départ coûte 10 minutes. Ne pas le faire coûte des heures de dette technique.
 
-Good structure = self-documenting = easy to maintain.
-
-## The Problem: Single Script Pipelines
+## L'arborescence de référence
 
 ```
-pipeline.py  # 1200 lines of everything
-```
-
-Everything in one file:
-- Database connections
-- Extraction logic
-- Transformation functions
-- Loading functions
-- Configuration
-- Utility functions
-
-This doesn't scale.
-
-## Solution: Organized Project Structure
-
-```
-data-pipeline/
-├── README.md
-├── requirements.txt
-├── setup.py
-├── .env.example
-├── .gitignore
-├── config/
-│   ├── __init__.py
-│   └── settings.py
+my_pipeline/
 ├── src/
-│   ├── __init__.py
-│   ├── extract.py
-│   ├── transform.py
-│   ├── load.py
-│   └── utils.py
+│   └── my_pipeline/
+│       ├── __init__.py
+│       ├── extract.py
+│       ├── transform.py
+│       ├── load.py
+│       └── config.py
 ├── tests/
 │   ├── __init__.py
 │   ├── test_extract.py
 │   ├── test_transform.py
 │   └── test_load.py
-└── scripts/
-    ├── run_daily_pipeline.py
-    └── backfill_date_range.py
+├── dags/
+│   └── daily_orders.py
+├── pyproject.toml
+├── Makefile
+├── .env.example
+└── README.md
 ```
 
-Clear separation. Each file has one purpose.
+**Principe** : le code métier dans `src/`, les tests dans `tests/`, l'orchestration dans `dags/`.
 
-## config/settings.py: Configuration
+## Le pyproject.toml
+
+```toml
+[project]
+name = "my-pipeline"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0",
+    "psycopg2-binary>=2.9",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.1",
+]
+```
+
+Installer le projet en mode éditable :
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+```
+
+Avec `-e`, les modifications du code sont immédiatement disponibles sans réinstallation.
+
+## La configuration
+
+Jamais de credentials en dur. Toujours des variables d'environnement.
 
 ```python
-"""
-Pipeline configuration.
-Load from environment variables.
-"""
-
+# src/my_pipeline/config.py
 import os
-from dataclasses import dataclass
+from dotenv import load_dotenv
 
-@dataclass
-class DatabaseConfig:
-    host: str
-    port: int
-    database: str
-    user: str
-    password: str
+load_dotenv()
 
-    @property
-    def connection_string(self) -> str:
-        return f"postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
-
-
-@dataclass
-class PipelineConfig:
-    source_db: DatabaseConfig
-    target_db: DatabaseConfig
-    batch_size: int
-    max_retries: int
-
-
-def load_config() -> PipelineConfig:
-    """Load configuration from environment variables."""
-
-    source_db = DatabaseConfig(
-        host=os.getenv('SOURCE_DB_HOST', 'localhost'),
-        port=int(os.getenv('SOURCE_DB_PORT', '5432')),
-        database=os.getenv('SOURCE_DB_NAME', 'production'),
-        user=os.getenv('SOURCE_DB_USER', 'user'),
-        password=os.getenv('SOURCE_DB_PASSWORD', '')
-    )
-
-    target_db = DatabaseConfig(
-        host=os.getenv('TARGET_DB_HOST', 'localhost'),
-        port=int(os.getenv('TARGET_DB_PORT', '5432')),
-        database=os.getenv('TARGET_DB_NAME', 'warehouse'),
-        user=os.getenv('TARGET_DB_USER', 'user'),
-        password=os.getenv('TARGET_DB_PASSWORD', '')
-    )
-
-    return PipelineConfig(
-        source_db=source_db,
-        target_db=target_db,
-        batch_size=int(os.getenv('BATCH_SIZE', '10000')),
-        max_retries=int(os.getenv('MAX_RETRIES', '3'))
-    )
+DB_HOST = os.environ["DB_HOST"]
+DB_NAME = os.environ["DB_NAME"]
+DB_USER = os.environ["DB_USER"]
+DB_PASSWORD = os.environ["DB_PASSWORD"]
+S3_BUCKET = os.environ.get("S3_BUCKET", "data-lake")
 ```
 
-Configuration separate from logic. Easy to change. No hardcoded values.
+Le fichier `.env.example` documente les variables attendues (sans les valeurs) :
 
-## src/extract.py: Extraction Logic
-
-```python
-"""
-Data extraction from source systems.
-"""
-
-import pandas as pd
-from sqlalchemy import create_engine, text
-from datetime import date
-import logging
-
-logger = logging.getLogger(__name__)
-
-
-def extract_orders(connection_string: str, process_date: date) -> pd.DataFrame:
-    """
-    Extract orders for a specific date.
-
-    Args:
-        connection_string: Database connection string
-        process_date: Date to extract
-
-    Returns:
-        DataFrame with orders
-    """
-    logger.info(f"Extracting orders for {process_date}")
-
-    engine = create_engine(connection_string)
-
-    query = text("""
-        SELECT
-            order_id,
-            customer_id,
-            product_id,
-            amount,
-            order_date,
-            status
-        FROM orders
-        WHERE DATE(order_date) = :process_date
-    """)
-
-    df = pd.read_sql(query, engine, params={'process_date': process_date})
-
-    logger.info(f"Extracted {len(df)} orders")
-
-    return df
+```
+DB_HOST=
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+S3_BUCKET=data-lake
 ```
 
-## src/transform.py: Transformation Logic
+`.env` est dans le `.gitignore`. Toujours.
+
+## Séparer extract / transform / load
 
 ```python
-"""
-Data transformations.
-"""
-
+# src/my_pipeline/extract.py
 import pandas as pd
-import logging
+from my_pipeline.config import DB_HOST, DB_NAME
 
-logger = logging.getLogger(__name__)
+def extract_orders(date: str) -> pd.DataFrame:
+    conn_string = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+    query = "SELECT * FROM orders WHERE order_date = %(date)s"
+    return pd.read_sql(query, conn_string, params={"date": date})
+```
 
+```python
+# src/my_pipeline/transform.py
+import pandas as pd
 
 def clean_orders(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Clean orders data.
-
-    - Remove duplicates
-    - Drop nulls in critical fields
-    - Standardize status values
-    """
-    logger.info(f"Cleaning {len(df)} orders")
-
-    # Remove duplicates
-    original_count = len(df)
-    df = df.drop_duplicates(subset=['order_id'])
-    duplicates_removed = original_count - len(df)
-    if duplicates_removed > 0:
-        logger.warning(f"Removed {duplicates_removed} duplicate orders")
-
-    # Drop nulls
-    df = df.dropna(subset=['order_id', 'customer_id', 'amount'])
-
-    # Standardize status
-    status_map = {
-        'complete': 'completed',
-        'done': 'completed',
-        'cancelled': 'canceled'
-    }
-    df['status'] = df['status'].str.lower().replace(status_map)
-
-    logger.info(f"Cleaned data: {len(df)} orders remaining")
-
-    return df
-
-
-def calculate_metrics(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Calculate derived metrics.
-    """
-    df = df.copy()
-
-    # Flag high-value orders
-    df['is_high_value'] = df['amount'] > 1000
-
-    # Extract date parts
-    df['order_month'] = pd.to_datetime(df['order_date']).dt.to_period('M')
-    df['order_year'] = pd.to_datetime(df['order_date']).dt.year
-
+    df = df.drop_duplicates(subset=["order_id"])
+    df = df[df["amount"] > 0]
+    df["amount"] = df["amount"].round(2)
     return df
 ```
 
-## src/load.py: Loading Logic
-
 ```python
-"""
-Data loading to target systems.
-"""
-
+# src/my_pipeline/load.py
 import pandas as pd
-from sqlalchemy import create_engine, text
-from datetime import date
-import logging
 
-logger = logging.getLogger(__name__)
-
-
-def load_orders(df: pd.DataFrame, connection_string: str, process_date: date):
-    """
-    Load orders to warehouse (idempotent).
-
-    Args:
-        df: DataFrame to load
-        connection_string: Target database connection
-        process_date: Date partition to load
-    """
-    logger.info(f"Loading {len(df)} orders for {process_date}")
-
-    engine = create_engine(connection_string)
-
-    with engine.begin() as conn:
-        # Delete existing data for this date (idempotent)
-        conn.execute(
-            text("DELETE FROM warehouse.orders WHERE DATE(order_date) = :date"),
-            {'date': process_date}
-        )
-        logger.info(f"Deleted existing orders for {process_date}")
-
-    # Insert new data
-    df.to_sql(
-        'orders',
-        engine,
-        schema='warehouse',
-        if_exists='append',
-        index=False
-    )
-
-    logger.info(f"Successfully loaded {len(df)} orders")
+def load_to_warehouse(df: pd.DataFrame, table: str):
+    df.to_sql(table, warehouse_conn, if_exists="replace", index=False)
 ```
 
-## scripts/run_daily_pipeline.py: Orchestration
+Chaque module a une responsabilité claire. Le transform ne connaît ni la source ni la destination.
+
+## Les tests
 
 ```python
-"""
-Run daily orders pipeline.
-"""
+# tests/test_transform.py
+import pandas as pd
+from my_pipeline.transform import clean_orders
 
-import sys
-import logging
-from datetime import datetime, timedelta
-from pathlib import Path
+def test_removes_duplicates():
+    df = pd.DataFrame({"order_id": [1, 1, 2], "amount": [10, 10, 20]})
+    result = clean_orders(df)
+    assert len(result) == 2
 
-# Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from src.extract import extract_orders
-from src.transform import clean_orders, calculate_metrics
-from src.load import load_orders
-from config.settings import load_config
-
-# Setup logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
-
-
-def run_pipeline(process_date: datetime.date):
-    """
-    Run the full pipeline for a specific date.
-    """
-    logger.info(f"Starting pipeline for {process_date}")
-
-    # Load config
-    config = load_config()
-
-    try:
-        # Extract
-        df = extract_orders(
-            config.source_db.connection_string,
-            process_date
-        )
-
-        # Transform
-        df = clean_orders(df)
-        df = calculate_metrics(df)
-
-        # Load
-        load_orders(
-            df,
-            config.target_db.connection_string,
-            process_date
-        )
-
-        logger.info(f"Pipeline completed successfully for {process_date}")
-
-    except Exception as e:
-        logger.error(f"Pipeline failed: {e}")
-        raise
-
-
-if __name__ == '__main__':
-    # Default: yesterday
-    process_date = datetime.now().date() - timedelta(days=1)
-
-    # Or from command line: python run_daily_pipeline.py 2025-01-15
-    if len(sys.argv) > 1:
-        process_date = datetime.strptime(sys.argv[1], '%Y-%m-%d').date()
-
-    run_pipeline(process_date)
+def test_removes_negative_amounts():
+    df = pd.DataFrame({"order_id": [1, 2], "amount": [10, -5]})
+    result = clean_orders(df)
+    assert len(result) == 1
 ```
-
-## scripts/backfill_date_range.py: Backfilling
-
-```python
-"""
-Backfill pipeline for a date range.
-"""
-
-import sys
-from datetime import datetime, timedelta
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from scripts.run_daily_pipeline import run_pipeline
-
-
-def backfill(start_date: datetime.date, end_date: datetime.date):
-    """Backfill pipeline for date range."""
-
-    current_date = start_date
-
-    while current_date <= end_date:
-        print(f"Processing {current_date}")
-
-        try:
-            run_pipeline(current_date)
-        except Exception as e:
-            print(f"Failed for {current_date}: {e}")
-            # Continue with next date
-
-        current_date += timedelta(days=1)
-
-
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print("Usage: python backfill_date_range.py START_DATE END_DATE")
-        print("Example: python backfill_date_range.py 2025-01-01 2025-01-31")
-        sys.exit(1)
-
-    start = datetime.strptime(sys.argv[1], '%Y-%m-%d').date()
-    end = datetime.strptime(sys.argv[2], '%Y-%m-%d').date()
-
-    backfill(start, end)
-```
-
-## requirements.txt
-
-```
-pandas==2.1.0
-sqlalchemy==2.0.23
-psycopg2-binary==2.9.9
-python-dotenv==1.0.0
-pytest==7.4.3
-```
-
-## .env.example
-
-```
-# Source database
-SOURCE_DB_HOST=localhost
-SOURCE_DB_PORT=5432
-SOURCE_DB_NAME=production
-SOURCE_DB_USER=user
-SOURCE_DB_PASSWORD=password
-
-# Target database
-TARGET_DB_HOST=localhost
-TARGET_DB_PORT=5432
-TARGET_DB_NAME=warehouse
-TARGET_DB_USER=user
-TARGET_DB_PASSWORD=password
-
-# Pipeline settings
-BATCH_SIZE=10000
-MAX_RETRIES=3
-```
-
-## README.md
-
-```markdown
-# Orders Data Pipeline
-
-Daily pipeline to extract, transform, and load orders data.
-
-## Setup
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-# Edit .env with your database credentials
+pytest tests/ -v
 ```
 
-## Usage
+**Règle** : tester le transform en priorité. C'est là que vivent les bugs métier.
 
-```bash
-# Run for yesterday
-python scripts/run_daily_pipeline.py
+## Le Makefile
 
-# Run for specific date
-python scripts/run_daily_pipeline.py 2025-01-15
+```makefile
+.PHONY: install test lint run
 
-# Backfill date range
-python scripts/backfill_date_range.py 2025-01-01 2025-01-31
+install:
+pip install -e ".[dev]"
+
+test:
+pytest tests/ -v
+
+lint:
+ruff check src/ tests/
+
+run:
+python -m my_pipeline.main
 ```
 
-## Testing
+Un `make test` vaut mieux qu'un README de 3 pages.
 
-```bash
-pytest tests/
-```
-```
+## Les erreurs classiques
 
-## Why This Structure Works
+- **Tout dans un seul fichier** : impossible à tester, impossible à relire
+- **Imports relatifs cassés** : résolu par le `pip install -e .`
+- **Credentials dans le repo** : fuite garantie
+- **Pas de tests** : refactoring impossible, régressions assurées
+- **Dépendances non épinglées** : `pip install pandas` installe une version différente chaque mois
 
-**Separation of concerns**: Extract, transform, load are independent.
+## En résumé
 
-**Testable**: Each module can be tested separately.
-
-**Reusable**: transform.py can be used by multiple pipelines.
-
-**Clear entry points**: scripts/ folder shows how to run things.
-
-**Configuration separate**: Change databases without touching code.
-
-**Scalable**: Add new pipelines without mess.
-
-## What to Avoid
-
-**Don't:** Mix configuration and logic.
-**Don't:** Put everything in `utils.py` (vague name = dumping ground).
-**Don't:** Create deep nested folders (flat is better).
-**Don't:** Name files `helper.py` or `common.py` (be specific).
-
-## Summary
-
-Structure your Python pipelines:
-- config/ for settings
-- src/ for pipeline logic
-- tests/ for tests
-- scripts/ for entry points
-
-Organized code = maintainable code = productive team.
+Un projet Python data bien structuré : `src/` pour le code, `tests/` pour les tests, `pyproject.toml` pour les dépendances, `.env` pour la config. C'est simple, mainstream, et ça tient dans le temps.
 
 ---
 
