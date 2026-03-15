@@ -27,9 +27,10 @@ buildFuture = false
       unsafe = true
 
 [params]
-  description = "Data Engineer Freelance — Architectures data fiables, qualité des données et pilotage de projets data"
+  description = "Data Engineer Freelance basé à Paris — Architectures data fiables, qualité des données et pilotage de projets data en Île-de-France et remote."
   author = "Issa Sanogo"
-  jobTitle = "Data Engineer Freelance"
+  jobTitle = "Data Engineer Freelance Paris"
+  location = "Paris, Île-de-France, France"
   email = "ngsanogo@proton.me"
   linkedin = "https://www.linkedin.com/in/ngsanogo/"
   github = "https://github.com/ngsanogo"
