@@ -1,4 +1,4 @@
-.PHONY: setup hooks dev build test test-content ci clean lint stop new-post help
+.PHONY: setup hooks dev build test test-content test-links ci clean lint stop new-post help
 
 check-docker:
 	@command -v docker >/dev/null 2>&1 || { \
@@ -15,6 +15,7 @@ help:
 	@echo "  make build  - Build the static site"
 	@echo "  make test   - Build and validate output"
 	@echo "  make test-content - Validate content front matter quality"
+	@echo "  make test-links - Validate links in generated HTML and Markdown"
 	@echo "  make ci     - Run local CI checks"
 	@echo "  make stop   - Stop all running containers"
 	@echo "  make clean  - Remove generated files"
@@ -49,11 +50,17 @@ test-content: check-docker
 	@echo "🧾 Validating content front matter..."
 	@docker compose --profile lint run --rm -T lint ./scripts/validate-frontmatter.sh
 
+test-links: check-docker
+	@echo "🔗 Validating links in Docker..."
+	@docker run --rm --entrypoint sh -v "$$PWD":/data lycheeverse/lychee:latest -lc 'find /data/content -name "*.md" -print0 | xargs -0 lychee --no-progress --accept "200..=299,429,999" --base-url https://ngsanogo.github.io --'
+	@docker run --rm --entrypoint sh -v "$$PWD":/data lycheeverse/lychee:latest -lc 'find /data/public -name "*.html" -print0 | xargs -0 lychee --offline --no-progress --base-url /data/public --'
+
 ci:
 	@echo "🧰 Running CI checks locally..."
 	@$(MAKE) lint
 	@$(MAKE) test
 	@$(MAKE) test-content
+	@$(MAKE) test-links
 
 clean:
 	@echo "🧹 Cleaning generated files..."
