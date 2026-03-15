@@ -48,7 +48,7 @@
 {"@context":"https://schema.org","@type":"WebSite","name":"{{ .Site.Title }}","url":"{{ .Site.BaseURL }}","description":"{{ .Site.Params.description }}"}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"{{ .Site.Params.author }}","url":"{{ .Site.BaseURL }}","jobTitle":"{{ .Site.Params.jobTitle }}","description":"{{ .Site.Params.description }}","sameAs":["{{ .Site.Params.linkedin }}","{{ .Site.Params.github }}"]}
+{"@context":"https://schema.org","@type":"Person","name":"{{ .Site.Params.author }}","url":"{{ .Site.BaseURL }}","jobTitle":"{{ .Site.Params.jobTitle }}","description":"{{ .Site.Params.description }}","address":{"@type":"PostalAddress","addressLocality":"Paris","addressRegion":"Île-de-France","addressCountry":"FR"},"sameAs":["{{ .Site.Params.linkedin }}","{{ .Site.Params.github }}"]}
 </script>
 {{ else if eq .Section "posts" }}
 <script type="application/ld+json">
