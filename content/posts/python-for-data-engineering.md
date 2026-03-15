@@ -4,7 +4,7 @@ slug: python-for-data-engineering
 date: 2026-01-18
 description: "Les bases de Python pour le data engineering. Les librairies essentielles, les patterns courants et les bonnes pratiques pour écrire des pipelines solides."
 categories: ["data-engineering", "programming"]
-tags: ["python", "pipelines", "programmation", "bonnes-pratiques"]
+tags: ["python", "pipelines", "programming", "bonnes-pratiques"]
 keywords: []
 series: ""
 image: "/images/og-default.svg"
@@ -183,6 +183,8 @@ Toujours logger avant de lever l'exception. En production, c'est le log qui perm
 ## En résumé
 
 Python pour le data engineering, c'est avant tout Pandas/Polars pour les données, psycopg2/SQLAlchemy pour les bases, et boto3 pour le cloud. Maîtrisez ces briques, écrivez du code propre et testable, et vos pipelines tiendront en production.
+
+**Étape suivante** : [Structurer son projet Python data proprement →](/posts/python-project-structure-data/) — arborescence, packaging, configuration et Makefile.
 
 ---
 

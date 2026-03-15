@@ -80,6 +80,16 @@ Ne pas tout déployer en même temps. Rendre une couche fiable avant de passer �
 
 La meilleure stack est celle qui livre de la valeur vite, pas celle qui a le plus de composants.
 
+## Pour aller plus loin
+
+Articles associés pour approfondir chaque couche :
+
+- **Ingestion** → [ETL vs ELT : comment choisir](/posts/etl-vs-elt-when-to-choose/)
+- **Transformation** → [dbt pour les nuls : guide pratique](/posts/dbt-pour-les-nuls-guide-pratique/)
+- **Orchestration** → [Apache Airflow : orchestrer ses pipelines](/posts/apache-airflow-orchestration/)
+- **Fiabilité** → [Monitoring des pipelines data en production](/posts/monitoring-data-pipelines/)
+- **Architecture** → [Batch, micro-batch, streaming : quel pattern ?](/posts/data-pipeline-architecture-patterns/)
+
 ---
 
 **Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

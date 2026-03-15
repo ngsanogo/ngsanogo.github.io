@@ -77,6 +77,19 @@ L'essentiel : écrire un DAG, configurer un schedule, gérer les retries et les 
 
 Ne pas essayer d'apprendre tout en même temps. Maîtriser chaque outil avant de passer au suivant.
 
+## Pour aller plus loin
+
+Chaque outil de cette liste a son guide dédié sur ce blog :
+
+- [SQL → Pourquoi c'est la compétence n°1 du data engineer](/posts/why-learn-sql/)
+- [SQL → Optimisation et plans d'exécution](/posts/sql-query-optimization/)
+- [Python → Guide complet pour les pipelines data](/posts/python-for-data-engineering/)
+- [Python → Structurer son projet proprement](/posts/python-project-structure-data/)
+- [PostgreSQL & SGBD → Les fondamentaux](/posts/databases-sgbd-fundamentals/)
+- [Docker → Lancer ses pipelines partout](/posts/docker-for-data-engineers/)
+- [Airflow → Orchestrer ses pipelines](/posts/apache-airflow-orchestration/)
+- [dbt → Guide pratique de démarrage](/posts/dbt-pour-les-nuls-guide-pratique/)
+
 ---
 
 **Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**
