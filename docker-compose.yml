@@ -16,7 +16,7 @@ services:
     build:
       context: .
       target: hugo
-    command: hugo --minify
+    command: hugo --minify --cleanDestinationDir
     volumes:
       - .:/site
     profiles: ["build"]
@@ -27,7 +27,7 @@ services:
     build:
       context: .
       target: hugo
-    command: sh -c "hugo --minify && test -f public/index.html && test -f public/sitemap.xml && echo 'All checks passed'"
+    command: sh -c "hugo --minify --cleanDestinationDir && test -f public/index.html && test -f public/sitemap.xml && echo 'All checks passed'"
     volumes:
       - .:/site
     profiles: ["test"]
