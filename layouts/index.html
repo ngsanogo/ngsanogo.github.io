@@ -1,16 +1,16 @@
 {{ define "main" }}
 <div class="hero">
-    <h1 class="page-title">Data Engineering — Articles et retours d'expérience</h1>
-    <p class="tagline">Je partage ce que j'apprends sur le terrain en construisant des architectures data fiables.</p>
+    <h1 class="page-title">Data Engineer Freelance à Paris — Architectures data fiables</h1>
+    <p class="tagline">8 ans d'expérience en data engineering. Santé, recherche médicale, SaaS. Je partage sur ce blog ce que j'apprends sur le terrain.</p>
 </div>
 
 <div class="highlight-box">
-    <p>8 ans d'expérience en data engineering. Santé, edtech, SaaS.</p>
+    <p>Padoa · Institut Jérôme Lejeune · AP-HP — Des contextes où la fiabilité des données n'est pas négociable.</p>
 </div>
 
 <div class="hero-cta">
     <a href="/blog/" class="button-primary">Lire les articles</a>
-    <a href="https://isdataconsulting.com/" class="button-secondary" target="_blank" rel="noopener noreferrer">Mes services freelance →</a>
+    <a href="/contact/" class="button-secondary">Me contacter →</a>
 </div>
 
 {{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
