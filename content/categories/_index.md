@@ -1,4 +1,4 @@
 ---
-title: "Categories"
-description: "Browse posts by category."
+title: "Catégories"
+description: "Parcourir les articles par catégorie."
 ---
