@@ -1,4 +1,4 @@
 ---
 title: "Tags"
-description: "Browse posts by topic."
+description: "Parcourir les articles par sujet."
 ---
