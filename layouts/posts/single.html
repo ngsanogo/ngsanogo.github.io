@@ -3,6 +3,7 @@
     <header class="article-header">
         <h1 class="page-title">{{ .Title }}</h1>
         {{ partial "post-meta.html" (dict "page" . "showTaxonomies" true) }}
+        <p class="reading-time">{{ .ReadingTime }} min de lecture</p>
     </header>
     {{ .Content }}
     {{ partial "consulting-cta.html" . }}
@@ -10,4 +11,14 @@
         <a href="/blog/" class="button-secondary">← Tous les articles</a>
     </footer>
 </article>
+
+{{ $related := first 3 (where (.Site.RegularPages.Related .) "Section" "posts") }}
+{{ with $related }}
+<section class="related-posts" aria-labelledby="related-heading">
+    <h2 id="related-heading" class="section-title">Sur le même sujet</h2>
+    {{ range . }}
+    {{ partial "post-card.html" (dict "page" .) }}
+    {{ end }}
+</section>
+{{ end }}
 {{ end }}
