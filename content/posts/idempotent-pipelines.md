@@ -19,6 +19,17 @@ Lancez-le une fois : 100 enregistrements chargés. Lancez-le encore : toujours 1
 
 Sans idempotence, chaque incident nécessite une intervention manuelle pour nettoyer les données en double. Ce n'est pas tenable en production.
 
+## Quick Start (Docker)
+
+Pour tester les patterns SQL de cet article :
+
+```bash
+docker run --name pg-idem -e POSTGRES_PASSWORD=secret -d postgres:16
+docker exec -it pg-idem psql -U postgres
+```
+
+Copiez les `MERGE` et `DELETE+INSERT` directement dans `psql`. Pour nettoyer : `docker rm -f pg-idem`.
+
 ## Pourquoi c'est critique
 
 Les pipelines sont relancés constamment :
@@ -69,11 +80,13 @@ SELECT * FROM staging_orders WHERE order_date = '2024-01-15';
 
 ```python
 from datetime import date
+from sqlalchemy import text
 
-def load_orders(df, execution_date: date):
+def load_orders(df, execution_date: date, engine):
     df = df.drop_duplicates(subset=["order_id"])
-    engine.execute(f"DELETE FROM orders WHERE order_date = '{execution_date}'")
-    df.to_sql("orders", engine, if_exists="append", index=False)
+    with engine.begin() as conn:
+        conn.execute(text("DELETE FROM orders WHERE order_date = :dt"), {"dt": str(execution_date)})
+        df.to_sql("orders", conn, if_exists="append", index=False)
 ```
 
 ## Les pièges

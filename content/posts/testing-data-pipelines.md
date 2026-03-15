@@ -17,6 +17,19 @@ Un pipeline sans tests, c'est un pipeline qui casse en silence. Les données arr
 
 Les tests ne sont pas un luxe. C'est ce qui permet de refactorer, de déployer et de dormir tranquille.
 
+## Quick Start (Docker)
+
+Pour exécuter les tests Python de cet article :
+
+```bash
+docker run --rm -it python:3.12-slim bash -c "
+  pip install -q pandas pytest &&
+  python
+"
+```
+
+Collez les fonctions de test et lancez-les avec `pytest`. Pour les tests SQL, lancez un PostgreSQL : `docker run --name pg-test -e POSTGRES_PASSWORD=secret -d postgres:16`.
+
 ## Les 3 niveaux de tests
 
 ### 1. Tests unitaires : la logique de transformation

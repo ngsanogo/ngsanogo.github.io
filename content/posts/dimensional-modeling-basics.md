@@ -17,6 +17,17 @@ Les données brutes sont chargées dans le warehouse. Des tables partout. Des jo
 
 La modélisation dimensionnelle résout ce problème en organisant les données pour la consommation, pas pour le stockage.
 
+## Quick Start (Docker)
+
+Pour tester les exemples SQL de cet article :
+
+```bash
+docker run --name pg-dim -e POSTGRES_PASSWORD=secret -d postgres:16
+docker exec -it pg-dim psql -U postgres
+```
+
+Copiez les `CREATE TABLE` et requêtes directement dans `psql`. Pour nettoyer : `docker rm -f pg-dim`.
+
 ## Le schéma en étoile
 
 Le modèle le plus courant : une table de faits au centre, entourée de tables de dimensions.

@@ -15,6 +15,22 @@ draft: false
 
 dbt te permet d'écrire des transformations SQL comme du code versionné, testé, documenté et déployé proprement.
 
+## Quick Start (Docker)
+
+Pour tester dbt sans rien installer, avec PostgreSQL :
+
+```bash
+docker run --name pg-dbt -e POSTGRES_PASSWORD=secret -p 5432:5432 -d postgres:16
+docker run --rm -it python:3.12-slim bash -c "
+  pip install -q dbt-postgres &&
+  dbt init my_project &&
+  cd my_project &&
+  bash
+"
+```
+
+Configurez la connexion vers `host.docker.internal:5432` et lancez `dbt debug`.
+
 ## Pourquoi dbt change la donne
 
 Sans dbt, on voit souvent :

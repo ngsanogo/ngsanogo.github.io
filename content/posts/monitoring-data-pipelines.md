@@ -20,6 +20,17 @@ Le monitoring data, c'est répondre à 3 questions en permanence :
 2. **Est-ce que les données arrivent ?** (freshness)
 3. **Est-ce que les données sont correctes ?** (qualité)
 
+## Quick Start (Docker)
+
+Pour tester les checks SQL de cet article :
+
+```bash
+docker run --name pg-mon -e POSTGRES_PASSWORD=secret -d postgres:16
+docker exec -it pg-mon psql -U postgres
+```
+
+Pour nettoyer : `docker rm -f pg-mon`.
+
 ## Les 4 niveaux de monitoring
 
 ### Niveau 1 : Infrastructure

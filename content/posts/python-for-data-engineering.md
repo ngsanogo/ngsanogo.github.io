@@ -14,6 +14,21 @@ draft: false
 ## Pourquoi Python
 
 Python est le langage dominant en data engineering. Pas parce qu'il est le plus rapide — mais parce que l'écosystème est imbattable :
+
+## Quick Start (Docker)
+
+Pour tester les exemples de cet article sans rien installer :
+
+```bash
+docker run --rm -it python:3.12-slim bash -c "
+  pip install -q pandas polars psycopg2-binary boto3 &&
+  python
+"
+```
+
+Vous êtes dans un shell Python avec toutes les librairies prêtes.
+
+## L'écosystème
 - Pandas, Polars, DuckDB pour la manipulation de données
 - SQLAlchemy, psycopg2 pour les bases de données
 - Airflow, Prefect, Dagster pour l'orchestration

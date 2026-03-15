@@ -20,6 +20,17 @@ Le full reload (tout retraiter à chaque run) fonctionne au début. Mais quand l
 
 Le traitement incrémental résout ça : ne charger que les données nouvelles ou modifiées depuis le dernier run.
 
+## Quick Start (Docker)
+
+Pour tester les exemples SQL de cet article :
+
+```bash
+docker run --name pg-incr -e POSTGRES_PASSWORD=secret -d postgres:16
+docker exec -it pg-incr psql -U postgres
+```
+
+Pour nettoyer : `docker rm -f pg-incr`.
+
 ## Les 3 patterns
 
 ### 1. Timestamp-based

@@ -20,20 +20,23 @@ PostgreSQL est la base relationnelle open source la plus complète. Fiable, perf
 
 La plupart des outils data (Airflow, dbt, Metabase) s'y connectent nativement.
 
-## Installation rapide
+## Installation rapide (Docker)
+
+La méthode la plus simple, quel que soit l'OS :
 
 ```bash
-# Ubuntu / Debian
-sudo apt install postgresql postgresql-client
-
-# Démarrer le service
-sudo systemctl start postgresql
+docker run --name postgres \
+  -e POSTGRES_PASSWORD=secret \
+  -p 5432:5432 \
+  -d postgres:16
 
 # Se connecter
-sudo -u postgres psql
+docker exec -it postgres psql -U postgres
 ```
 
-Sous macOS : `brew install postgresql@16 && brew services start postgresql@16`.
+Un seul `docker run` et PostgreSQL tourne. Pas d'installation système, pas de conflits de version.
+
+> **Alternative sans Docker** : sous Debian/Ubuntu `sudo apt install postgresql`, sous macOS `brew install postgresql@16`.
 
 ## Les commandes psql essentielles
 

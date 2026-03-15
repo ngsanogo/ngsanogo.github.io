@@ -19,6 +19,19 @@ Résultat : personne ne sait où est quoi, les imports cassent, et le déploieme
 
 Structurer son projet dès le départ coûte 10 minutes. Ne pas le faire coûte des heures de dette technique.
 
+## Quick Start (Docker)
+
+Pour reproduire la structure et les tests de cet article :
+
+```bash
+docker run --rm -it python:3.12-slim bash -c "
+  pip install -q pandas pytest ruff python-dotenv &&
+  bash
+"
+```
+
+Vous êtes dans un shell avec toutes les dépendances du projet. Créez l'arborescence et lancez `pytest`.
+
 ## L'arborescence de référence
 
 ```
@@ -110,7 +123,7 @@ S3_BUCKET=data-lake
 ```python
 # src/my_pipeline/extract.py
 import pandas as pd
-from my_pipeline.config import DB_HOST, DB_NAME
+from my_pipeline.config import DB_HOST, DB_NAME, DB_USER, DB_PASSWORD
 
 def extract_orders(date: str) -> pd.DataFrame:
     conn_string = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
@@ -169,16 +182,16 @@ pytest tests/ -v
 .PHONY: install test lint run
 
 install:
-pip install -e ".[dev]"
+	pip install -e ".[dev]"
 
 test:
-pytest tests/ -v
+	pytest tests/ -v
 
 lint:
-ruff check src/ tests/
+	ruff check src/ tests/
 
 run:
-python -m my_pipeline.main
+	python -m my_pipeline.main
 ```
 
 Un `make test` vaut mieux qu'un README de 3 pages.

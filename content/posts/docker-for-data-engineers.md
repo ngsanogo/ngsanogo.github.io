@@ -54,6 +54,7 @@ services:
     image: postgres:16
     environment:
       POSTGRES_DB: data
+      POSTGRES_PASSWORD: changeme
 ```
 
 ## Pourquoi c'est utile en data engineering

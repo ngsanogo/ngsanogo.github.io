@@ -15,6 +15,17 @@ draft: false
 
 Une requête lente, c'est un pipeline qui dépasse sa fenêtre, un dashboard qui timeout, un utilisateur qui attend. L'optimisation SQL n'est pas un luxe — c'est une compétence de base du data engineer.
 
+## Quick Start (Docker)
+
+Pour tester les exemples SQL de cet article :
+
+```bash
+docker run --name pg-optim -e POSTGRES_PASSWORD=secret -d postgres:16
+docker exec -it pg-optim psql -U postgres
+```
+
+Vous pouvez ensuite copier-coller chaque requête dans `psql`. Pour nettoyer : `docker rm -f pg-optim`.
+
 ## EXPLAIN : comprendre avant d'optimiser
 
 Avant de toucher à quoi que ce soit, regarder le plan d'exécution :

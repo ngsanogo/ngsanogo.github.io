@@ -17,6 +17,17 @@ Rate limits d'API. Timeouts de base de données. Fichiers source manquants. Sch�
 
 La question n'est pas "est-ce que mon pipeline va échouer ?" mais "quand il échoue, que se passe-t-il ?"
 
+## Quick Start (Docker)
+
+Pour tester les exemples Python de cet article :
+
+```bash
+docker run --rm -it python:3.12-slim bash -c "
+  pip install -q tenacity requests &&
+  python
+"
+```
+
 ## Les 3 niveaux de gestion d'erreur
 
 ### Niveau 1 — Retry automatique
@@ -24,6 +35,7 @@ La question n'est pas "est-ce que mon pipeline va échouer ?" mais "quand il éc
 La majorité des erreurs sont transitoires. Un retry suffit.
 
 ```python
+import requests
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, max=60))

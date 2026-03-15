@@ -41,34 +41,36 @@ Un fichier `docker-compose.yml` suffit pour faire tourner les deux :
 
 ```yaml
 services:
-  minio:
-    image: minio/minio
-    command: server /data --console-address ":9001"
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+    minio:
+        image: minio/minio:latest
+        command: server /data --console-address ":9001"
+        ports:
+            - "9000:9000"
+            - "9001:9001"
+        environment:
+            MINIO_ROOT_USER: minioadmin
+            MINIO_ROOT_PASSWORD: minioadmin
 
-  airflow:
-    image: apache/airflow:2.8.1
-    environment:
-      AWS_ACCESS_KEY_ID: minioadmin
-      AWS_SECRET_ACCESS_KEY: minioadmin
-      AWS_ENDPOINT_URL: http://minio:9000
-    volumes:
-      - ./dags:/opt/airflow/dags
+    airflow:
+        image: apache/airflow:2.10.5
+        environment:
+            AWS_ACCESS_KEY_ID: minioadmin
+            AWS_SECRET_ACCESS_KEY: minioadmin
+            AWS_ENDPOINT_URL: http://minio:9000
+        volumes:
+            - ./dags:/opt/airflow/dags
 ```
 
 Airflow se connecte à MinIO comme s'il parlait à S3. Aucune modification du code des DAGs.
+
+Pour un environnement vraiment reproductible, figez ensuite les tags sur des versions validées par votre équipe (et évitez `latest` en CI/production).
 
 ## Connexion Airflow → MinIO
 
 Dans Airflow, créer une connexion S3 :
 
 ```python
-from airflow.hooks.S3_hook import S3Hook
+from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 
 hook = S3Hook(aws_conn_id="minio_conn")
 hook.load_string(

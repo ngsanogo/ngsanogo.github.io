@@ -17,6 +17,17 @@ Chaque année, un nouvel outil promet de remplacer SQL. Et chaque année, SQL es
 
 Pourquoi ? Parce que SQL fait exactement ce qu'on lui demande : interroger des données. Et il le fait mieux que tout le reste.
 
+## Quick Start (Docker)
+
+Pour tester les exemples SQL de cet article :
+
+```bash
+docker run --name pg-sql -e POSTGRES_PASSWORD=secret -d postgres:16
+docker exec -it pg-sql psql -U postgres
+```
+
+Pour nettoyer : `docker rm -f pg-sql`.
+
 ## Le langage universel de la data
 
 SQL est partout :
