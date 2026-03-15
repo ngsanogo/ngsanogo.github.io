@@ -656,6 +656,20 @@ pre code {
     flex-wrap: wrap;
 }
 
+/* --- Reading Time --- */
+.reading-time {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    margin-block-start: var(--space-2);
+}
+
+/* --- Related Posts --- */
+.related-posts {
+    margin-block-start: var(--space-8);
+    padding-block-start: var(--space-7);
+    border-block-start: 1px solid var(--color-border);
+}
+
 /* --- Article Footer --- */
 .article-footer {
     margin-block-start: var(--space-7);
