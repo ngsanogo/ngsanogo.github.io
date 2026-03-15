@@ -5,9 +5,6 @@ cta:
   - label: "Me contacter"
     url: "/contact/"
     style: primary
-  - label: "Voir mes projets →"
-    url: "/projects/"
-    style: secondary
 ---
 
 <p class="cv-contact">Région parisienne, France · <a href="mailto:ngsanogo@proton.me">Email</a> · <a href="https://www.linkedin.com/in/ngsanogo">LinkedIn</a> · <a href="https://github.com/ngsanogo">GitHub</a></p>
