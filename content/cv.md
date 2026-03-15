@@ -1,8 +1,13 @@
 ---
 title: Data Engineer Senior
-description: "CV d'Issa Sanogo — Data Engineer Senior. 8 ans d'expérience en architecture de plateformes data, qualité des données et pilotage de projets."
+description: "CV d'Issa Sanogo - Freelance Data Engineer Paris. 8 ans d'experience en architecture data, fiabilite des pipelines et projets data 0% boite noire."
+keywords:
+  - cv data engineer senior
+  - senior data engineer Paris
+  - product manager data
+image: "/images/og-default.svg"
 cta:
-  - label: "Me contacter"
+  - label: "Reserver un echange"
     url: "/contact/"
     style: primary
 ---
@@ -16,6 +21,8 @@ cta:
 Data Engineer avec 8 ans d'expérience, spécialisé en **architecture de plateformes data** et **qualité des données**.
 
 Habitué aux contextes exigeants (santé, recherche médicale), je cadre les besoins métier, pilote des projets transverses et accompagne les équipes vers des solutions data fiables et exploitables.
+
+Approche: **0% boite noire**. Documentation, tests, observabilite et decisions techniques explicables pour chaque composant critique.
 
 ---
 

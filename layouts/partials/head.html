@@ -2,14 +2,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {{ $metaTitle := .Title | default .Site.Title }}
 {{ $metaDescription := .Description | default .Summary | default .Site.Params.description }}
-<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+{{ $metaKeywords := .Params.keywords | default .Params.tags | default .Params.categories }}
+<title>{{ if .IsHome }}{{ .Site.Title }} | {{ .Site.Params.role }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
 <meta name="description" content="{{ $metaDescription }}">
-{{ with .Params.keywords }}
+{{ with $metaKeywords }}
 <meta name="keywords" content="{{ delimit . ", " }}">
 {{ end }}
 <link rel="canonical" href="{{ .Permalink }}">
+<link rel="alternate" hreflang="fr-FR" href="{{ .Permalink }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
 <meta name="robots" content="index, follow">
 <meta name="author" content="{{ .Site.Params.author }}">
+<meta name="geo.region" content="FR-IDF">
+<meta name="geo.placename" content="Paris">
+<meta name="ICBM" content="48.8566, 2.3522">
 {{ $ogType := "website" }}
 {{ if eq .Section "posts" }}{{ $ogType = "article" }}{{ end }}
 {{ $ogImage := "/images/og-default.svg" | absURL }}

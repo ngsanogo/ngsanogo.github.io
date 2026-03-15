@@ -1,7 +1,10 @@
 {{ define "main" }}
-<h1 class="page-title">{{ .Title }}</h1>
 {{ $pag := .Paginate .Pages }}
-<p class="page-subtitle">Articles sur le data engineering, les outils et les bonnes pratiques.{{ if gt $pag.TotalPages 1 }} (Page {{ $pag.PageNumber }} sur {{ $pag.TotalPages }}){{ end }}</p>
+<header class="article-header">
+    <p class="eyebrow">Bibliotheque technique</p>
+    <h1 class="page-title">{{ .Title }}</h1>
+    <p class="page-subtitle">Des articles pratiques sur l'architecture data, la qualite, l'orchestration et le delivery de plateformes fiables.{{ if gt $pag.TotalPages 1 }} Page {{ $pag.PageNumber }} sur {{ $pag.TotalPages }}.{{ end }}</p>
+</header>
 
 {{ range $pag.Pages }}
 {{ partial "post-card.html" (dict "page" .) }}

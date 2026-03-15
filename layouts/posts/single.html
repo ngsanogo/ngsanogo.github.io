@@ -1,14 +1,25 @@
 {{ define "main" }}
 <article>
     <header class="article-header">
+        {{ with .Params.categories }}
+        <p class="eyebrow">{{ index . 0 }}</p>
+        {{ end }}
         <h1 class="page-title">{{ .Title }}</h1>
         {{ partial "post-meta.html" (dict "page" . "showTaxonomies" true) }}
         <p class="reading-time">{{ .ReadingTime }} min de lecture</p>
     </header>
     {{ .Content }}
-    {{ partial "consulting-cta.html" . }}
+    <section class="article-callout" aria-labelledby="article-callout-title">
+        <p class="eyebrow">Parlons-en</p>
+        <h2 id="article-callout-title">Besoin d'un senior data engineer pour cadrer ou fiabiliser ce sujet ?</h2>
+        <p>Je peux intervenir sur l'architecture, la reprise de donnees, la qualite et le delivery produit sur des contextes exigeants.</p>
+        <div class="article-footer">
+            <a href="/contact/" class="button-primary">Me contacter</a>
+            <a href="/cv/" class="button-secondary">Voir le CV</a>
+        </div>
+    </section>
     <footer class="article-footer">
-        <a href="/blog/" class="button-secondary">← Tous les articles</a>
+        <a href="/blog/" class="button-secondary">Retour aux articles</a>
     </footer>
 </article>
 

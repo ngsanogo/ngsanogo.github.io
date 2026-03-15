@@ -1,13 +1,18 @@
-<header role="banner">
-    <a href="/" class="site-title">{{ .Site.Title }}</a>
+<header class="site-header" role="banner">
+    <div class="site-header__top">
+        <div>
+            <p class="site-header__eyebrow">{{ .Site.Params.role }}</p>
+            <a href="/" class="site-title">{{ .Site.Title }}</a>
+        </div>
+        <nav role="navigation" aria-label="Navigation principale">
+            {{ range .Site.Menus.main }}
+            {{ if .Params.cta }}
+            <a href="{{ .URL }}" class="nav-cta">{{ .Name }}</a>
+            {{ else }}
+            <a href="{{ .URL }}">{{ .Name }}</a>
+            {{ end }}
+            {{ end }}
+        </nav>
+    </div>
     <p class="site-desc">{{ .Site.Params.description }}</p>
-    <nav role="navigation" aria-label="Navigation principale">
-        {{ range .Site.Menus.main }}
-        {{ if .Params.cta }}
-        <a href="{{ .URL }}" class="nav-cta" target="_blank" rel="noopener">{{ .Name }}</a>
-        {{ else }}
-        <a href="{{ .URL }}">{{ .Name }}</a>
-        {{ end }}
-        {{ end }}
-    </nav>
 </header>

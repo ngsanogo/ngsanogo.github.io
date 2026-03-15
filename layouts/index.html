@@ -1,27 +1,55 @@
 {{ define "main" }}
-<div class="hero">
-    <h1 class="page-title">Data Engineer Freelance à Paris — Architectures data fiables</h1>
-    <p class="tagline">8 ans d'expérience en data engineering. Santé, recherche médicale, SaaS. Je partage sur ce blog ce que j'apprends sur le terrain.</p>
-</div>
-
-<div class="highlight-box">
-    <p>Padoa · Institut Jérôme Lejeune · AP-HP — Des contextes où la fiabilité des données n'est pas négociable.</p>
-</div>
-
-<div class="hero-cta">
-    <a href="/blog/" class="button-primary">Lire les articles</a>
-    <a href="/contact/" class="button-secondary">Me contacter →</a>
-</div>
-
 {{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
-{{ $latest := first 3 $posts }}
-{{ if $latest }}
-<section aria-labelledby="blog-heading" class="home-section">
-    <h2 id="blog-heading" class="section-title">Derniers articles</h2>
-    {{ range $latest }}
-    {{ partial "post-card.html" (dict "page" .) }}
+{{ $featuredSlugs := slice "comment-j-ai-industrialise-un-pipeline-de-reprise-de-donnees-clients-chez-padoa" "data-pipeline-architecture-patterns" "idempotent-pipelines" "data-quality-fundamentals" }}
+{{ $latest := first 4 (where $posts "Params.slug" "not in" $featuredSlugs) }}
+
+<section class="home-hero" aria-labelledby="home-title">
+    <p class="eyebrow">{{ .Site.Params.role }}</p>
+    <h1 id="home-title" class="page-title">Je conçois des plateformes data fiables, lisibles et opérables.</h1>
+    <p class="tagline">8 ans d'experience dans des contextes ou la qualite des donnees ne se negocie pas. J'interviens sur l'architecture, la reprise de donnees, les pipelines et le pilotage produit.</p>
+    <div class="hero-cta">
+        <a href="/contact/" class="button-primary">Reserver un echange</a>
+        <a href="/blog/" class="button-secondary">Lire les articles</a>
+    </div>
+</section>
+
+<section class="home-grid" aria-label="Repères rapides">
+    <article class="fact-card">
+        <p class="fact-card__label">Positionnement</p>
+        <p>Senior Data Engineer &amp; PM. Architecture, delivery et arbitrages techniques explicitables.</p>
+    </article>
+    <article class="fact-card">
+        <p class="fact-card__label">Terrains</p>
+        <p>Sante, recherche medicale, SaaS, migrations sensibles et plateformes data a forte exigence de fiabilite.</p>
+    </article>
+    <article class="fact-card">
+        <p class="fact-card__label">Methode</p>
+        <p>Documentation, tests, observabilite et pipelines 0% boite noire pour des equipes qui veulent comprendre ce qu'elles exploitent.</p>
+    </article>
+</section>
+
+<section aria-labelledby="featured-heading" class="home-section">
+    <div class="section-head">
+        <h2 id="featured-heading" class="section-title">Commencer ici</h2>
+        <p class="page-subtitle">Quatre articles pour comprendre mon approche technique et mon niveau d'execution.</p>
+    </div>
+    {{ range $featuredSlugs }}
+    {{ with $.Site.GetPage (printf "/posts/%s" .) }}
+    {{ partial "post-card.html" (dict "page" . "readMoreLabel" "Lire l'article") }}
     {{ end }}
-    <p class="view-all"><a href="/blog/" class="read-more">Voir tous les articles →</a></p>
+    {{ end }}
+</section>
+
+{{ if $latest }}
+<section aria-labelledby="latest-heading" class="home-section">
+    <div class="section-head">
+        <h2 id="latest-heading" class="section-title">Dernieres publications</h2>
+        <p class="page-subtitle">Les sujets que je traite en ce moment sur le terrain.</p>
+    </div>
+    {{ range $latest }}
+    {{ partial "post-card.html" (dict "page" . "readMoreLabel" "Continuer la lecture") }}
+    {{ end }}
+    <p class="view-all"><a href="/blog/" class="read-more">Voir toute la bibliotheque</a></p>
 </section>
 {{ end }}
 {{ end }}

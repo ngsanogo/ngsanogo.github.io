@@ -1,7 +1,7 @@
 {{- $p := .page -}}
 {{- $showTaxonomies := false -}}
 {{- if isset . "showTaxonomies" -}}
-        {{- $showTaxonomies = .showTaxonomies -}}
+    {{- $showTaxonomies = .showTaxonomies -}}
 {{- end -}}
 <div class="post-meta">
     <span>{{ partial "date-fr.html" $p.Date }}</span>
@@ -9,18 +9,9 @@
     {{ with $p.Params.categories }}
     <span class="meta-sep">·</span>
     <span class="post-taxonomy-inline">
-        <span class="taxonomy-label">Catégories :</span>
+        <span class="taxonomy-label">Categorie</span>
         {{ range $index, $cat := . }}
         <a class="taxonomy-link" href="{{ (print "/categories/" ($cat | urlize) "/") | relLangURL }}">{{ $cat }}</a>{{ if lt $index (sub (len .) 1) }},{{ end }}
-        {{ end }}
-    </span>
-    {{ end }}
-    {{ with $p.Params.tags }}
-    <span class="meta-sep">·</span>
-    <span class="post-taxonomy-inline">
-        <span class="taxonomy-label">Étiquettes :</span>
-        {{ range $index, $tag := . }}
-        <a class="taxonomy-link" href="{{ (print "/tags/" ($tag | urlize) "/") | relLangURL }}">{{ $tag }}</a>{{ if lt $index (sub (len .) 1) }},{{ end }}
         {{ end }}
     </span>
     {{ end }}

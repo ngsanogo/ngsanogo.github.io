@@ -107,7 +107,7 @@ new-post:
 		'keywords: []' \
 		'draft: true' \
 		'series: ""' \
-		'image: ""' \
+		'image: "/images/og-default.svg"' \
 		'---' \
 		'' \
 		'## Introduction' \

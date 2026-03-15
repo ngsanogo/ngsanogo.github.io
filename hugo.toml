@@ -1,7 +1,7 @@
 baseURL = "https://ngsanogo.github.io/"
 languageCode = "fr"
 defaultContentLanguage = "fr"
-title = "Issa Sanogo — Data Engineer Freelance"
+title = "Issa Sanogo"
 buildFuture = false
 
 [taxonomies]
@@ -20,15 +20,16 @@ buildFuture = false
     codeFences = true
     guessSyntax = false
     lineNos = false
-    noClasses = false
-    style = "github"
+    noClasses = true
+    style = "github-dark"
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
 
 [params]
-  description = "Data Engineer Freelance basé à Paris — Architectures data fiables, qualité des données et pilotage de projets data en Île-de-France et remote."
+  description = "Senior Data Engineer & PM a Paris. Architecture data, reprise de donnees, qualite et delivery produit sans boite noire."
   author = "Issa Sanogo"
+  role = "Senior Data Engineer & PM"
   jobTitle = "Data Engineer Freelance Paris"
   location = "Paris, Île-de-France, France"
   email = "ngsanogo@proton.me"
@@ -41,7 +42,7 @@ buildFuture = false
   weight = 1
 
 [[menus.main]]
-  name = "Blog"
+  name = "Articles"
   url = "/blog/"
   weight = 2
 
@@ -54,10 +55,5 @@ buildFuture = false
   name = "Contact"
   url = "/contact/"
   weight = 4
-
-[[menus.main]]
-  name = "Mes services →"
-  url = "https://isdataconsulting.com/"
-  weight = 99
   [menus.main.params]
     cta = true

@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".highlight").forEach(function (block) {
     var code = block.querySelector("code");
-    if (!code) return;
+    if (!code || !navigator.clipboard) return;
 
     var button = document.createElement("button");
     button.type = "button";
     button.className = "copy-button";
-    button.textContent = "Copy";
+    button.textContent = "Copier";
+    button.setAttribute("aria-label", "Copier le bloc de code");
 
     button.addEventListener("click", function () {
-      if (!navigator.clipboard) return;
       navigator.clipboard.writeText(code.innerText).then(function () {
-        button.textContent = "Copied";
+        button.textContent = "Copie";
         setTimeout(function () {
-          button.textContent = "Copy";
+          button.textContent = "Copier";
         }, 1500);
       });
     });
