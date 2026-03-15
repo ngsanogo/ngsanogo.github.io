@@ -39,6 +39,7 @@ make dev    # starts dev server at http://localhost:1313
 | Run tests                | `make test`          |
 | Validate post metadata   | `make test-content`  |
 | Validate links           | `make test-links`    |
+| Scan secrets             | `make test-secrets`  |
 | Run local full checks    | `make ci`            |
 | Stop containers          | `make stop`          |
 | Clean output             | `make clean`         |
@@ -54,7 +55,8 @@ Push to `main` runs CI and then triggers GitHub Pages deployment.
 
 - `make test` builds with `--cleanDestinationDir` to prevent stale pages and ghost 404s in `public/`.
 - `make test-content` enforces post front matter quality (slug, date format, SEO description, image field).
-- `make test-links` checks links in both source Markdown and generated HTML in Docker only.
+- `make test-links` checks links in both source Markdown and generated HTML in Docker only, with explicit timeout/retry/concurrency thresholds for CI stability.
+- `make test-secrets` scans repository content for leaked secrets in Docker.
 - `make ci` chains lint, build checks, content validation, and link checks.
 
 ## Repository map

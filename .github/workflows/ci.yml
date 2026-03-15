@@ -25,6 +25,9 @@ jobs:
           docker --version
           docker compose version
 
+      - name: Validate Docker Compose config
+        run: docker compose --profile dev --profile build --profile test --profile lint config > /dev/null
+
       - name: Run lint checks
         run: |
           docker build --target lint -t ngsanogo-site-lint .
@@ -35,3 +38,9 @@ jobs:
 
       - name: Validate content front matter
         run: make test-content
+
+      - name: Validate links
+        run: make test-links
+
+      - name: Scan secrets
+        run: make test-secrets

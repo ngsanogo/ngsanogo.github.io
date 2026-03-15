@@ -1,4 +1,4 @@
-.PHONY: setup hooks dev build test test-content test-links ci clean lint stop new-post help
+.PHONY: setup hooks dev build test test-content test-links test-secrets ci clean lint stop new-post help
 
 check-docker:
 	@command -v docker >/dev/null 2>&1 || { \
@@ -16,6 +16,7 @@ help:
 	@echo "  make test   - Build and validate output"
 	@echo "  make test-content - Validate content front matter quality"
 	@echo "  make test-links - Validate links in generated HTML and Markdown"
+	@echo "  make test-secrets - Scan repository for leaked secrets"
 	@echo "  make ci     - Run local CI checks"
 	@echo "  make stop   - Stop all running containers"
 	@echo "  make clean  - Remove generated files"
@@ -52,8 +53,12 @@ test-content: check-docker
 
 test-links: check-docker
 	@echo "🔗 Validating links in Docker..."
-	@docker run --rm --entrypoint sh -v "$$PWD":/data lycheeverse/lychee:latest -lc 'find /data/content -name "*.md" -print0 | xargs -0 lychee --no-progress --accept "200..=299,429,999" --base-url https://ngsanogo.github.io --'
-	@docker run --rm --entrypoint sh -v "$$PWD":/data lycheeverse/lychee:latest -lc 'find /data/public -name "*.html" -print0 | xargs -0 lychee --offline --no-progress --base-url /data/public --'
+	@docker run --rm --entrypoint sh -v "$$PWD":/data lycheeverse/lychee:latest -lc 'find /data/content -name "*.md" -print0 | xargs -0 lychee --no-progress --accept "200..=299,429,999" --base-url https://ngsanogo.github.io --timeout 30 --max-retries 3 --retry-wait-time 2 --max-concurrency 16 --threads 8 --user-agent "Mozilla/5.0 (compatible; ngsanogo-link-check/1.0)" --'
+	@docker run --rm --entrypoint sh -v "$$PWD":/data lycheeverse/lychee:latest -lc 'find /data/public -name "*.html" -print0 | xargs -0 lychee --offline --no-progress --base-url /data/public --timeout 10 --max-concurrency 16 --threads 8 --'
+
+test-secrets: check-docker
+	@echo "🔐 Scanning for secrets in Docker..."
+	@docker run --rm -v "$$PWD":/repo -w /repo zricethezav/gitleaks:latest detect --source . --no-git --redact --verbose
 
 ci:
 	@echo "🧰 Running CI checks locally..."
@@ -61,6 +66,7 @@ ci:
 	@$(MAKE) test
 	@$(MAKE) test-content
 	@$(MAKE) test-links
+	@$(MAKE) test-secrets
 
 clean:
 	@echo "🧹 Cleaning generated files..."
