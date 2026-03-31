@@ -4,7 +4,7 @@
         <p class="eyebrow">Note</p>
         <h1 class="page-title">{{ .Title }}</h1>
         <p class="post-meta">
-            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date-fr.html" . }}</time>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date-fr.html" .Date }}</time>
         </p>
     </header>
     {{ .Content }}

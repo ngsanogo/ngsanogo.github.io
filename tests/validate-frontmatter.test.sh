@@ -1,70 +1,172 @@
 #!/usr/bin/env bash
-# Test unitaire pour la validation front matter
+# Tests unitaires pour scripts/validate-frontmatter.sh
 set -euo pipefail
 
-echo "🧪 Running front matter validation tests..."
+VALIDATOR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/scripts/validate-frontmatter.sh"
+PASS=0
+FAIL=0
 
-# Test de validation de slug valide
-echo "Testing valid slug..."
-echo "title: Test Post" > /tmp/test-valid.md
-echo "slug: test-post" >> /tmp/test-valid.md
-echo "date: 2023-01-01" >> /tmp/test-valid.md
-echo "description: Test description with enough characters for validation" >> /tmp/test-valid.md
-echo "categories: [\"data-engineering\"]" >> /tmp/test-valid.md
-echo "tags: [\"test\"]" >> /tmp/test-valid.md
-echo "keywords: []" >> /tmp/test-valid.md
-echo "image: /images/test.jpg" >> /tmp/test-valid.md
-echo "---" >> /tmp/test-valid.md
-echo "Content" >> /tmp/test-valid.md
+# Long enough description to satisfy the 100-char minimum
+DESC="Cette description est suffisamment longue pour satisfaire l'exigence minimale de cent caractères pour la qualité SEO."
 
-# Exécuter la validation
-if ./scripts/validate-frontmatter.sh; then
-  echo "✅ Valid slug test passed"
-else
-  echo "❌ Valid slug test failed"
-fi
+check() {
+    local name="$1" expected="$2" dir="$3"
+    local actual=0
+    POSTS_DIR="$dir" bash "$VALIDATOR" >/dev/null 2>&1 || actual=$?
+    if [[ "$actual" -eq "$expected" ]]; then
+        echo "✅ $name"
+        PASS=$((PASS + 1))
+    else
+        echo "❌ $name (expected exit $expected, got $actual)"
+        FAIL=$((FAIL + 1))
+    fi
+}
 
-# Test de validation de slug invalide
-echo "Testing invalid slug..."
-echo "title: Test Post" > /tmp/test-invalid.md
-echo "slug: Test-Post" >> /tmp/test-invalid.md  # Slug avec majuscule
-echo "date: 2023-01-01" >> /tmp/test-invalid.md
-echo "description: Test description with enough characters for validation" >> /tmp/test-invalid.md
-echo "categories: [\"data-engineering\"]" >> /tmp/test-invalid.md
-echo "tags: [\"test\"]" >> /tmp/test-invalid.md
-echo "keywords: []" >> /tmp/test-invalid.md
-echo "image: /images/test.jpg" >> /tmp/test-invalid.md
-echo "---" >> /tmp/test-invalid.md
-echo "Content" >> /tmp/test-invalid.md
+make_post() {
+    cat > "$1/post.md" <<EOF
+---
+title: "Titre valide pour le test unitaire"
+slug: "titre-valide"
+date: "2024-01-15"
+description: "$DESC"
+categories: ["data-engineering"]
+tags: ["test"]
+keywords: ["test"]
+image: /images/og-default.svg
+---
+EOF
+}
 
-# Exécuter la validation
-if ! ./scripts/validate-frontmatter.sh; then
-  echo "✅ Invalid slug test passed (correctly rejected)"
-else
-  echo "❌ Invalid slug test failed (should have been rejected)"
-fi
+TMP=$(mktemp -d)
+trap 'rm -rf "$TMP"' EXIT
 
-# Test de validation de titre trop court
-echo "Testing short title..."
-echo "title: T" > /tmp/test-short-title.md
-echo "slug: test-short-title" >> /tmp/test-short-title.md
-echo "date: 2023-01-01" >> /tmp/test-short-title.md
-echo "description: Test description with enough characters for validation" >> /tmp/test-short-title.md
-echo "categories: [\"data-engineering\"]" >> /tmp/test-short-title.md
-echo "tags: [\"test\"]" >> /tmp/test-short-title.md
-echo "keywords: []" >> /tmp/test-short-title.md
-echo "image: /images/test.jpg" >> /tmp/test-short-title.md
-echo "---" >> /tmp/test-short-title.md
-echo "Content" >> /tmp/test-short-title.md
+# 1. Valid post passes
+D="$TMP/t1"; mkdir "$D"; make_post "$D"
+check "valid post passes" 0 "$D"
 
-# Exécuter la validation
-if ! ./scripts/validate-frontmatter.sh; then
-  echo "✅ Short title test passed (correctly rejected)"
-else
-  echo "❌ Short title test failed (should have been rejected)"
-fi
+# 2. Invalid slug (uppercase) fails
+D="$TMP/t2"; mkdir "$D"
+cat > "$D/post.md" <<EOF
+---
+title: "Titre valide pour le test unitaire"
+slug: "Invalid-Slug"
+date: "2024-01-15"
+description: "$DESC"
+categories: ["data-engineering"]
+tags: ["test"]
+keywords: ["test"]
+image: /images/og-default.svg
+---
+EOF
+check "invalid slug (uppercase) fails" 1 "$D"
 
-# Nettoyage
-rm -f /tmp/test-valid.md /tmp/test-invalid.md /tmp/test-short-title.md
+# 3. Title too short fails
+D="$TMP/t3"; mkdir "$D"
+cat > "$D/post.md" <<EOF
+---
+title: "Court"
+slug: "court"
+date: "2024-01-15"
+description: "$DESC"
+categories: ["data-engineering"]
+tags: ["test"]
+keywords: ["test"]
+image: /images/og-default.svg
+---
+EOF
+check "title too short fails" 1 "$D"
 
-echo "✅ All tests completed"
+# 4. Description too short fails
+D="$TMP/t4"; mkdir "$D"
+cat > "$D/post.md" <<EOF
+---
+title: "Titre valide pour le test unitaire"
+slug: "titre-valide"
+date: "2024-01-15"
+description: "Trop court."
+categories: ["data-engineering"]
+tags: ["test"]
+keywords: ["test"]
+image: /images/og-default.svg
+---
+EOF
+check "description too short fails" 1 "$D"
+
+# 5. Missing required field fails
+D="$TMP/t5"; mkdir "$D"
+cat > "$D/post.md" <<EOF
+---
+title: "Titre valide pour le test unitaire"
+slug: "titre-valide"
+date: "2024-01-15"
+description: "$DESC"
+categories: ["data-engineering"]
+tags: ["test"]
+keywords: ["test"]
+---
+EOF
+check "missing image field fails" 1 "$D"
+
+# 6. Invalid date format fails
+D="$TMP/t6"; mkdir "$D"
+cat > "$D/post.md" <<EOF
+---
+title: "Titre valide pour le test unitaire"
+slug: "titre-valide"
+date: "15/01/2024"
+description: "$DESC"
+categories: ["data-engineering"]
+tags: ["test"]
+keywords: ["test"]
+image: /images/og-default.svg
+---
+EOF
+check "invalid date format fails" 1 "$D"
+
+# 7. Duplicate slugs fail
+D="$TMP/t7"; mkdir "$D"
+cat > "$D/post1.md" <<EOF
+---
+title: "Titre valide pour le test unitaire"
+slug: "titre-valide"
+date: "2024-01-15"
+description: "$DESC"
+categories: ["data-engineering"]
+tags: ["test"]
+keywords: ["test"]
+image: /images/og-default.svg
+---
+EOF
+cat > "$D/post2.md" <<EOF
+---
+title: "Autre titre valide pour le test unitaire"
+slug: "titre-valide"
+date: "2024-01-16"
+description: "$DESC"
+categories: ["data-engineering"]
+tags: ["test"]
+keywords: ["test"]
+image: /images/og-default.svg
+---
+EOF
+check "duplicate slugs fail" 1 "$D"
+
+# 8. Relative image path fails
+D="$TMP/t8"; mkdir "$D"
+cat > "$D/post.md" <<EOF
+---
+title: "Titre valide pour le test unitaire"
+slug: "titre-valide"
+date: "2024-01-15"
+description: "$DESC"
+categories: ["data-engineering"]
+tags: ["test"]
+keywords: ["test"]
+image: images/og-default.svg
+---
+EOF
+check "relative image path fails" 1 "$D"
+
+echo ""
+echo "Résultats: $PASS réussis, $FAIL échoués"
+[[ $FAIL -eq 0 ]] || exit 1

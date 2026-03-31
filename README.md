@@ -51,21 +51,6 @@ make dev    # starts dev server at http://localhost:1313
 Pull requests to `main` run CI checks.
 Push to `main` runs CI and then triggers GitHub Pages deployment.
 
-## Production Readiness Checks
-
-- `make test` builds with `--cleanDestinationDir` to prevent stale pages and ghost 404s in `public/`.
-- `make test-content` enforces post front matter quality (slug, date format, SEO description, image field).
-- `make test-links` checks links in both source Markdown and generated HTML in Docker only, with explicit timeout/retry/concurrency thresholds for CI stability.
-- `make test-secrets` scans repository content for leaked secrets in Docker.
-- `make ci` chains lint, build checks, content validation, and link checks.
-
-## Repository map
-
-- `content/`: source content (posts/pages)
-- `layouts/`, `assets/`, `static/`: Hugo presentation layers
-- `.github/workflows/`: CI and deployment workflows
-- `scripts/`: operational scripts
-
 ## License
 
 MIT License. See `LICENSE`.

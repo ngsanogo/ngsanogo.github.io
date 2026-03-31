@@ -8,7 +8,7 @@
 {{ range .Pages.ByDate.Reverse }}
 <article class="note-item">
     <p class="post-meta">
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date-fr.html" . }}</time>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date-fr.html" .Date }}</time>
     </p>
     <h2 class="note-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
     {{ with .Description }}<p class="note-summary">{{ . }}</p>{{ end }}

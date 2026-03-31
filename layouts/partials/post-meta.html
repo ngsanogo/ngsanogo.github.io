@@ -9,7 +9,7 @@
     {{ with $p.Params.categories }}
     <span class="meta-sep">·</span>
     <span class="post-taxonomy-inline">
-        <span class="taxonomy-label">Categorie</span>
+        <span class="taxonomy-label">Catégorie</span>
         {{ range $index, $cat := . }}
         <a class="taxonomy-link" href="{{ (print "/categories/" ($cat | urlize) "/") | relLangURL }}">{{ $cat }}</a>{{ if lt $index (sub (len .) 1) }},{{ end }}
         {{ end }}

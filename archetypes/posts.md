@@ -6,9 +6,8 @@ description: ""
 categories: []
 tags: []
 keywords: []
-format: "article"
 draft: true
-image: ""
+image: "/images/og-default.svg"
 ---
 
 ## Introduction

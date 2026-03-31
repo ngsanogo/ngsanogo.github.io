@@ -46,3 +46,7 @@ pnpm-debug.log*
 !.env.example
 .envrc
 .direnv/
+
+# Personal/internal documents — not for public tracking
+ideas.md
+CHARTE_EDITORIALE.md

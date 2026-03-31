@@ -6,6 +6,7 @@ buildFuture = false
 
 [taxonomies]
   tag = "tags"
+  category = "categories"
 
 [pagination]
   pagerSize = 999

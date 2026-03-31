@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-POSTS_DIR="$ROOT_DIR/content/posts"
+POSTS_DIR="${POSTS_DIR:-$ROOT_DIR/content/posts}"
 
 if [[ ! -d "$POSTS_DIR" ]]; then
   echo "❌ Missing posts directory: $POSTS_DIR"
