@@ -1,17 +1,15 @@
 ---
 title: "À propos"
-description: "Data engineer depuis 9 ans entre la santé et le SaaS. J'écris ici sur la data quand quelque chose me marque — un problème résolu, un pattern reconstruit, une leçon tirée d'un incident."
+description: "Data engineer depuis 9 ans. J'écris sur ce que je construis, ce que je casse et ce que j'apprends en travaillant sur des plateformes data."
 image: "/images/og-default.svg"
 ---
 
-Je travaille dans la data depuis neuf ans. J'ai commencé par gérer des données d'essais cliniques à l'AP-HP, puis j'ai construit un data warehouse dans un institut de recherche médicale. Aujourd'hui je navigue entre l'ingénierie data et le pilotage produit dans le SaaS.
+Je travaille dans la data depuis neuf ans. J'ai commencé à l'AP-HP sur des données d'essais cliniques, puis deux ans à l'Institut Jérôme Lejeune sur de la recherche génétique. Aujourd'hui je travaille en freelance sur des projets data engineering et plateforme.
 
-Ce qui m'a attiré dans ce métier, c'est le moment où une donnée brute devient un outil de décision. Ce qui m'y retient, c'est que chaque contexte pose des problèmes différents. La donnée en santé n'a rien à voir avec la donnée SaaS. Les contraintes changent, les réflexes doivent s'adapter.
+Ce blog n'est pas un portfolio et ce n'est pas un site de consulting. C'est un espace personnel pour documenter ce qui marche et ce qui ne marche pas quand on construit des plateformes data. Pas de calendrier de publication, pas d'objectif SEO. J'écris quand j'ai quelque chose à dire.
 
-Ma conviction : les plateformes data fiables se construisent par l'explicité, pas par la sophistication. Un pipeline dont on comprend le comportement en lisant le code est un pipeline bien écrit. La complexité technique est souvent un symptôme, rarement une solution.
-
-Ce blog est mon carnet d'ingénierie. J'écris ici quand quelque chose me marque — un problème que j'aurais voulu trouver documenté, une conviction à défendre, une leçon apprise après un incident de trop.
+Ma philosophie en une phrase : je préfère les pipelines lisibles aux architectures brillantes.
 
 ---
 
-Pour le contexte professionnel → [LinkedIn](https://www.linkedin.com/in/ngsanogo/). Pour les missions → [isdataconsulting.com](https://isdataconsulting.com). Pour discuter technique → ngsanogo@proton.me.
+Professionnel → [LinkedIn](https://www.linkedin.com/in/ngsanogo/). Missions → [isdataconsulting.com](https://isdataconsulting.com). Email → ngsanogo@proton.me.

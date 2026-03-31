@@ -6,15 +6,13 @@ buildFuture = false
 
 [taxonomies]
   tag = "tags"
-  category = "categories"
 
 [pagination]
-  pagerSize = 10
+  pagerSize = 999
 
 [permalinks]
   [permalinks.page]
     posts = "/posts/:slug/"
-    notes = "/notes/:slug/"
 
 [markup]
   [markup.highlight]
@@ -33,23 +31,13 @@ buildFuture = false
   page = ["HTML"]
 
 [params]
-  description = "Notes et réflexions d'un data engineer qui préfère les pipelines lisibles aux architectures brillantes."
+  description = "Data engineer. J'écris sur ce que j'apprends, ce que je construis et ce que je casse."
   author = "Issa Sanogo"
   email = "ngsanogo@proton.me"
   linkedin = "https://www.linkedin.com/in/ngsanogo/"
   github = "https://github.com/ngsanogo"
 
 [[menus.main]]
-  name = "Articles"
-  url = "/blog/"
-  weight = 1
-
-[[menus.main]]
-  name = "Commencer ici"
-  url = "/commencer/"
-  weight = 2
-
-[[menus.main]]
   name = "À propos"
   url = "/about/"
-  weight = 3
+  weight = 1

@@ -1,15 +1,8 @@
 {{- $p := .page -}}
-{{- $readMoreLabel := "Lire la suite →" -}}
-{{- if isset . "readMoreLabel" -}}
-    {{- $readMoreLabel = .readMoreLabel -}}
-{{- end -}}
-{{- $format := $p.Params.format | default $p.Section | default "article" -}}
 <div class="post-item">
+    <h2 class="post-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
     <p class="post-meta">
-        <span class="content-badge content-badge--{{ $format }}">{{ $format }}</span>
-        <span class="meta-sep">·</span>
         <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ partial "date-fr.html" $p.Date }}</time>
     </p>
-    <h2 class="post-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
     {{ with $p.Description }}<p class="post-description">{{ . }}</p>{{ end }}
 </div>

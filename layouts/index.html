@@ -1,15 +1,6 @@
 {{ define "main" }}
 {{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
-{{ $notes := (where .Site.RegularPages "Section" "notes").ByDate.Reverse }}
-{{ $all := ($posts | append $notes).ByDate.Reverse }}
-
-<section class="home-hero" aria-labelledby="home-title">
-    <p class="tagline">{{ .Site.Params.description }}</p>
-</section>
-
-<section aria-label="Flux de contenu" class="home-section">
-    {{ range $all }}
-    {{ partial "post-card.html" (dict "page" .) }}
-    {{ end }}
-</section>
+{{ range $posts }}
+{{ partial "post-card.html" (dict "page" .) }}
+{{ end }}
 {{ end }}

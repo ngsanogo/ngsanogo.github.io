@@ -463,14 +463,6 @@ footer[role="contentinfo"],
     color: var(--accent-strong);
 }
 
-.content-badge {
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--accent-strong);
-}
-
 .post-taxonomy-inline {
     display: inline;
 }

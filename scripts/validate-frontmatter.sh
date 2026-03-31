@@ -9,7 +9,7 @@ if [[ ! -d "$POSTS_DIR" ]]; then
   exit 1
 fi
 
-required_fields=(title slug date description format categories tags keywords image)
+required_fields=(title slug date description categories tags keywords image)
 errors=0
 slugs_tmp="$(mktemp)"
 cleanup() {
