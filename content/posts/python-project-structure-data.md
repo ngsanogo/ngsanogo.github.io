@@ -6,9 +6,11 @@ description: "Comment organiser un projet Python data proprement. Arborescence, 
 categories: ["data-engineering", "programming"]
 tags: ["python", "structure-projet", "bonnes-pratiques", "packaging"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
+aliases:
+  - /posts/python-for-data-engineering/
 ---
 
 ## Le problème
@@ -207,7 +209,3 @@ Un `make test` vaut mieux qu'un README de 3 pages.
 ## En résumé
 
 Un projet Python data bien structuré : `src/` pour le code, `tests/` pour les tests, `pyproject.toml` pour les dépendances, `.env` pour la config. C'est simple, mainstream, et ça tient dans le temps.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

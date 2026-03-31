@@ -6,18 +6,18 @@ description: "La qualité des données en santé est un défi unique : systèmes
 categories: ["data-quality"]
 tags: ["santé", "qualité-données", "gouvernance", "pipelines"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
 ---
 
+## Pourquoi cet article ?
+
+Pendant mes quatre ans à l’AP-HP puis à l’Institut Jérôme Lejeune, j’ai appris que la qualité des données en santé est un problème à part. Un identifiant patient mal rattaché ne se corrige pas comme une erreur de montant. Les systèmes sont fragmentés, la réglementation interdit l’improvisation, et la tolérance à l’erreur est proche de zéro sur certains flux. Cet article pose le cadre que j’applique depuis, et que j’aurais aimé trouver documenté quand j’ai commencé.
+
 ## Ce qui rend la santé différente
 
-En santé, une erreur de données n'est pas juste un dashboard faux. C'est potentiellement une décision clinique affectée. Le niveau d'exigence n'est pas le même que dans le e-commerce ou le marketing.
-
-Trois facteurs rendent le sujet plus complexe :
-
-### 1. Fragmentation des systèmes
+### 1. Systèmes fragmentés
 
 Les données vivent dans des dizaines de systèmes : DPI (dossier patient informatisé), LIMS (labo), imagerie, pharmacie, RH. Chacun a son propre schéma, ses propres identifiants, ses propres conventions.
 
@@ -73,7 +73,3 @@ Sans traçabilité, impossible de passer un audit ou de débugger un incident.
 ## En résumé
 
 La qualité des données en santé exige plus de rigueur, plus de traçabilité et plus de collaboration avec les métiers. Le cadre technique (tests, quarantaine, lignage) est le même qu'ailleurs — mais le niveau d'exigence et les conséquences d'un échec sont d'un autre ordre.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

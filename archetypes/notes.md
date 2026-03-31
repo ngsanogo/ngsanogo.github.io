@@ -3,12 +3,6 @@ title: "{{ replace .Name "-" " " | title }}"
 slug: "{{ .Name }}"
 date: "{{ .Date }}"
 description: ""
-categories: []
 tags: []
-keywords: []
-format: "article"
 draft: true
-image: ""
 ---
-
-## Introduction

@@ -1,14 +1,11 @@
 {{ define "main" }}
-{{ $pag := .Paginate .Pages }}
 <header class="article-header">
-    <p class="eyebrow">Bibliotheque technique</p>
+    <p class="eyebrow">Articles</p>
     <h1 class="page-title">{{ .Title }}</h1>
-    <p class="page-subtitle">Des articles pratiques sur l'architecture data, la qualite, l'orchestration et le delivery de plateformes fiables.{{ if gt $pag.TotalPages 1 }} Page {{ $pag.PageNumber }} sur {{ $pag.TotalPages }}.{{ end }}</p>
+    <p class="page-subtitle">Des réflexions sur l'architecture data, la qualité, l'orchestration et les décisions techniques en production.</p>
 </header>
 
-{{ range $pag.Pages }}
+{{ range .Pages.ByDate.Reverse }}
 {{ partial "post-card.html" (dict "page" .) }}
 {{ end }}
-
-{{ partial "pagination.html" (dict "pag" $pag) }}
 {{ end }}

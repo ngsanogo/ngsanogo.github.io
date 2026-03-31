@@ -1,13 +1,13 @@
 ---
-title: "Qualité des données : les fondamentaux"
+title: "Les 6 dimensions de la qualité des données — et celles qu'on oublie toujours"
 slug: data-quality-fundamentals
 date: 2026-02-03
 description: "La qualité des données est le socle de tout projet data fiable. Les 6 dimensions, les erreurs courantes et les stratégies concrètes pour l'implémenter."
 categories: ["data-quality"]
 tags: ["qualité-données", "data-engineering", "bonnes-pratiques"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
 ---
 
@@ -82,7 +82,3 @@ L'outil compte moins que la discipline : des tests écrits, automatisés, qui al
 ## En résumé
 
 La qualité des données n'est pas un projet ponctuel. C'est une pratique continue, intégrée aux pipelines, visible par les équipes métier. Commencez par les tests basiques, montez en puissance, et surtout : faites en sorte que les problèmes remontent avant que quelqu'un ne les découvre dans un dashboard.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

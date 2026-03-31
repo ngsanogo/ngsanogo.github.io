@@ -6,20 +6,14 @@ description: "Les principes qui séparent un pipeline fragile d'un pipeline fiab
 categories: ["fundamentals"]
 tags: ["bonnes-pratiques", "data-engineering", "principes", "qualité-code", "zen-of-python"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
 ---
 
-## L'inspiration
+## Pourquoi cet article ?
 
-Le Zen of Python tient en 19 aphorismes. Tapez `import this` dans un terminal Python et vous les verrez. Ces principes ne sont pas réservés au développement logiciel — ils s'appliquent directement au data engineering.
-
-La plupart des pipelines data ne cassent pas parce qu'ils sont mal codés. Ils cassent parce qu'ils sont mal pensés : trop complexes, trop couplés, trop implicites.
-
-Le code data est lu bien plus souvent qu'il n'est écrit. Un pipeline tourne pendant des mois. Quand il casse à 3h du matin, ce n'est jamais son auteur qui le débugue.
-
-Voici les principes qui font la différence.
+J’ai passé deux jours à traquer une duplication silencieuse en production. Le pipeline tournait, les logs étaient verts, les chiffres étaient faux. Quand j’ai fini par trouver la cause — une absence de contrôle d’unicité à l’insertion — je me suis demandé combien de mes pipelines avaient le même défaut. C’est ce genre de moment qui m’a poussé à formaliser les principes que j’applique maintenant systématiquement. Ils sont largement inspirés du Zen of Python.
 
 ## Explicit is better than implicit
 
@@ -148,7 +142,3 @@ Ces 4 tests couvrent 80 % des incidents data.
 | Now is better than never | Tests, monitoring et docs dès le jour 1 |
 
 Le code data n'a pas besoin d'être élégant. Il a besoin d'être fiable, lisible, et réparable.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

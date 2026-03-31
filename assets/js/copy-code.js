@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
     button.setAttribute("aria-label", "Copier le bloc de code");
 
     button.addEventListener("click", function () {
-      navigator.clipboard.writeText(code.innerText).then(function () {
-        button.textContent = "Copie";
+      navigator.clipboard.writeText(code.textContent).then(function () {
+        button.textContent = "Copié";
         setTimeout(function () {
           button.textContent = "Copier";
         }, 1500);

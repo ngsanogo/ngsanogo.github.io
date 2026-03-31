@@ -6,8 +6,8 @@ description: "ETL ou ELT n'est pas un choix dogmatique. Un cadre de décision ba
 categories: ["fundamentals"]
 tags: ["etl", "elt", "architecture", "data-pipelines"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
 ---
 
@@ -93,7 +93,3 @@ Sources multiples, besoins analytiques + conformité. Warehouse : Snowflake.
 ## En résumé
 
 ETL vs ELT est une décision de contexte, pas de doctrine. Choisir le pattern qui correspond le mieux aux contraintes de conformité, aux capacités de la plateforme, et à la maintenabilité par l'équipe. En cas de doute : ELT par défaut, ETL quand la sécurité l'exige.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

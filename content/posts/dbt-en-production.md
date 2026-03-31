@@ -1,14 +1,16 @@
 ---
-title: "dbt pour les nuls : guide pratique"
-slug: dbt-pour-les-nuls-guide-pratique
+title: "dbt en production : ce qui change quand c'est pour de vrai"
+slug: dbt-en-production
 date: 2026-01-05
-description: "Guide simple et concret pour débuter avec dbt : models, tests, documentation et déploiement progressif en production."
+description: "dbt en production, c'est autre chose que le getting started. Tests de non-régression, sources contractuelles, séparation staging/marts, gestion des environnements."
 categories: ["tools"]
-tags: ["dbt", "sql", "analytics-engineering", "getting-started"]
+tags: ["dbt", "sql", "analytics-engineering", "production"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
+aliases:
+  - /posts/dbt-pour-les-nuls-guide-pratique/
 ---
 
 ## dbt, c'est quoi en une phrase
@@ -132,7 +134,3 @@ left join {{ ref('stg_customers') }} c
 ## En résumé
 
 dbt n'est pas magique. C'est surtout une discipline qui rend les transformations lisibles, testables et maintenables. Commence petit, impose des conventions, et monte en puissance progressivement.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

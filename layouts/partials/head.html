@@ -2,14 +2,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {{ $metaTitle := .Title | default .Site.Title }}
 {{ $metaDescription := .Description | default .Summary | default .Site.Params.description }}
-{{ $metaKeywords := .Params.keywords | default .Params.tags | default .Params.categories }}
-<title>{{ if .IsHome }}{{ .Site.Title }} | {{ .Site.Params.role }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+{{ $metaKeywords := .Params.tags | default .Params.categories }}
+{{ with .Params.keywords }}{{ if gt (len .) 0 }}{{ $metaKeywords = . }}{{ end }}{{ end }}
+<title>{{ if .IsHome }}{{ .Site.Title }} — Notes d'un data engineer{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
 <meta name="description" content="{{ $metaDescription }}">
 {{ with $metaKeywords }}
 <meta name="keywords" content="{{ delimit . ", " }}">
 {{ end }}
 <link rel="canonical" href="{{ .Permalink }}">
-<link rel="alternate" hreflang="fr-FR" href="{{ .Permalink }}">
+<link rel="alternate" hreflang="{{ .Site.LanguageCode }}" href="{{ .Permalink }}">
 <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
 <meta name="robots" content="index, follow">
 <meta name="author" content="{{ .Site.Params.author }}">
@@ -54,7 +55,7 @@
 {"@context":"https://schema.org","@type":"WebSite","name":"{{ .Site.Title }}","url":"{{ .Site.BaseURL }}","description":"{{ .Site.Params.description }}"}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"{{ .Site.Params.author }}","url":"{{ .Site.BaseURL }}","jobTitle":"{{ .Site.Params.jobTitle }}","description":"{{ .Site.Params.description }}","address":{"@type":"PostalAddress","addressLocality":"Paris","addressRegion":"Île-de-France","addressCountry":"FR"},"sameAs":["{{ .Site.Params.linkedin }}","{{ .Site.Params.github }}"]}
+{"@context":"https://schema.org","@type":"Person","name":"{{ .Site.Params.author }}","url":"{{ .Site.BaseURL }}","description":"{{ .Site.Params.description }}","address":{"@type":"PostalAddress","addressLocality":"Paris","addressRegion":"Île-de-France","addressCountry":"FR"},"sameAs":["{{ .Site.Params.linkedin }}","{{ .Site.Params.github }}"]}
 </script>
 {{ else if eq .Section "posts" }}
 <script type="application/ld+json">

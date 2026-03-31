@@ -1,0 +1,17 @@
+{{ define "main" }}
+<header class="article-header">
+    <p class="eyebrow">Notes</p>
+    <h1 class="page-title">{{ .Title }}</h1>
+    <p class="page-subtitle">{{ .Description }}</p>
+</header>
+
+{{ range .Pages.ByDate.Reverse }}
+<article class="note-item">
+    <p class="post-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date-fr.html" . }}</time>
+    </p>
+    <h2 class="note-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+    {{ with .Description }}<p class="note-summary">{{ . }}</p>{{ end }}
+</article>
+{{ end }}
+{{ end }}

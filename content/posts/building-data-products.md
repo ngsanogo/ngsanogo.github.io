@@ -6,18 +6,16 @@ description: "Un data engineer qui pense produit crée plus de valeur. Comment p
 categories: ["product-data"]
 tags: ["data-products", "product-thinking", "data-engineering", "stakeholder-management"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
 ---
 
-## Le déclic
+## Pourquoi cet article ?
 
-La plupart des data engineers reçoivent un besoin, codent un pipeline, livrent. Le travail est techniquement solide. Mais personne ne l'utilise.
+J’ai livré un pipeline dont personne ne s’est servi. Trois jours de développement, une architecture propre, zéro utilisateur. Le problème n’était pas technique. Je n’avais pas posé la bonne question au départ. C’est ce raté qui m’a fait basculer vers une approche produit : commencer par le problème métier, pas par la donnée disponible. Cet article retrace ce changement de perspective.
 
-Ce qui manque : la pensée produit. Ne plus demander "comment je construis ça ?" mais "quel problème ça résout ?"
-
-## Qu'est-ce qu'un data product ?
+## Qu’est-ce qu’un data product ?
 
 Un data product est un livrable basé sur la donnée qui résout un problème précis pour un utilisateur défini. Ce n'est pas juste une table ou un dashboard.
 
@@ -81,8 +79,4 @@ Le MVP n'a pas besoin d'être beau. Il a besoin de prouver que le besoin existe.
 
 Le data engineer qui adopte cette approche ne monte pas seulement en compétence technique. Il devient l'interlocuteur qui comprend le métier, propose des solutions pragmatiques et mesure leur impact.
 
-C'est la différence entre "j'ai livré un pipeline" et "j'ai résolu un problème business". La seconde phrase vaut plus en entretien, en mission freelance et en satisfaction personnelle.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**
+C'est la différence entre "j'ai livré un pipeline" et "j'ai résolu un problème business". La seconde phrase vaut plus, en entretien comme sur le terrain.

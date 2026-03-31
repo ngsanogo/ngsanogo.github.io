@@ -6,8 +6,8 @@ description: "Tables de faits, tables de dimensions, schéma en étoile. Comment
 categories: ["data-modeling"]
 tags: ["modélisation", "data-warehouse", "schéma-étoile", "star-schema"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
 ---
 
@@ -102,7 +102,3 @@ Type 2 est le standard quand l'historique compte.
 ## En résumé
 
 La modélisation dimensionnelle n'est pas académique. C'est l'approche qui rend un warehouse utilisable au quotidien. Faits au centre, dimensions autour, schéma en étoile. Commencez par un domaine métier, livrez un premier mart, et étendez progressivement.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

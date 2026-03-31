@@ -6,8 +6,8 @@ description: "Comment surveiller ses pipelines data efficacement. Les métriques
 categories: ["data-engineering", "observability"]
 tags: ["monitoring", "observabilité", "alerting", "production", "pipelines"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
 ---
 
@@ -120,7 +120,3 @@ Pas besoin de 15 dashboards. Un seul, bien fait, que l'équipe consulte chaque m
 ## En résumé
 
 Le monitoring data, c'est 4 niveaux : infra, orchestration, freshness, qualité. Commencez par les alertes critiques, ajoutez progressivement. Un bon monitoring ne produit pas du bruit — il produit de la confiance.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

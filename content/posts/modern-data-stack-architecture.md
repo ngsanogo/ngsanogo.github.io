@@ -6,9 +6,11 @@ description: "Les composants essentiels d'une plateforme data moderne. Ce qu'il 
 categories: ["architecture"]
 tags: ["architecture", "modern-data-stack", "elt", "cloud", "data-warehouse"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
+aliases:
+  - /posts/essential-data-engineering-tools/
 ---
 
 ## Ce qui a changé
@@ -85,11 +87,7 @@ La meilleure stack est celle qui livre de la valeur vite, pas celle qui a le plu
 Articles associés pour approfondir chaque couche :
 
 - **Ingestion** → [ETL vs ELT : comment choisir](/posts/etl-vs-elt-when-to-choose/)
-- **Transformation** → [dbt pour les nuls : guide pratique](/posts/dbt-pour-les-nuls-guide-pratique/)
-- **Orchestration** → [Apache Airflow : orchestrer ses pipelines](/posts/apache-airflow-orchestration/)
+- **Transformation** → [dbt en production : au-delà du getting started](/posts/dbt-en-production/)
+- **Orchestration** → [MinIO et Airflow : construire un data lake local](/posts/minio-airflow-data-lake/)
 - **Fiabilité** → [Monitoring des pipelines data en production](/posts/monitoring-data-pipelines/)
 - **Architecture** → [Batch, micro-batch, streaming : quel pattern ?](/posts/data-pipeline-architecture-patterns/)
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

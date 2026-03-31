@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1
 # ----------------------------
 # Stage 1 — Hugo base
 # ----------------------------
@@ -17,7 +16,7 @@ WORKDIR /site
 
 
 # ----------------------------
-# Stage 1b — Lint tooling
+# Stage 2 — Lint tooling
 # ----------------------------
 FROM python:3.12-alpine AS lint
 
@@ -33,7 +32,7 @@ COPY . .
 
 
 # ----------------------------
-# Stage 2 — Build static site
+# Stage 3 — Build static site
 # ----------------------------
 FROM hugo AS build
 
@@ -42,7 +41,7 @@ RUN hugo --minify
 
 
 # ----------------------------
-# Stage 3 — Production runtime
+# Stage 4 — Production runtime
 # ----------------------------
 FROM nginxinc/nginx-unprivileged:1.27-alpine AS runtime
 

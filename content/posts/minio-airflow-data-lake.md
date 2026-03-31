@@ -6,9 +6,12 @@ description: "Comment combiner MinIO et Apache Airflow pour monter un data lake 
 categories: ["data-engineering", "tools"]
 tags: ["minio", "airflow", "data-lake", "s3", "architecture"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
+aliases:
+  - /posts/docker-for-data-engineers/
+  - /posts/apache-airflow-orchestration/
 ---
 
 ## Pourquoi un data lake local
@@ -160,7 +163,3 @@ Le code ne change pas. Seule la configuration change.
 ## En résumé
 
 MinIO + Airflow en local, c'est un data lake de développement complet. Même protocole que la prod, mêmes outils, mêmes patterns. Développez en local, déployez sur le cloud.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

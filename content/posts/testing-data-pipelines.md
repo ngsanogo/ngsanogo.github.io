@@ -6,8 +6,8 @@ description: "Comment tester des pipelines data efficacement. Tests unitaires, d
 categories: ["data-engineering", "testing"]
 tags: ["tests", "qualité", "pipelines", "pytest", "bonnes-pratiques"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
 ---
 
@@ -187,7 +187,3 @@ Chaque push déclenche les tests. Pas de merge sans tests verts.
 ## En résumé
 
 Testez les transformations en unitaire, les connexions en intégration, les données en production. Commencez par les tests unitaires — c'est rapide, fiable, et ça couvre 80% des bugs.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

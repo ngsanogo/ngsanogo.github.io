@@ -1,15 +1,10 @@
 ---
-title: "Issa Sanogo — Data Engineer Freelance Paris"
-description: "Senior Data Engineer & PM a Paris. Architecture data, pipelines fiables, qualite des donnees et delivery produit sans boite noire."
+title: "Notes sur la data — Issa Sanogo"
+description: "J'écris ici quand quelque chose me marque dans mon travail sur la data. Un problème que j'aurais voulu trouver documenté, un pattern que j'ai dû reconstruire seul, une leçon apprise après un incident de trop."
 keywords:
   - data engineering
-  - data engineer freelance Paris
-  - freelance data engineer Paris
-  - ETL
-  - SQL
-  - airflow
   - qualité des données
   - architecture data
-  - data engineer île-de-france
+  - pipelines data
 image: "/images/og-default.svg"
 ---

@@ -1,4 +1,4 @@
-.PHONY: setup hooks dev build test test-content test-links test-secrets ci clean lint stop new-post help
+.PHONY: setup hooks dev build test test-content test-links test-secrets ci clean lint stop new-post new-note help test-unit fix
 
 check-docker:
 	@command -v docker >/dev/null 2>&1 || { \
@@ -17,11 +17,14 @@ help:
 	@echo "  make test-content - Validate content front matter quality"
 	@echo "  make test-links - Validate links in generated HTML and Markdown"
 	@echo "  make test-secrets - Scan repository for leaked secrets"
+	@echo "  make test-unit - Run unit tests"
 	@echo "  make ci     - Run local CI checks"
 	@echo "  make stop   - Stop all running containers"
 	@echo "  make clean  - Remove generated files"
 	@echo "  make lint   - Run formatters and linters (Docker pre-commit)"
+	@echo "  make fix    - Run auto-correction tools"
 	@echo "  make new-post TITLE=\"...\" - Create a new post file with standard front matter"
+	@echo "  make new-note TITLE=\"...\" - Create a new note file with lightweight front matter"
 
 setup: check-docker
 	@echo "🔧 Building Docker images..."
@@ -47,6 +50,10 @@ test: check-docker
 	@echo "🧪 Running tests..."
 	@docker compose --profile test run --rm -T test
 
+test-unit: check-docker
+	@echo "🧪 Running unit tests..."
+	@docker compose --profile test run --rm -T test ./tests/validate-frontmatter.test.sh
+
 test-content: check-docker
 	@echo "🧾 Validating content front matter..."
 	@docker compose --profile lint run --rm -T lint ./scripts/validate-frontmatter.sh
@@ -60,13 +67,14 @@ test-secrets: check-docker
 	@echo "🔐 Scanning for secrets in Docker..."
 	@docker run --rm -v "$$PWD":/repo -w /repo zricethezav/gitleaks:latest detect --source . --no-git --redact --verbose
 
-ci:
+ci: check-docker
 	@echo "🧰 Running CI checks locally..."
 	@$(MAKE) lint
 	@$(MAKE) test
 	@$(MAKE) test-content
 	@$(MAKE) test-links
 	@$(MAKE) test-secrets
+	@$(MAKE) test-unit
 
 clean:
 	@echo "🧹 Cleaning generated files..."
@@ -106,10 +114,41 @@ new-post:
 		'tags: []' \
 		'keywords: []' \
 		'draft: true' \
-		'series: ""' \
 		'image: "/images/og-default.svg"' \
 		'---' \
 		'' \
 		'## Introduction' \
 		'' > "$$file"; \
 	echo "✅ Created $$file"
+
+new-note:
+	@if [ -z "$(TITLE)" ]; then \
+		echo "❌ Missing TITLE. Usage: make new-note TITLE=\"My Note\""; \
+		exit 1; \
+	fi
+	@slug="$$(printf '%s' "$(TITLE)" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$$//')"; \
+	if [ -z "$$slug" ]; then \
+		echo "❌ Could not derive a valid slug from TITLE."; \
+		exit 1; \
+	fi; \
+	file="content/notes/$$slug.md"; \
+	if [ -f "$$file" ]; then \
+		echo "❌ Note already exists: $$file"; \
+		exit 1; \
+	fi; \
+	printf '%s\n' \
+		'---' \
+		'title: "$(TITLE)"' \
+		'slug: "'"$$slug"'"' \
+		'date: "'"$$(date +%Y-%m-%d)"'"' \
+		'description: ""' \
+		'tags: []' \
+		'draft: true' \
+		'---' \
+		'' > "$$file"; \
+	echo "✅ Created $$file"
+
+fix:
+	@echo "🔧 Running auto-correction..."
+	@docker compose --profile lint run --rm -T lint prettier --write .
+	@docker compose --profile lint run --rm -T lint markdownlint --fix .

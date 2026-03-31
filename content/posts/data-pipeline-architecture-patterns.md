@@ -6,8 +6,8 @@ description: "Les 3 patterns d'architecture de pipeline data comparés. Critère
 categories: ["data-engineering"]
 tags: ["architecture", "data-pipelines", "etl", "streaming", "batch"]
 keywords: []
-series: ""
 image: "/images/og-default.svg"
+format: "article"
 draft: false
 ---
 
@@ -72,7 +72,3 @@ La donnée est traitée enregistrement par enregistrement, en continu, au fil de
 Commencer par du batch. C'est le plus simple, le plus fiable, le moins cher. Passer en micro-batch si la fraîcheur quotidienne ne suffit plus. N'introduire du streaming que si le besoin temps réel est validé par un cas métier concret — pas par une envie technique.
 
 La plupart des plateformes data en production utilisent un mix batch + micro-batch. Le streaming pur reste l'exception.
-
----
-
-**Vous avez un projet data similaire ? Parlons-en → [isdataconsulting.com](https://isdataconsulting.com)**

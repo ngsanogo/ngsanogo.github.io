@@ -2,9 +2,6 @@
 {{ $isPost := eq .Section "posts" }}
 <article>
     <header class="article-header">
-        {{ if not $isPost }}
-        <p class="eyebrow">{{ .Site.Params.role }}</p>
-        {{ end }}
         <h1 class="page-title">{{ .Title }}</h1>
         {{ if $isPost }}
         {{ partial "post-meta.html" (dict "page" . "showTaxonomies" true) }}
