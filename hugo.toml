@@ -39,6 +39,11 @@ buildFuture = false
   github = "https://github.com/ngsanogo"
 
 [[menus.main]]
+  name = "Posts"
+  url = "/posts/"
+  weight = 1
+
+[[menus.main]]
   name = "À propos"
   url = "/about/"
-  weight = 1
+  weight = 2

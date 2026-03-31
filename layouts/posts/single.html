@@ -2,15 +2,8 @@
 <article>
     <header class="article-header">
         <h1 class="page-title">{{ .Title }}</h1>
-        <p class="post-meta">
-            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date-fr.html" .Date }}</time>
-        </p>
+        {{ partial "post-meta.html" (dict "page" . "showTaxonomies" true) }}
     </header>
     {{ .Content }}
-    <footer class="article-footer">
-        <a href="/" class="button-secondary">← Retour</a>
-    </footer>
 </article>
-{{ $js := resources.Get "js/copy-code.js" | minify | fingerprint }}
-<script defer src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
 {{ end }}

@@ -1,5 +1,5 @@
 ---
-title: "dbt en production : ce qui change quand c'est pour de vrai"
+title: "dbt en production : au-delà du getting started"
 slug: dbt-en-production
 date: 2026-01-05
 description: "dbt en production, c'est autre chose que le getting started. Tests de non-régression, sources contractuelles, séparation staging/marts, gestion des environnements."

@@ -1,6 +1,10 @@
 {{ define "main" }}
-{{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
+<div class="home-intro">
+    {{ .Content }}
+</div>
+{{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse | first 5 }}
 {{ range $posts }}
 {{ partial "post-card.html" (dict "page" .) }}
 {{ end }}
+<p><a href="/posts/">Voir tous les posts →</a></p>
 {{ end }}
