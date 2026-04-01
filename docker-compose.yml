@@ -38,7 +38,7 @@ services:
     build:
       context: .
       target: lint
-    command: pre-commit run --all-files
+    command: sh -c "git config --global --add safe.directory /site && pre-commit run --all-files"
     volumes:
       - .:/site
       - precommit-cache:/root/.cache/pre-commit
