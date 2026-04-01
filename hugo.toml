@@ -29,7 +29,7 @@ disableKinds = ["taxonomy", "term"]
   page = ["HTML"]
 
 [params]
-  description = "Data engineer. J'écris sur ce que j'apprends, ce que je construis et ce que je casse."
+  description = "Data engineer et passionné de data."
   author = "Issa Sanogo"
   email = "ngsanogo@proton.me"
   linkedin = "https://www.linkedin.com/in/ngsanogo/"
