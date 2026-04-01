@@ -93,7 +93,7 @@ WHERE o.order_date >= '2024-01-01';
 Ce qu'il faut lire :
 
 - **Seq Scan** sur une grande table → problème, il manque probablement un index
-- **Index Scan** → le moteur utilise un index, c'est bien
+- **Index Scan** ou **Bitmap Index Scan** → le moteur utilise un index, c'est bien
 - **Actual time** → le temps réel (pas l'estimation)
 
 **Règle absolue** : `EXPLAIN ANALYZE` avant et après toute optimisation. Sans mesure, pas d'optimisation.
@@ -146,9 +146,11 @@ JOIN customers c ON o.customer_id = c.customer_id;
 -- L'index sur order_date n'est PAS utilisé
 SELECT * FROM orders WHERE EXTRACT(YEAR FROM order_date) = 2024;
 
--- L'index est utilisé
+-- L'index est utilisé (si la plage est sélective — moins de ~10 % des lignes)
 SELECT * FROM orders WHERE order_date >= '2024-01-01' AND order_date < '2025-01-01';
 ```
+
+> Note : si la plage couvre la quasi-totalité des lignes, PostgreSQL préfère un Seq Scan (plus rapide que de parcourir l'index pour revenir sur chaque page). L'index ne s'active que quand la sélectivité est suffisante.
 
 ### Partitionnement pour les très grandes tables
 

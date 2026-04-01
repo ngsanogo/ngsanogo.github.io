@@ -51,7 +51,7 @@ Les pipelines sont relancés constamment : retry automatique après un échec, b
 
 ### Les patterns
 
-**UPSERT / MERGE** — fusionner au lieu d'ajouter :
+**UPSERT / MERGE** — fusionner au lieu d'ajouter (PostgreSQL ≥ 15, Snowflake, BigQuery) :
 
 ```sql
 MERGE INTO orders_mart AS target
@@ -74,9 +74,10 @@ SELECT * FROM staging_orders WHERE order_date = '2024-01-15';
 
 Simple, efficace, idempotent par construction. C'est le pattern que j'utilise par défaut.
 
-**INSERT OVERWRITE** (cloud warehouses) :
+**INSERT OVERWRITE** (Hive, Spark SQL, BigQuery — non disponible en PostgreSQL standard) :
 
 ```sql
+-- Hive / Spark SQL / BigQuery uniquement
 INSERT OVERWRITE orders_mart
 PARTITION (order_date = '2024-01-15')
 SELECT * FROM staging_orders WHERE order_date = '2024-01-15';
@@ -102,6 +103,16 @@ def load_orders(df, execution_date: date, engine):
 Une dépendance à l'état précédent casse l'idempotence. Un pipeline qui fait un delta basé sur `max(updated_at)` de la table destination n'est pas idempotent — si on le relance après un incident, le delta sera faux.
 
 Sans partition date, impossible d'écraser proprement une journée sans toucher au reste.
+
+**Doublons dans la source.** `MERGE` et `DELETE + INSERT` supposent que la source est déjà déduplicée. Si `staging_orders` contient deux lignes avec le même `order_id`, PostgreSQL lève une erreur `MERGE command cannot affect row a second time`. Toujours dédupliquer avant de charger :
+
+```sql
+-- Dédupliquer la source avant MERGE ou DELETE+INSERT
+DELETE FROM staging_orders
+WHERE ctid NOT IN (
+    SELECT MIN(ctid) FROM staging_orders GROUP BY order_id
+);
+```
 
 ---
 

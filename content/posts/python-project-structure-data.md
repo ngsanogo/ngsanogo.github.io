@@ -124,12 +124,16 @@ S3_BUCKET=data-lake
 ```python
 # src/my_pipeline/extract.py
 import pandas as pd
+from sqlalchemy import create_engine, text
 from my_pipeline.config import DB_HOST, DB_NAME, DB_USER, DB_PASSWORD
 
 def extract_orders(date: str) -> pd.DataFrame:
-    conn_string = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
-    query = "SELECT * FROM orders WHERE order_date = %(date)s"
-    return pd.read_sql(query, conn_string, params={"date": date})
+    engine = create_engine(
+        f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+    )
+    query = text("SELECT * FROM orders WHERE order_date = :date")
+    with engine.connect() as conn:
+        return pd.read_sql(query, conn, params={"date": date})
 ```
 
 ```python
@@ -146,9 +150,11 @@ def clean_orders(df: pd.DataFrame) -> pd.DataFrame:
 ```python
 # src/my_pipeline/load.py
 import pandas as pd
+from sqlalchemy.engine import Engine
 
-def load_to_warehouse(df: pd.DataFrame, table: str):
-    df.to_sql(table, warehouse_conn, if_exists="replace", index=False)
+def load_to_warehouse(df: pd.DataFrame, table: str, engine: Engine) -> None:
+    with engine.begin() as conn:
+        df.to_sql(table, conn, if_exists="append", index=False)
 ```
 
 Chaque module a une responsabilité claire. Le transform ne connaît ni la source ni la destination.

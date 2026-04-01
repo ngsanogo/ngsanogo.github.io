@@ -40,33 +40,37 @@ Airflow orchestre les DAGs qui lisent et écrivent dans MinIO via le protocole S
 
 ## Mise en place avec Docker Compose
 
-Un fichier `docker-compose.yml` suffit pour faire tourner les deux :
+Un fichier `docker-compose.yml` suffit pour faire tourner les deux. La commande `standalone` d'Airflow initialise la base, démarre scheduler et webserver en un seul processus :
 
 ```yaml
 services:
   minio:
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2024-11-07T00-52-20Z
     command: server /data --console-address ":9001"
     ports:
       - "9000:9000"
       - "9001:9001"
     environment:
       MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
 
   airflow:
     image: apache/airflow:2.10.5
+    command: standalone
+    depends_on:
+      - minio
     environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
       AWS_ACCESS_KEY_ID: minioadmin
-      AWS_SECRET_ACCESS_KEY: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin123
       AWS_ENDPOINT_URL: http://minio:9000
+    ports:
+      - "8080:8080"
     volumes:
       - ./dags:/opt/airflow/dags
 ```
 
-Airflow se connecte à MinIO comme s'il parlait à S3. Aucune modification du code des DAGs.
-
-Pour un environnement vraiment reproductible, figez ensuite les tags sur des versions validées par votre équipe (et évitez `latest` en CI/production).
+`airflow standalone` migre la base, crée un utilisateur admin (mot de passe affiché dans les logs au premier démarrage) et lance scheduler + webserver. Figez les tags sur des versions validées — évitez `latest` en CI/production. Pour la prod, préférez un Compose multi-services avec PostgreSQL et scheduler séparé.
 
 ## Connexion Airflow → MinIO
 
@@ -93,35 +97,61 @@ Ou via l'UI Airflow :
 Pipeline classique : ingestion → nettoyage → agrégation.
 
 ```python
+import io
+from datetime import datetime
+
+import boto3
+import pandas as pd
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from datetime import datetime
-import boto3
 
-s3 = boto3.client(
-    "s3",
-    endpoint_url="http://minio:9000",
-    aws_access_key_id="minioadmin",
-    aws_secret_access_key="minioadmin",
-)
+BUCKET = "data-lake"
 
-def ingest():
-    # Récupérer les données et les poser dans landing/
+def _get_s3():
+    """Client initialisé à l'intérieur de la fonction, pas au niveau module."""
+    return boto3.client("s3")  # lit AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_ENDPOINT_URL
+
+
+def ingest(**context):
+    execution_date = context["ds"]  # format YYYY-MM-DD
+    s3 = _get_s3()
+    raw_csv = "order_id,customer_id,amount\n1,101,150.00\n2,102,200.00"
     s3.put_object(
-        Bucket="data-lake",
-        Key="landing/orders/2024-01-15.csv",
-        Body=raw_data
+        Bucket=BUCKET,
+        Key=f"landing/orders/{execution_date}.csv",
+        Body=raw_csv.encode(),
     )
 
-def clean():
-    # Lire depuis landing/, nettoyer, écrire dans staging/
-    obj = s3.get_object(Bucket="data-lake", Key="landing/orders/2024-01-15.csv")
-    cleaned = transform(obj["Body"].read())
-    s3.put_object(Bucket="data-lake", Key="staging/orders/2024-01-15.parquet", Body=cleaned)
 
-with DAG("orders_pipeline", start_date=datetime(2024, 1, 1), schedule="@daily"):
-    PythonOperator(task_id="ingest", python_callable=ingest) >> \
-    PythonOperator(task_id="clean", python_callable=clean)
+def clean(**context):
+    execution_date = context["ds"]
+    s3 = _get_s3()
+    obj = s3.get_object(Bucket=BUCKET, Key=f"landing/orders/{execution_date}.csv")
+    df = pd.read_csv(io.BytesIO(obj["Body"].read()))
+    if df.empty:
+        raise ValueError(f"Fichier vide ou corrompu pour {execution_date}")
+    expected_cols = {"order_id", "customer_id", "amount"}
+    if not expected_cols.issubset(df.columns):
+        raise ValueError(f"Colonnes manquantes: {expected_cols - set(df.columns)}")
+    df = df.dropna().drop_duplicates(subset=["order_id"])
+    buffer = io.BytesIO()
+    df.to_parquet(buffer, index=False)
+    s3.put_object(
+        Bucket=BUCKET,
+        Key=f"staging/orders/{execution_date}.parquet",
+        Body=buffer.getvalue(),
+    )
+
+
+with DAG(
+    "orders_pipeline",
+    start_date=datetime(2024, 1, 15),
+    schedule="@daily",
+    catchup=False,
+):
+    ingest_task = PythonOperator(task_id="ingest", python_callable=ingest)
+    clean_task = PythonOperator(task_id="clean", python_callable=clean)
+    ingest_task >> clean_task
 ```
 
 ## Organisation des buckets

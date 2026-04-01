@@ -54,7 +54,8 @@ def test_removes_negative_amounts():
         "amount": [100, -50]
     })
     result = clean_orders(df)
-    assert result["amount"].min() >= 0
+    assert len(result) == 1
+    assert result["amount"].iloc[0] > 0
 
 def test_rounds_amounts():
     df = pd.DataFrame({
@@ -79,11 +80,11 @@ from pipeline.load import load_to_warehouse
 
 @pytest.fixture
 def test_db():
-    """Base de test éphémère."""
-    conn = create_test_database()
-    seed_test_data(conn)
+    """Base de test éphémère — implémentez avec pytest-postgresql, TestContainers ou SQLite."""
+    conn = create_test_database()   # à implémenter selon votre stack
+    seed_test_data(conn)             # charge les données de test initiales
     yield conn
-    drop_test_database(conn)
+    drop_test_database(conn)         # nettoyage en fin de test
 
 def test_extract_returns_dataframe(test_db):
     df = extract_orders("2024-01-15", conn=test_db)
@@ -170,7 +171,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - run: pip install -e ".[dev]"
       - run: pytest tests/ -v --tb=short
 ```

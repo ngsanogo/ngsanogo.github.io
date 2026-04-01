@@ -35,7 +35,7 @@ La donnée s'accumule, puis est traitée en bloc à intervalles réguliers (tout
 
 Du batch avec des intervalles plus courts — toutes les 5 à 15 minutes.
 
-**Fonctionnement** : même logique que le batch, mais orchestré en boucles courtes (via Airflow par exemple).
+**Fonctionnement** : même logique que le batch, mais orchestré en boucles courtes. Airflow convient pour des intervalles ≥ 5 minutes — en dessous, l'overhead du scheduler devient problématique. Pour des intervalles plus courts, préférer Spark Structured Streaming ou Kafka Streams.
 
 **Quand l'utiliser :**
 

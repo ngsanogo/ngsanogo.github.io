@@ -29,6 +29,25 @@ docker run --name pg-mon -e POSTGRES_PASSWORD=secret -d postgres:16
 docker exec -it pg-mon psql -U postgres
 ```
 
+Dans `psql`, créez le schéma de démonstration avant d'exécuter les exemples des sections suivantes :
+
+```sql
+CREATE SCHEMA warehouse;
+
+CREATE TABLE warehouse.orders (
+    order_id    BIGINT PRIMARY KEY,
+    order_date  DATE NOT NULL,
+    customer_id BIGINT,
+    amount      NUMERIC(10,2),
+    loaded_at   TIMESTAMP DEFAULT NOW()
+);
+
+INSERT INTO warehouse.orders VALUES
+  (1, CURRENT_DATE - 1, 10, 200.00, NOW() - INTERVAL '30 minutes'),
+  (2, CURRENT_DATE - 1, 11, 150.00, NOW() - INTERVAL '30 minutes'),
+  (3, CURRENT_DATE - 1, 12, 300.00, NOW() - INTERVAL '30 minutes');
+```
+
 Pour nettoyer : `docker rm -f pg-mon`.
 
 ## Les 4 niveaux de monitoring
@@ -45,8 +64,8 @@ Les runs de pipelines : succès, échec, durée, retries.
 
 Airflow expose ces métriques nativement :
 
-- `dag_run_duration`
-- `task_instance_failures`
+- `dagrun.duration.success` / `dagrun.duration.failed`
+- `ti_failures`
 - `scheduler_heartbeat`
 
 **Alerte minimale** : tout DAG en échec depuis plus de 2 runs consécutifs.

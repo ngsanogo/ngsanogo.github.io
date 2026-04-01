@@ -35,7 +35,10 @@ Le modèle le plus courant : une table de faits au centre, entourée de tables d
 
 Elle contient les événements mesurables : ventes, commandes, visites, prescriptions. Chaque ligne = un événement. Les colonnes = des mesures (montant, quantité) et des clés vers les dimensions.
 
+Dans psql, créez d'abord les dimensions (section suivante), puis collez ce DDL :
+
 ```sql
+-- Prérequis : créer d'abord dim_customers, dim_products et dim_dates (section suivante)
 CREATE TABLE fct_orders (
     order_id BIGINT PRIMARY KEY,
     customer_key INT REFERENCES dim_customers(customer_key),
@@ -57,6 +60,24 @@ CREATE TABLE dim_customers (
     name VARCHAR(100),
     segment VARCHAR(50),
     country VARCHAR(50)
+);
+
+CREATE TABLE dim_products (
+    product_key INT PRIMARY KEY,
+    product_id VARCHAR(50),
+    name VARCHAR(100),
+    category VARCHAR(50)
+);
+
+CREATE TABLE dim_dates (
+    date_key INT PRIMARY KEY,
+    full_date DATE,
+    year INT,
+    quarter INT,
+    month INT,
+    week INT,
+    day_of_week VARCHAR(10),
+    is_holiday BOOLEAN
 );
 ```
 

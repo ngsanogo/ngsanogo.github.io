@@ -10,7 +10,6 @@ image: "/images/og-default.svg"
 draft: false
 aliases:
   - /posts/dbt-pour-les-nuls-guide-pratique/
-  - /posts/dbt-en-production/
 ---
 
 ## dbt, c'est quoi en une phrase
@@ -25,13 +24,13 @@ Pour tester dbt sans rien installer, avec PostgreSQL :
 docker run --name pg-dbt -e POSTGRES_PASSWORD=secret -p 5432:5432 -d postgres:16
 docker run --rm -it python:3.12-slim bash -c "
   pip install -q dbt-postgres &&
-  dbt init my_project &&
+  dbt init my_project --skip-profile-setup &&
   cd my_project &&
   bash
 "
 ```
 
-Configurez la connexion vers `host.docker.internal:5432` et lancez `dbt debug`.
+`--skip-profile-setup` crée le projet sans prompts interactifs. Configurez ensuite la connexion vers `host.docker.internal:5432` dans `~/.dbt/profiles.yml` et lancez `dbt debug`.
 
 ## Pourquoi dbt change la donne
 
@@ -116,11 +115,11 @@ left join {{ ref('stg_customers') }} c
 
 ## Les 5 commandes à connaître
 
-- `dbt debug`
-- `dbt run`
-- `dbt test`
-- `dbt build`
-- `dbt docs generate`
+- `dbt debug` — vérifie la connexion et la configuration du projet
+- `dbt run` — matérialise les modèles SQL (tables et views)
+- `dbt test` — lance les tests définis dans les fichiers `.yml`
+- `dbt build` — équivalent de `dbt run` + `dbt test` en séquence, recommandé en CI
+- `dbt docs generate` — génère la documentation HTML du projet
 
 ## Plan de déploiement en 3 phases
 

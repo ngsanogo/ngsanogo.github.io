@@ -113,7 +113,7 @@ La dette technique s'accumule quand on repousse. Le monitoring, les tests, la do
 
 Un pipeline idempotent produit le même résultat qu'on le lance 1 fois ou 5 fois. C'est la propriété la plus importante en data engineering.
 
-- Utiliser `INSERT OVERWRITE` ou `MERGE` au lieu de `INSERT INTO`
+- Utiliser `MERGE` (PostgreSQL ≥ 15) ou `DELETE + INSERT` par partition au lieu d'`INSERT INTO` brut
 - Partitionner par date et écraser la partition à chaque run
 - Ne jamais dépendre de l'état du run précédent
 
