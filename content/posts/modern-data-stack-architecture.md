@@ -87,7 +87,7 @@ La meilleure stack est celle qui livre de la valeur vite, pas celle qui a le plu
 Articles associés pour approfondir chaque couche :
 
 - **Ingestion** → [ETL vs ELT : comment choisir](/posts/etl-vs-elt-when-to-choose/)
-- **Transformation** → [dbt en production : au-delà du getting started](/posts/dbt-en-production/)
+- **Transformation** → [dbt en production : au-delà du getting started](/posts/dbt-pour-les-nuls-guide-pratique/)
 - **Orchestration** → [MinIO et Airflow : construire un data lake local](/posts/minio-airflow-data-lake/)
 - **Fiabilité** → [Monitoring des pipelines data en production](/posts/monitoring-data-pipelines/)
 - **Architecture** → [Batch, micro-batch, streaming : quel pattern ?](/posts/data-pipeline-architecture-patterns/)
