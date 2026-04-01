@@ -7,7 +7,6 @@ categories: ["data-engineering"]
 tags: ["architecture", "data-pipelines", "etl", "streaming", "batch"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 ---
 

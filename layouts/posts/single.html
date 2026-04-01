@@ -1,12 +1,14 @@
 {{ define "main" }}
+{{ $js := resources.Get "js/copy-code.js" | minify | fingerprint }}
 <article>
     <header class="article-header">
         <h1 class="page-title">{{ .Title }}</h1>
-        {{ partial "post-meta.html" (dict "page" . "showTaxonomies" false) }}
+        {{ partial "post-meta.html" . }}
     </header>
     {{ .Content }}
     <footer class="article-footer">
         <a href="/posts/">← Retour</a>
     </footer>
 </article>
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
 {{ end }}

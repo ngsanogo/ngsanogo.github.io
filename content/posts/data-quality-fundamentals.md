@@ -7,7 +7,6 @@ categories: ["data-quality"]
 tags: ["qualité-données", "data-engineering", "bonnes-pratiques"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 ---
 

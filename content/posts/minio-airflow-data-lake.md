@@ -7,7 +7,6 @@ categories: ["data-engineering", "tools"]
 tags: ["minio", "airflow", "data-lake", "s3", "architecture"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 aliases:
   - /posts/docker-for-data-engineers/

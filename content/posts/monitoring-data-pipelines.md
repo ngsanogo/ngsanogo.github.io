@@ -7,7 +7,6 @@ categories: ["data-engineering", "observability"]
 tags: ["monitoring", "observabilité", "alerting", "production", "pipelines"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 ---
 

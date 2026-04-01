@@ -1,7 +1,0 @@
-{{ define "main" }}
-<h1 class="page-title">{{ .Title }}</h1>
-<p class="page-subtitle">Articles dans cette {{ .Data.Singular }}.</p>
-{{ range .Pages }}
-{{ partial "post-card.html" (dict "page" . "showTaxonomies" true) }}
-{{ end }}
-{{ end }}

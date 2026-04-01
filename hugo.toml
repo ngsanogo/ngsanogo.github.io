@@ -3,10 +3,7 @@ languageCode = "fr"
 defaultContentLanguage = "fr"
 title = "Issa Sanogo"
 buildFuture = false
-
-[taxonomies]
-  tag = "tags"
-  category = "categories"
+disableKinds = ["taxonomy", "term"]
 
 [pagination]
   pagerSize = 999

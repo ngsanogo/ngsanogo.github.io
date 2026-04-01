@@ -7,7 +7,6 @@ categories: ["data-engineering", "programming"]
 tags: ["python", "structure-projet", "bonnes-pratiques", "packaging"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 aliases:
   - /posts/python-for-data-engineering/

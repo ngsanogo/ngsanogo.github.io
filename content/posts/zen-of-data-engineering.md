@@ -7,7 +7,6 @@ categories: ["fundamentals"]
 tags: ["bonnes-pratiques", "data-engineering", "principes", "qualité-code", "zen-of-python"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 ---
 

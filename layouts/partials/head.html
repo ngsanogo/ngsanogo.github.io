@@ -4,7 +4,7 @@
 {{ $metaDescription := .Description | default .Summary | default .Site.Params.description }}
 {{ $metaKeywords := .Params.tags | default .Params.categories }}
 {{ with .Params.keywords }}{{ if gt (len .) 0 }}{{ $metaKeywords = . }}{{ end }}{{ end }}
-<title>{{ if .IsHome }}{{ .Site.Title }} — Notes d'un data engineer{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
 <meta name="description" content="{{ $metaDescription }}">
 {{ with $metaKeywords }}
 <meta name="keywords" content="{{ delimit . ", " }}">

@@ -1,10 +1,8 @@
 {{ define "main" }}
 <header class="article-header">
-    <p class="eyebrow">Articles</p>
     <h1 class="page-title">{{ .Title }}</h1>
-    <p class="page-subtitle">Des réflexions sur l'architecture data, la qualité, l'orchestration et les décisions techniques en production.</p>
+    {{ with .Description }}<p class="page-subtitle">{{ . }}</p>{{ end }}
 </header>
-
 {{ range .Pages.ByDate.Reverse }}
 {{ partial "post-card.html" (dict "page" .) }}
 {{ end }}

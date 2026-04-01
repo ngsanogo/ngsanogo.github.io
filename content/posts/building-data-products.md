@@ -7,7 +7,6 @@ categories: ["product-data"]
 tags: ["data-products", "product-thinking", "data-engineering", "stakeholder-management"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 ---
 

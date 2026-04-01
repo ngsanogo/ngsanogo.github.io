@@ -7,7 +7,6 @@ categories: ["data-modeling"]
 tags: ["modélisation", "data-warehouse", "schéma-étoile", "star-schema"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 ---
 

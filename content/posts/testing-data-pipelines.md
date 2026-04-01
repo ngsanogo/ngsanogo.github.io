@@ -7,7 +7,6 @@ categories: ["data-engineering", "testing"]
 tags: ["tests", "qualité", "pipelines", "pytest", "bonnes-pratiques"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 ---
 

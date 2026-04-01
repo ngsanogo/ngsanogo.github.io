@@ -7,7 +7,6 @@ categories: ["data-engineering"]
 tags: ["postgresql", "sql", "optimisation", "performance", "bases-de-données", "fondamentaux"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 aliases:
   - /posts/databases-sgbd-fundamentals/

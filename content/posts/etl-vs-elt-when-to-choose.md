@@ -7,7 +7,6 @@ categories: ["fundamentals"]
 tags: ["etl", "elt", "architecture", "data-pipelines"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 ---
 

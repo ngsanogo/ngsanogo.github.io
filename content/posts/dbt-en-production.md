@@ -7,7 +7,6 @@ categories: ["tools"]
 tags: ["dbt", "sql", "analytics-engineering", "production"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 aliases:
   - /posts/dbt-pour-les-nuls-guide-pratique/

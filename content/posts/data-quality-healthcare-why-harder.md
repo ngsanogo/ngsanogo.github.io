@@ -7,7 +7,6 @@ categories: ["data-quality"]
 tags: ["santé", "qualité-données", "gouvernance", "pipelines"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 ---
 

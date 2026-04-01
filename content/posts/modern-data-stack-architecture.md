@@ -7,7 +7,6 @@ categories: ["architecture"]
 tags: ["architecture", "modern-data-stack", "elt", "cloud", "data-warehouse"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 aliases:
   - /posts/essential-data-engineering-tools/

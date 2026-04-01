@@ -7,7 +7,6 @@ categories: ["data-engineering"]
 tags: ["pipelines", "fiabilité", "idempotence", "gestion-erreurs", "incremental-processing", "bonnes-pratiques"]
 keywords: []
 image: "/images/og-default.svg"
-format: "article"
 draft: false
 aliases:
   - /posts/idempotent-pipelines/

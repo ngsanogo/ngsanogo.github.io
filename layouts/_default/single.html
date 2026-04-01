@@ -1,13 +1,8 @@
 {{ define "main" }}
-{{ $isPost := eq .Section "posts" }}
 <article>
     <header class="article-header">
         <h1 class="page-title">{{ .Title }}</h1>
-        {{ if $isPost }}
-        {{ partial "post-meta.html" (dict "page" . "showTaxonomies" true) }}
-        {{ else if .Description }}
-        <p class="page-subtitle">{{ .Description }}</p>
-        {{ end }}
+        {{ with .Description }}<p class="page-subtitle">{{ . }}</p>{{ end }}
     </header>
     {{ .Content }}
 </article>

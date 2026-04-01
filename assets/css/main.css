@@ -17,7 +17,6 @@
     --mono:
         "SFMono-Regular", "Cascadia Code", Menlo, Monaco, Consolas, monospace;
     --measure: 72ch;
-    --radius-sm: 0.45rem;
     --radius-md: 0.9rem;
     --radius-lg: 1.4rem;
     --shadow: 0 18px 45px rgba(37, 42, 38, 0.08);
@@ -237,8 +236,7 @@ main {
     gap: 1.5rem;
 }
 
-.eyebrow,
-.taxonomy-label {
+.eyebrow {
     margin: 0 0 0.55rem;
     color: var(--muted);
     font-family: var(--mono);
@@ -286,16 +284,6 @@ nav[role="navigation"] a:hover {
     background: rgba(31, 35, 32, 0.05);
 }
 
-nav[role="navigation"] .nav-cta {
-    background: var(--accent);
-    color: #f7f4ed;
-}
-
-nav[role="navigation"] .nav-cta:hover {
-    background: var(--accent-strong);
-    color: #f7f4ed;
-}
-
 .page-title {
     max-width: 16ch;
 }
@@ -304,8 +292,7 @@ nav[role="navigation"] .nav-cta:hover {
 .post-description,
 .post-meta,
 .footer-links,
-footer[role="contentinfo"],
-.taxonomy-count {
+footer[role="contentinfo"] {
     color: var(--muted);
 }
 
@@ -371,31 +358,6 @@ footer[role="contentinfo"],
     border-top: 1px solid var(--line);
 }
 
-.note-item {
-    padding: 1rem 0;
-    border-top: 1px solid var(--line);
-}
-
-.note-title {
-    margin: 0.25rem 0 0.3rem;
-    font-size: clamp(1rem, 1.8vw, 1.25rem);
-}
-
-.note-title a {
-    color: var(--text);
-    text-decoration: none;
-}
-
-.note-title a:hover {
-    color: var(--accent-strong);
-}
-
-.note-summary {
-    margin: 0;
-    color: var(--text-muted, var(--text));
-    font-size: 0.95rem;
-}
-
 .post-title {
     margin-bottom: 0.45rem;
     font-size: clamp(1.45rem, 2.3vw, 2rem);
@@ -417,18 +379,6 @@ footer[role="contentinfo"],
     letter-spacing: 0.03em;
 }
 
-.meta-sep {
-    margin: 0 0.4rem;
-}
-
-.post-taxonomy-inline {
-    display: inline;
-}
-
-.taxonomy-link {
-    text-decoration: none;
-}
-
 .article-header {
     margin: 0 0 2rem;
 }
@@ -445,38 +395,6 @@ article > * {
 article > .article-header,
 article > .article-footer {
     max-width: 100%;
-}
-
-.taxonomy-terms {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-}
-
-.taxonomy-term {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-}
-
-.taxonomy-pill {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.4rem;
-    padding: 0.55rem 0.85rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--bg-elevated);
-    color: var(--text);
-    text-decoration: none;
-    font-family: var(--mono);
-    font-size: 0.8rem;
-}
-
-.taxonomy-pill:hover {
-    background: #fffdf9;
 }
 
 footer[role="contentinfo"] {
