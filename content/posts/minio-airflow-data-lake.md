@@ -18,6 +18,7 @@ aliases:
 Travailler avec S3 en production, c'est standard. Mais développer directement sur AWS coûte cher et ralentit les itérations. MinIO résout ça : un stockage objet S3-compatible qui tourne en local.
 
 Combiné à Airflow, on obtient un environnement de développement complet :
+
 - Stockage objet (landing, staging, curated)
 - Orchestration des pipelines
 - Tests reproductibles sans accès cloud
@@ -43,24 +44,24 @@ Un fichier `docker-compose.yml` suffit pour faire tourner les deux :
 
 ```yaml
 services:
-    minio:
-        image: minio/minio:latest
-        command: server /data --console-address ":9001"
-        ports:
-            - "9000:9000"
-            - "9001:9001"
-        environment:
-            MINIO_ROOT_USER: minioadmin
-            MINIO_ROOT_PASSWORD: minioadmin
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
 
-    airflow:
-        image: apache/airflow:2.10.5
-        environment:
-            AWS_ACCESS_KEY_ID: minioadmin
-            AWS_SECRET_ACCESS_KEY: minioadmin
-            AWS_ENDPOINT_URL: http://minio:9000
-        volumes:
-            - ./dags:/opt/airflow/dags
+  airflow:
+    image: apache/airflow:2.10.5
+    environment:
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin
+      AWS_ENDPOINT_URL: http://minio:9000
+    volumes:
+      - ./dags:/opt/airflow/dags
 ```
 
 Airflow se connecte à MinIO comme s'il parlait à S3. Aucune modification du code des DAGs.
@@ -83,6 +84,7 @@ hook.load_string(
 ```
 
 Ou via l'UI Airflow :
+
 - **Conn Type** : Amazon Web Services
 - **Extra** : `{"endpoint_url": "http://minio:9000"}`
 

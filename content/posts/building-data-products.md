@@ -19,6 +19,7 @@ J’ai livré un pipeline dont personne ne s’est servi. Trois jours de dévelo
 Un data product est un livrable basé sur la donnée qui résout un problème précis pour un utilisateur défini. Ce n'est pas juste une table ou un dashboard.
 
 Il y a 4 niveaux de maturité :
+
 - **Niveau 1** : accès brut (tables exposées, exports)
 - **Niveau 2** : données curées (tables propres, documentées, validées)
 - **Niveau 3** : produits analytiques (dashboards self-service, métriques)
@@ -33,6 +34,7 @@ L'erreur classique : "On a des données de clics, construisons un dashboard de c
 L'approche produit : "Le marketing ne peut pas mesurer l'efficacité de ses campagnes. De quoi ont-ils besoin pour y arriver ?"
 
 Avant de coder, répondre à :
+
 - **Qui** utilise ce produit ? (rôle, fréquence, niveau technique)
 - **Quel problème** résout-il ? (en une phrase)
 - **Comment mesurer** le succès ? (adoption, impact business)
@@ -66,6 +68,7 @@ Sans ces métriques définies avant le développement, on ne peut pas savoir si 
 ## Le cycle produit data
 
 En pratique, un bon data product suit ce cycle :
+
 1. Identifier un problème métier concret
 2. Définir l'utilisateur et ses critères de succès
 3. Livrer un MVP en 2-4 semaines (pas 6 mois)

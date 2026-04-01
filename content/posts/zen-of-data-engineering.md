@@ -17,6 +17,7 @@ J’ai passé deux jours à traquer une duplication silencieuse en production. L
 ## Explicit is better than implicit
 
 Chaque pipeline doit rendre visible :
+
 - **Ce qu'il consomme** : quelles sources, quels schémas attendus
 - **Ce qu'il produit** : quelles tables, quels fichiers
 - **Ses hypothèses** : partitions attendues, volumes normaux, format des dates
@@ -131,13 +132,13 @@ Ces 4 tests couvrent 80 % des incidents data.
 
 ## Résumé
 
-| Principe (Zen of Python) | Application data |
-|---|---|
-| Explicit is better than implicit | Entrées/sorties/hypothèses visibles |
-| Readability counts | SQL formaté, nommage clair, pas de `GROUP BY 1,2` |
-| Errors should never pass silently | Assertions, checks de schéma, alertes |
-| Simple is better than complex | Pas d'abstraction prématurée |
-| Practicality beats purity | Livrer, itérer, ne pas sur-architecturer |
-| Now is better than never | Tests, monitoring et docs dès le jour 1 |
+| Principe (Zen of Python)          | Application data                                  |
+| --------------------------------- | ------------------------------------------------- |
+| Explicit is better than implicit  | Entrées/sorties/hypothèses visibles               |
+| Readability counts                | SQL formaté, nommage clair, pas de `GROUP BY 1,2` |
+| Errors should never pass silently | Assertions, checks de schéma, alertes             |
+| Simple is better than complex     | Pas d'abstraction prématurée                      |
+| Practicality beats purity         | Livrer, itérer, ne pas sur-architecturer          |
+| Now is better than never          | Tests, monitoring et docs dès le jour 1           |
 
 Le code data n'a pas besoin d'être élégant. Il a besoin d'être fiable, lisible, et réparable.

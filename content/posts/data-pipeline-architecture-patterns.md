@@ -23,6 +23,7 @@ La donnée s'accumule, puis est traitée en bloc à intervalles réguliers (tout
 **Fonctionnement** : extraction planifiée → transformation → chargement dans le warehouse.
 
 **Quand l'utiliser :**
+
 - La fraîcheur quotidienne ou horaire suffit
 - Le volume est élevé mais pas continu
 - L'équipe est petite et la simplicité est prioritaire
@@ -37,6 +38,7 @@ Du batch avec des intervalles plus courts — toutes les 5 à 15 minutes.
 **Fonctionnement** : même logique que le batch, mais orchestré en boucles courtes (via Airflow par exemple).
 
 **Quand l'utiliser :**
+
 - Besoin de fraîcheur inférieure à l'heure sans la complexité du streaming
 - L'infrastructure batch est déjà en place
 - Le volume est gérable par tranches
@@ -50,6 +52,7 @@ La donnée est traitée enregistrement par enregistrement, en continu, au fil de
 **Fonctionnement** : les événements arrivent dans un broker (Kafka, Kinesis), sont transformés et chargés quasi-instantanément.
 
 **Quand l'utiliser :**
+
 - Détection de fraude, alertes temps réel
 - Données IoT ou événementielles à fort débit
 - Le métier exige une latence de quelques secondes
@@ -58,13 +61,13 @@ La donnée est traitée enregistrement par enregistrement, en continu, au fil de
 
 ## Tableau de décision
 
-| Critère | Batch | Micro-batch | Streaming |
-|---|---|---|---|
-| Fraîcheur | Heures/jour | Minutes | Secondes |
-| Complexité ops | Basse | Moyenne | Haute |
-| Coût | Bas | Moyen | Élevé |
-| Debugging | Simple | Moyen | Difficile |
-| Cas typique | Reporting, warehouse | Dashboards opérationnels | Fraude, alertes |
+| Critère        | Batch                | Micro-batch              | Streaming       |
+| -------------- | -------------------- | ------------------------ | --------------- |
+| Fraîcheur      | Heures/jour          | Minutes                  | Secondes        |
+| Complexité ops | Basse                | Moyenne                  | Haute           |
+| Coût           | Bas                  | Moyen                    | Élevé           |
+| Debugging      | Simple               | Moyen                    | Difficile       |
+| Cas typique    | Reporting, warehouse | Dashboards opérationnels | Fraude, alertes |
 
 ## Conseil pratique
 

@@ -15,6 +15,7 @@ draft: false
 Un pipeline qui tourne ne veut pas dire un pipeline qui fonctionne. Les données peuvent arriver en retard, être incomplètes ou corrompues — et personne ne s'en aperçoit si le monitoring est absent.
 
 Le monitoring data, c'est répondre à 3 questions en permanence :
+
 1. **Est-ce que ça tourne ?** (orchestration)
 2. **Est-ce que les données arrivent ?** (freshness)
 3. **Est-ce que les données sont correctes ?** (qualité)
@@ -43,6 +44,7 @@ Outils : Prometheus + Grafana, CloudWatch, Datadog.
 Les runs de pipelines : succès, échec, durée, retries.
 
 Airflow expose ces métriques nativement :
+
 - `dag_run_duration`
 - `task_instance_failures`
 - `scheduler_heartbeat`
@@ -65,6 +67,7 @@ Si `last_load` date de plus de 2h alors que le pipeline tourne toutes les heures
 Les données sont-elles correctes ? C'est le niveau le plus précieux et le plus négligé.
 
 Contrôles classiques :
+
 - Volume : le nombre de lignes est-il dans la fourchette attendue ?
 - Nulls : les colonnes obligatoires sont-elles remplies ?
 - Unicité : pas de doublons sur les clés primaires ?
@@ -80,19 +83,20 @@ HAVING COUNT(*) < 100 OR COUNT(*) > 10000
 
 ## Les métriques essentielles
 
-| Métrique | Quoi | Seuil d'alerte |
-|---|---|---|
-| Pipeline success rate | % de runs réussis | < 95% sur 24h |
-| Pipeline duration | Temps d'exécution | > 2× la moyenne |
-| Data freshness | Âge du dernier chargement | > 2× la fréquence |
-| Row count delta | Variation du volume | > ±50% vs veille |
-| Null rate | % de nulls par colonne | > seuil métier |
+| Métrique              | Quoi                      | Seuil d'alerte    |
+| --------------------- | ------------------------- | ----------------- |
+| Pipeline success rate | % de runs réussis         | < 95% sur 24h     |
+| Pipeline duration     | Temps d'exécution         | > 2× la moyenne   |
+| Data freshness        | Âge du dernier chargement | > 2× la fréquence |
+| Row count delta       | Variation du volume       | > ±50% vs veille  |
+| Null rate             | % de nulls par colonne    | > seuil métier    |
 
 ## Alerting : moins c'est mieux
 
 Le piège classique : trop d'alertes. L'équipe les ignore, une vraie panne passe inaperçue.
 
 Règles :
+
 - **Chaque alerte doit être actionnable**. Si personne ne sait quoi faire quand elle sonne, elle ne sert à rien.
 - **Sévérité claire** : critique (action immédiate) vs warning (à traiter dans la journée).
 - **Canaux séparés** : Slack pour les warnings, PagerDuty/appel pour les critiques.

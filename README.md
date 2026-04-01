@@ -2,6 +2,8 @@
 
 Personal site and blog — **Issa Sanogo**.
 
+[![CI](https://github.com/ngsanogo/ngsanogo.github.io/actions/workflows/ci.yml/badge.svg)](https://github.com/ngsanogo/ngsanogo.github.io/actions/workflows/ci.yml)
+
 **Live:** [ngsanogo.github.io](https://ngsanogo.github.io)
 **Stack:** Hugo + Docker
 
@@ -15,7 +17,6 @@ Personal site and blog — **Issa Sanogo**.
 ## Requirements
 
 - Docker Desktop (includes Docker Compose)
-- VS Code with Dev Containers extension (for devcontainer workflow)
 
 **No local Python, Node.js, Hugo, or other tools required on macOS.**
 
@@ -30,20 +31,20 @@ make dev    # starts dev server at http://localhost:1313
 
 ## Daily commands
 
-| Task                     | Command              |
-| ------------------------ | -------------------- |
-| Build Docker images      | `make setup`         |
-| Configure git hooks only | `make hooks`         |
-| Dev server (hot reload)  | `make dev`           |
-| Build site               | `make build`         |
-| Run tests                | `make test`          |
-| Validate post metadata   | `make test-content`  |
-| Validate links           | `make test-links`    |
-| Scan secrets             | `make test-secrets`  |
-| Run local full checks    | `make ci`            |
-| Stop containers          | `make stop`          |
-| Clean output             | `make clean`         |
-| Lint and format          | `make lint`          |
+| Task                     | Command                     |
+| ------------------------ | --------------------------- |
+| Build Docker images      | `make setup`                |
+| Configure git hooks only | `make hooks`                |
+| Dev server (hot reload)  | `make dev`                  |
+| Build site               | `make build`                |
+| Run tests                | `make test`                 |
+| Validate post metadata   | `make test-content`         |
+| Validate links           | `make test-links`           |
+| Scan secrets             | `make test-secrets`         |
+| Run local full checks    | `make ci`                   |
+| Stop containers          | `make stop`                 |
+| Clean output             | `make clean`                |
+| Lint and format          | `make lint`                 |
 | Create a new blog post   | `make new-post TITLE="..."` |
 
 ## Deployment

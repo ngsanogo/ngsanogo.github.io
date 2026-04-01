@@ -75,13 +75,13 @@ Sources multiples, besoins analytiques + conformité. Warehouse : Snowflake.
 
 ## Matrice de décision
 
-| Contexte | Premier choix |
-|---|---|
-| Analytics marketing, itération rapide | ELT |
-| Données cliniques avec masquage obligatoire | ETL |
-| Consolidation finance, schémas stables | ELT |
-| Pré-traitement NLP/image avant warehouse | ETL |
-| Besoins mixtes réglementaires + analytiques | Hybride |
+| Contexte                                    | Premier choix |
+| ------------------------------------------- | ------------- |
+| Analytics marketing, itération rapide       | ELT           |
+| Données cliniques avec masquage obligatoire | ETL           |
+| Consolidation finance, schémas stables      | ELT           |
+| Pré-traitement NLP/image avant warehouse    | ETL           |
+| Besoins mixtes réglementaires + analytiques | Hybride       |
 
 ## Les erreurs classiques
 

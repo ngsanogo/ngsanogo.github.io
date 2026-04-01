@@ -36,12 +36,14 @@ Configurez la connexion vers `host.docker.internal:5432` et lancez `dbt debug`.
 ## Pourquoi dbt change la donne
 
 Sans dbt, on voit souvent :
+
 - des requêtes SQL copiées dans plusieurs endroits
 - des définitions métier incohérentes
 - peu de tests
 - une doc obsolète
 
 Avec dbt :
+
 - chaque modèle est un fichier clair
 - les dépendances sont explicites
 - les tests sont automatisés
@@ -60,6 +62,7 @@ Un model = une transformation SQL matérialisée en table ou view.
 ### 3. tests
 
 Deux niveaux :
+
 - tests génériques (`not_null`, `unique`, `accepted_values`)
 - tests métier personnalisés
 
@@ -81,6 +84,7 @@ models/
 ```
 
 Règle utile :
+
 - staging = nettoyage léger + renommage cohérent
 - marts = logique métier et indicateurs
 

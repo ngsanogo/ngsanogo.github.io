@@ -156,6 +156,7 @@ Quand une source externe échoue systématiquement, ne pas continuer à la marte
 ### Alertes : le minimum vital
 
 À alerter systématiquement :
+
 - échec après tous les retries
 - volume anormalement bas (possible perte de données)
 - durée anormalement longue (possible blocage)
@@ -197,12 +198,12 @@ Fonctionne même sans colonne `updated_at`. Coûteux en stockage et en compute s
 
 ### Comment choisir
 
-| Critère | Timestamp | CDC | Snapshot + diff |
-|---|---|---|---|
-| Détecte inserts + updates | Oui | Oui | Oui |
-| Détecte les deletes | Non | Oui | Oui |
-| Complexité | Faible | Élevée | Moyenne |
-| Latence | Batch | Temps réel possible | Batch |
+| Critère                   | Timestamp | CDC                 | Snapshot + diff |
+| ------------------------- | --------- | ------------------- | --------------- |
+| Détecte inserts + updates | Oui       | Oui                 | Oui             |
+| Détecte les deletes       | Non       | Oui                 | Oui             |
+| Complexité                | Faible    | Élevée              | Moyenne         |
+| Latence                   | Batch     | Temps réel possible | Batch           |
 
 **Règle** : commencer par timestamp-based. Passer à CDC quand les deletes comptent ou que la latence est critique. Snapshot + diff en dernier recours.
 
@@ -229,10 +230,10 @@ Jamais d'`INSERT INTO` brut sur un pipeline incrémental — c'est la recette de
 
 ## En résumé
 
-| Propriété | Problème qu'elle résout |
-|---|---|
-| Idempotence | Relances sûres, pas de doublons |
-| Gestion des erreurs | Pas de données corrompues silencieusement |
-| Traitement incrémental | Coûts et durées maîtrisés à l'échelle |
+| Propriété              | Problème qu'elle résout                   |
+| ---------------------- | ----------------------------------------- |
+| Idempotence            | Relances sûres, pas de doublons           |
+| Gestion des erreurs    | Pas de données corrompues silencieusement |
+| Traitement incrémental | Coûts et durées maîtrisés à l'échelle     |
 
 Un pipeline production-grade n'est pas plus compliqué qu'un pipeline basique. Il est juste pensé pour les cas qui arrivent inévitablement : relances, pannes, volumes croissants.

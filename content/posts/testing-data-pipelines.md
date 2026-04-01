@@ -133,6 +133,7 @@ La réponse pragmatique :
 3. **Les invariants de données** — unicité, non-nullité, bornes
 
 Ne pas tester :
+
 - Les librairies tierces (Pandas sait lire un CSV)
 - Les requêtes SQL triviales
 - L'infrastructure (c'est le job du monitoring)

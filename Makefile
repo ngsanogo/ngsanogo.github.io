@@ -1,4 +1,4 @@
-.PHONY: setup hooks dev build test test-content test-links test-secrets ci clean lint stop new-post new-note help test-unit fix
+.PHONY: setup hooks build test test-content test-links test-secrets ci clean lint stop help test-unit fix new-post
 
 check-docker:
 	@command -v docker >/dev/null 2>&1 || { \
@@ -24,7 +24,6 @@ help:
 	@echo "  make lint   - Run formatters and linters (Docker pre-commit)"
 	@echo "  make fix    - Run auto-correction tools"
 	@echo "  make new-post TITLE=\"...\" - Create a new post file with standard front matter"
-	@echo "  make new-note TITLE=\"...\" - Create a new note file with lightweight front matter"
 
 setup: check-docker
 	@echo "🔧 Building Docker images..."
@@ -121,32 +120,7 @@ new-post:
 		'' > "$$file"; \
 	echo "✅ Created $$file"
 
-new-note:
-	@if [ -z "$(TITLE)" ]; then \
-		echo "❌ Missing TITLE. Usage: make new-note TITLE=\"My Note\""; \
-		exit 1; \
-	fi
-	@slug="$$(printf '%s' "$(TITLE)" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$$//')"; \
-	if [ -z "$$slug" ]; then \
-		echo "❌ Could not derive a valid slug from TITLE."; \
-		exit 1; \
-	fi; \
-	file="content/notes/$$slug.md"; \
-	if [ -f "$$file" ]; then \
-		echo "❌ Note already exists: $$file"; \
-		exit 1; \
-	fi; \
-	printf '%s\n' \
-		'---' \
-		'title: "$(TITLE)"' \
-		'slug: "'"$$slug"'"' \
-		'date: "'"$$(date +%Y-%m-%d)"'"' \
-		'description: ""' \
-		'tags: []' \
-		'draft: true' \
-		'---' \
-		'' > "$$file"; \
-	echo "✅ Created $$file"
+
 
 fix:
 	@echo "🔧 Running auto-correction..."

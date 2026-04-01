@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -48,9 +52,6 @@ jobs:
 
       - name: Validate content
         run: make test-content
-
-      - name: Build site
-        run: make build
 
       - name: Run link validation
         run: make test-links

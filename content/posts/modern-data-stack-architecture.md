@@ -37,6 +37,7 @@ Outils courants : Fivetran, Airbyte, scripts custom pour les sources exotiques.
 Le cœur de la stack. Toute la donnée vit ici, toutes les transformations y tournent.
 
 Les options principales :
+
 - **Snowflake** : séparation stockage/calcul, facturation à la seconde
 - **BigQuery** : serverless, paiement à la requête, écosystème Google
 - **Databricks** : lakehouse (lac + warehouse combiné), bon pour le ML
@@ -48,6 +49,7 @@ Pour la plupart des cas, le choix entre ces 3 dépend de l'écosystème existant
 C'est là que la donnée brute devient exploitable. L'outil dominant est **dbt** : SQL versionné, testé, documenté.
 
 Le pattern :
+
 - `staging` : nettoyage léger, renommage
 - `marts` : logique métier, indicateurs, tables consommables
 

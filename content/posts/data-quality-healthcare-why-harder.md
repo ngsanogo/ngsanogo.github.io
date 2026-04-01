@@ -35,6 +35,7 @@ Un montant de facture erroné se corrige. Un résultat de labo mal rattaché à 
 ### Classifier les flux par criticité
 
 Tous les flux data n'ont pas le même niveau de risque. Distinguer :
+
 - **Critique** : données patients, résultats cliniques, prescriptions
 - **Important** : données de recherche, échantillons biologiques
 - **Standard** : données RH, finances, reporting opérationnel
@@ -44,6 +45,7 @@ La rigueur des contrôles qualité doit suivre cette classification.
 ### Contrats de données à chaque interface
 
 Entre chaque système source et la plateforme data, un contrat explicite :
+
 - schéma attendu
 - règles de validation
 - format d'identifiant patient

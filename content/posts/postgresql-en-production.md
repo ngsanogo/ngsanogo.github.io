@@ -91,6 +91,7 @@ WHERE o.order_date >= '2024-01-01';
 ```
 
 Ce qu'il faut lire :
+
 - **Seq Scan** sur une grande table → problème, il manque probablement un index
 - **Index Scan** → le moteur utilise un index, c'est bien
 - **Actual time** → le temps réel (pas l'estimation)
@@ -115,7 +116,7 @@ Quand **ne pas** indexer : tables < 10 000 lignes (le Seq Scan est plus rapide),
 
 ### Réécrire les requêtes
 
-**Éviter SELECT *** — charger uniquement les colonnes nécessaires :
+**Éviter SELECT \*** — charger uniquement les colonnes nécessaires :
 
 ```sql
 -- Mauvais
@@ -178,12 +179,12 @@ ANALYZE orders;
 
 ### Types de données — les erreurs courantes
 
-| Utiliser | Pour |
-|---|---|
-| `NUMERIC(10,2)` | Montants — jamais `FLOAT` (erreurs d'arrondi) |
+| Utiliser                   | Pour                                              |
+| -------------------------- | ------------------------------------------------- |
+| `NUMERIC(10,2)`            | Montants — jamais `FLOAT` (erreurs d'arrondi)     |
 | `TIMESTAMP WITH TIME ZONE` | Dès que vous manipulez plusieurs fuseaux horaires |
-| `JSONB` | Données semi-structurées, indexable et performant |
-| `TEXT` | Texte long sans limite imposée |
+| `JSONB`                    | Données semi-structurées, indexable et performant |
+| `TEXT`                     | Texte long sans limite imposée                    |
 
 La règle que j'applique sans exception : ne jamais stocker de l'argent dans un `FLOAT`. Les erreurs d'arrondi des flottants corrompent les calculs financiers de façon silencieuse.
 
