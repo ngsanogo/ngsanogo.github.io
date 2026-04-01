@@ -10,12 +10,5 @@
         {{ end }}
     </header>
     {{ .Content }}
-    {{ with .Params.cta }}
-    <footer class="article-footer">
-        {{ range . }}
-        <a href="{{ .url }}" class="button-{{ .style }}">{{ .label }}</a>
-        {{ end }}
-    </footer>
-    {{ end }}
 </article>
 {{ end }}

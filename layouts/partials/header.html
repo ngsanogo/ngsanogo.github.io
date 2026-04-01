@@ -5,11 +5,7 @@
         </div>
         <nav role="navigation" aria-label="Navigation principale">
             {{ range .Site.Menus.main }}
-            {{ if .Params.cta }}
-            <a href="{{ .URL }}" class="nav-cta">{{ .Name }}</a>
-            {{ else }}
             <a href="{{ .URL }}">{{ .Name }}</a>
-            {{ end }}
             {{ end }}
         </nav>
     </div>

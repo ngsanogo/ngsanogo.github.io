@@ -2,8 +2,11 @@
 <article>
     <header class="article-header">
         <h1 class="page-title">{{ .Title }}</h1>
-        {{ partial "post-meta.html" (dict "page" . "showTaxonomies" true) }}
+        {{ partial "post-meta.html" (dict "page" . "showTaxonomies" false) }}
     </header>
     {{ .Content }}
+    <footer class="article-footer">
+        <a href="/posts/">← Retour</a>
+    </footer>
 </article>
 {{ end }}

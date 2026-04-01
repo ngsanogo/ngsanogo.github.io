@@ -42,6 +42,7 @@ services:
     volumes:
       - .:/site
       - precommit-cache:/root/.cache/pre-commit
+      - .git:/site/.git
     profiles: ["lint"]
     labels:
       - "com.ngsanogo.service=lint"
