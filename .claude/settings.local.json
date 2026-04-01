@@ -1,5 +1,0 @@
-{
-  "permissions": {
-    "allow": ["Bash(*)", "WebFetch(domain:api.github.com)"]
-  }
-}
