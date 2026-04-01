@@ -60,7 +60,7 @@ test-content: check-docker
 
 test-links: check-docker
 	@echo "🔗 Validating links in Docker..."
-	@docker run --rm --entrypoint sh -v "$$PWD":/data lycheeverse/lychee:latest -lc 'find /data/content -name "*.md" -print0 | xargs -0 lychee --no-progress --accept "200..=299,429,999" --base-url https://ngsanogo.github.io --timeout 30 --max-retries 3 --retry-wait-time 2 --max-concurrency 16 --threads 8 --user-agent "Mozilla/5.0 (compatible; ngsanogo-link-check/1.0)" --'
+	@docker run --rm --entrypoint sh -v "$$PWD":/data lycheeverse/lychee:latest -lc 'find /data/content -name "*.md" -print0 | xargs -0 lychee --no-progress --accept "200..=299,429,999" --base-url https://ngsanogo.github.io --exclude "^https://ngsanogo\.github\.io" --timeout 30 --max-retries 3 --retry-wait-time 2 --max-concurrency 16 --threads 8 --user-agent "Mozilla/5.0 (compatible; ngsanogo-link-check/1.0)" --'
 	@docker run --rm --entrypoint sh -v "$$PWD":/data lycheeverse/lychee:latest -lc 'find /data/public -name "*.html" -print0 | xargs -0 lychee --offline --no-progress --base-url /data/public --timeout 10 --max-concurrency 16 --threads 8 --'
 
 test-secrets: check-docker

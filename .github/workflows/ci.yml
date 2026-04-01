@@ -29,6 +29,7 @@ jobs:
       - name: Build Docker images
         run: |
           docker buildx bake test lint \
+            --allow=fs=/tmp \
             --set "*.cache-from=type=local,src=/tmp/.buildx-cache" \
             --set "*.cache-to=type=local,dest=/tmp/.buildx-cache-new,mode=max" \
             --load

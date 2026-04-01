@@ -50,3 +50,4 @@ pnpm-debug.log*
 # Personal/internal documents — not for public tracking
 ideas.md
 CHARTE_EDITORIALE.md
+.claude/
