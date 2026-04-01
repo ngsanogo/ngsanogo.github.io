@@ -2,7 +2,7 @@
 <div class="home-intro">
     {{ .Content }}
 </div>
-{{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse | first 5 }}
+{{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse | first 10 }}
 {{ range $posts }}
 {{ partial "post-card.html" (dict "page" .) }}
 {{ end }}

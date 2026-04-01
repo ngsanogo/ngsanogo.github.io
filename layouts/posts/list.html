@@ -3,7 +3,24 @@
     <h1 class="page-title">{{ .Title }}</h1>
     {{ with .Description }}<p class="page-subtitle">{{ . }}</p>{{ end }}
 </header>
-{{ range .Pages.ByDate.Reverse }}
+{{ $paginator := .Paginator }}
+{{ range $paginator.Pages }}
 {{ partial "post-card.html" (dict "page" .) }}
+{{ end }}
+
+{{ if gt $paginator.TotalPages 1 }}
+<nav class="pagination" role="navigation">
+    <ul>
+        {{ if $paginator.HasPrev }}
+        <li><a href="{{ $paginator.Prev.URL }}">← Page précédente</a></li>
+        {{ end }}
+        {{ range $paginator.Pagers }}
+        <li{{ if eq . $.Paginator }} class="active"{{ end }}><a href="{{ .URL }}">{{ .PageNumber }}</a></li>
+        {{ end }}
+        {{ if $paginator.HasNext }}
+        <li><a href="{{ $paginator.Next.URL }}">Page suivante →</a></li>
+        {{ end }}
+    </ul>
+</nav>
 {{ end }}
 {{ end }}
