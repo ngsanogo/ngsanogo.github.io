@@ -1,9 +1,15 @@
 ---
 title: "Issa Sanogo"
-description: "Data engineer. J'écris sur ce que j'apprends, ce que je construis et ce que je casse."
+description: "Data engineer et passionné de data."
 image: "/images/og-default.svg"
 ---
 
-Data engineer. J'écris sur ce que j'apprends, ce que je construis et ce que je casse.
+Je travaille dans la data depuis neuf ans. Après l'AP-HP sur des données d'essais cliniques et deux ans à l'Institut Jérôme Lejeune sur des projets de recherche génétique, je travaille aujourd'hui en freelance sur des migrations de données et des plateformes data.
 
-Passionné de data depuis 9 ans, je partage ici ce qui marche et ce qui ne marche pas quand on construit des plateformes data. Pas de calendrier, pas de promesses, juste du contenu quand il est prêt.
+Ici, je documente ce qui fonctionne — et ce qui casse — quand on construit des systèmes data en production. Monitoring, qualité des données, architecture, testing. Du concret, sans filtre.
+
+Je préfère les pipelines lisibles aux architectures brillantes. Pas de calendrier : j'écris quand j'ai quelque chose à dire.
+
+---
+
+[LinkedIn](https://www.linkedin.com/in/ngsanogo/) · [isdataconsulting.com](https://isdataconsulting.com) · [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
