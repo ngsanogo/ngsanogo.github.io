@@ -12,6 +12,6 @@ Pas de calendrier de publication, pas d’objectif SEO. J’écris quand j’ai 
 Ma philosophie : privilégier la simplicité et la lisibilité dans les pipelines de données, plutôt que de viser des architectures complexes et brillantes. Je crois que les meilleures solutions sont souvent les plus simples, et que la clarté est essentielle pour maintenir des systèmes data efficaces et évolutifs.
 
 **Contact :**
-Pour échanger → [LinkedIn](#)
+Pour échanger → [LinkedIn](https://www.linkedin.com/in/ngsanogo/)
 Pour les missions → [isdataconsulting.com](https://isdataconsulting.com)
 Email → [ngsanogo@proton.me](mailto:ngsanogo@proton.me)
