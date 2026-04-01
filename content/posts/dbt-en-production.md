@@ -11,6 +11,7 @@ format: "article"
 draft: false
 aliases:
   - /posts/dbt-pour-les-nuls-guide-pratique/
+  - /posts/dbt-en-production/
 ---
 
 ## dbt, c'est quoi en une phrase

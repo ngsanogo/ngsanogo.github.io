@@ -48,6 +48,12 @@ jobs:
       - name: Validate content
         run: make test-content
 
+      - name: Build site
+        run: make build
+
+      - name: Run link validation
+        run: make test-links
+
       - name: Run unit tests
         run: make test-unit
 
