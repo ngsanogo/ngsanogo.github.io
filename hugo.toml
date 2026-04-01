@@ -31,7 +31,6 @@ disableKinds = ["taxonomy", "term"]
 [params]
   description = "Data engineer et passionné de data."
   author = "Issa Sanogo"
-  email = "ngsanogo@proton.me"
   linkedin = "https://www.linkedin.com/in/ngsanogo/"
   github = "https://github.com/ngsanogo"
 
